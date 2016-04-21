@@ -69,7 +69,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
 
     //变量
     //courselist
-    protected List<String> mNevigationCourses;
+    protected ArrayList<String> mNevigationCourses;
     protected String name;
 
     //主界面打开的类型
@@ -152,6 +152,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
         Intent intent = new Intent(mContext, CourseActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("course", course);
+        intent.putExtra("list",mNevigationCourses);
         startActivity(intent);
     }
 
@@ -192,7 +193,11 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
         mDrawerCourseList = (RecyclerView) findViewById(R.id.list_main_drawer_course);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mDrawerCourseList.setLayoutManager(linearLayoutManager);
-        mNevigationCourses = new ArrayList<>();
+        if (null != getIntent().getStringArrayListExtra("list")) {
+            mNevigationCourses=getIntent().getStringArrayListExtra("list");
+        }else{
+            mNevigationCourses = new ArrayList<>();
+        }
         mNevigationCourseAdapter = new NevigationCourseAdapter(mContext, mNevigationCourses);
         mDrawerCourseList.setAdapter(mNevigationCourseAdapter);
     }

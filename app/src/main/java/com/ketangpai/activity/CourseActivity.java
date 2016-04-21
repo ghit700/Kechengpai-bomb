@@ -80,7 +80,7 @@ public class CourseActivity extends DrawerBaseActivity {
 
     @Override
     public void onItemClick(View view, int position) {
-        mCourseName = ((TextView) view.findViewById(R.id.tv_item_drawerCourseName)).getText().toString() + position;
+        mCourseName = ((TextView) view.findViewById(R.id.tv_item_drawerCourseName)).getText().toString();
         getSupportActionBar().setTitle(mCourseName);
         mDrawerContainer.closeDrawer(Gravity.LEFT);
         setSelectItemView(position);

@@ -16,6 +16,7 @@ import com.ketangpai.activity.AccountActivity;
 import com.ketangpai.activity.AccountUpdateActivity;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.bean.User;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AccountUpdatePresenter;
 import com.ketangpai.viewInterface.AccountUpdateViewInterface;
@@ -30,10 +31,12 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
     String mColumnCode;
     String mColumnValue;
     String account;
+    String u_id;
 
     @Override
     protected void initVarious() {
         super.initVarious();
+        u_id = mContext.getSharedPreferences("user", 0).getString("u_id", "");
         mColumnName = ((AccountUpdateActivity) getActivity()).getColunmnName();
         switch (mColumnName) {
             case "密码":
@@ -125,7 +128,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
                 public void onClick(View v) {
                     if (!et_dialog_content_new.equals("")) {
                         mColumnValue = et_dialog_content_new.getText().toString();
-                        mPresenter.updateUserInfo(account, mColumnCode, mColumnValue);
+                        mPresenter.updateUserInfo(mContext, u_id, mColumnCode, mColumnValue);
                         showUpdateOnCompleteDialog(mColumnName, 3);
                     } else {
                         showUpdateOnCompleteDialog(mColumnName, 0);
@@ -149,7 +152,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
                 if (!newPwd.equals(confirmPwd)) {
                     showUpdateOnCompleteDialog("密码", 2);
                 } else {
-                    mPresenter.updateUserInfo(account, "password", newPwd);
+                    mPresenter.updateUserInfo(mContext, u_id, "password", newPwd);
                     showUpdateOnCompleteDialog("密码", 3);
                 }
             } else {

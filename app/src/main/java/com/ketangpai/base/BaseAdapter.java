@@ -95,12 +95,13 @@ public abstract class BaseAdapter<E> extends RecyclerView.Adapter<BaseAdapter.Vi
 
     public void clearData() {
         mDataList.clear();
+//        notifyDataSetChanged();
     }
 
     ;
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,View
-            .OnLongClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View
+            .OnLongClickListener {
 
         private SparseArray<View> mViews;
 

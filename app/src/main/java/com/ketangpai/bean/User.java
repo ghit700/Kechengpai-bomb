@@ -1,21 +1,24 @@
 package com.ketangpai.bean;
 
-public class User {
+import cn.bmob.v3.BmobObject;
+
+public class User extends BmobObject {
+
+
     protected String account;
     protected String password;
     protected String school;
     protected String name;
-    protected int type;
+    protected Integer type;
+    private Integer number;
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
-
-    private int number;
 
     public String getAccount() {
         return account;
@@ -49,25 +52,16 @@ public class User {
         this.name = name;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public User(){
-
-    }
 
 
-    public User(String account, String password, String school, String name, int type, int number) {
-        this.account = account;
-        this.password = password;
-        this.school = school;
-        this.name = name;
-        this.type = type;
-        this.number = number;
-    }
+
+
 }

@@ -11,7 +11,7 @@ public interface LoginViewInterface {
      *
      * @param
      */
-    public void login(User user, int ret);
+    public void login(User user);
 
     public void showLoginLoading();
 
@@ -24,5 +24,5 @@ public interface LoginViewInterface {
     /**
      * @param
      */
-    public void register(int type);
+    public void register(int ret);
 }

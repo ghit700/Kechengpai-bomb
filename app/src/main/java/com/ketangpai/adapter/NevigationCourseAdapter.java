@@ -10,6 +10,7 @@ import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Course;
 import com.ketangpai.nan.ketangpai.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,9 +21,12 @@ public class NevigationCourseAdapter extends BaseAdapter<String> {
     //选中的position
     private int selectPosition = -1;
 
+    ArrayList<String> list;
+
 
     public NevigationCourseAdapter(Context mContext, List<String> mDataList) {
         super(mContext, mDataList);
+        list= (ArrayList<String>) mDataList;
     }
 
     @Override
@@ -56,5 +60,7 @@ public class NevigationCourseAdapter extends BaseAdapter<String> {
         this.selectPosition = selectPosition;
     }
 
-
+    public ArrayList<String> getList() {
+        return list;
+    }
 }

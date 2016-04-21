@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Course;
+import com.ketangpai.bean.Student_Course;
+import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.view.MyPopupMenu;
@@ -54,7 +56,7 @@ public class CourseSMainCourseAdapter extends BaseAdapter<Course> implements Pop
         });
 
         //初始化view的值
-        StudentName.setText(s.getTeacher());
+        StudentName.setText(((Student_Course)s).getTeacher());
         CourseName.setText(s.getName());
         CourseCode.setText(s.getCode());
 

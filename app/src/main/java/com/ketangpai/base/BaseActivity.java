@@ -77,5 +77,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    protected void sendToast(String text) {
+        Toast.makeText(mContext, text, Toast.LENGTH_LONG).show();
+    }
+
 
 }

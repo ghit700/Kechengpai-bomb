@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,6 +23,7 @@ import com.ketangpai.presenter.LoginPresenter;
 import com.ketangpai.utils.ActivityCollector;
 import com.ketangpai.viewInterface.LoginViewInterface;
 
+import cn.bmob.v3.listener.SaveListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -46,6 +47,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
     private int type = 0;
     private AlertDialog RegisterDialog;
     private User mUser;
+
 
     @Override
     protected int getContentViewId() {
@@ -95,7 +97,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
         switch (v.getId()) {
             case R.id.btn_login_login:
                 mimm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                mPresenter.login(mName.getText().toString(), mPassword.getText().toString());
+                mPresenter.login(mContext, mName.getText().toString(), mPassword.getText().toString());
                 break;
             case R.id.et_login_name:
                 mimm.showSoftInput(null, InputMethodManager.SHOW_FORCED);
@@ -194,14 +196,25 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
                         !et_register_school.getText().toString().equals("") &&
                         !et_register_name.getText().toString().equals("")) {
 
+                    mUser = new User();
                     //注册
                     if (type == 0) {
                         //老师
-                        mUser = new User(et_register_account.getText().toString(), et_register_password.getText().toString(), et_register_school.getText().toString(), et_register_name.getText().toString(), 0, 0);
+                        mUser.setAccount(et_register_account.getText().toString());
+                        mUser.setPassword(et_register_password.getText().toString());
+                        mUser.setName(et_register_name.getText().toString());
+                        mUser.setNumber(0);
+                        mUser.setSchool(et_register_school.getText().toString());
+                        mUser.setType(0);
                     } else {
-                        mUser = new User(et_register_account.getText().toString(), et_register_password.getText().toString(), et_register_school.getText().toString(), et_register_name.getText().toString(), 1, Integer.parseInt(et_register_sid.getText().toString()));
+                        mUser.setAccount(et_register_account.getText().toString());
+                        mUser.setPassword(et_register_password.getText().toString());
+                        mUser.setName(et_register_name.getText().toString());
+                        mUser.setNumber(Integer.parseInt(et_register_sid.getText().toString()));
+                        mUser.setSchool(et_register_school.getText().toString());
+                        mUser.setType(1);
                     }
-                    mPresenter.register(mUser);
+                    mPresenter.register(mContext, mUser);
                 } else {
                     showRegisterFailDialog();
                 }
@@ -220,9 +233,8 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
     }
 
     @Override
-    public void login(User user, int ret) {
-        if (ret >= 0) {
-            Log.i(TAG, "login ret=" + ret);
+    public void login(User user) {
+        if (null != user) {
             mUser = user;
             type = mUser.getType();
             saveUserMessage();
@@ -293,6 +305,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
         editor.putString("school", mUser.getSchool());
         editor.putInt("number", mUser.getNumber());
         editor.putString("name", mUser.getName());
+        editor.putString("u_id", mUser.getObjectId());
         editor.commit();
         startActivity(new Intent(mContext, MainActivity.class));
         finish();

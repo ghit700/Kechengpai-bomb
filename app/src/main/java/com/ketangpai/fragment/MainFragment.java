@@ -97,12 +97,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         }
         if (v.getId() == R.id.tv_main_course) {
             ((AppCompatActivity) mContext).getSupportActionBar().setTitle("课堂");
+
             mFragmentManager.beginTransaction().replace(R.id.fragment_main_mainContainer, mCouresFragment).commit();
             ((TextView) v).setTextColor(getResources().getColor(R.color.colorBottomTextSelected));
             mMessageText.setTextColor(getResources().getColor(R.color.colorBottomTextNoSelected));
 
         } else {
             ((AppCompatActivity) mContext).getSupportActionBar().setTitle("私信");
+
             mFragmentManager.beginTransaction().replace(R.id.fragment_main_mainContainer, mMessageFragment).commit();
             ((TextView) v).setTextColor(getResources().getColor(R.color.colorBottomTextSelected));
             mCourseText.setTextColor(getResources().getColor(R.color.colorBottomTextNoSelected));
