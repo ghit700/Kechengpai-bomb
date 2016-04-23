@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.MainCoursePresenter;
+import com.ketangpai.utils.CodeUtils;
 import com.ketangpai.viewInterface.MainCourseViewInterface;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
@@ -62,7 +64,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
 
     //变量
     //course数组
-    private List<Course> mCourses;
+    private List mCourses;
     //判断addBtn是否open
     private boolean isBtnOpen = true;
     //判断是老师还是学生
@@ -85,6 +87,13 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
         initAddBtnAnim();
         mNevigationCourseAdapter = ((MainActivity) getActivity()).getNevigationCourseAdapter();
+        if (type == 0) {
+            mCourses = new ArrayList<Teacher_Course>();
+            mMainCourseAdapter = new CourseTMainCourseAdapter(mContext, mCourses);
+        } else {
+            mCourses = new ArrayList<Student_Course>();
+            mMainCourseAdapter = new CourseSMainCourseAdapter(mContext, mCourses);
+        }
 
     }
 
@@ -112,6 +121,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
 
     @Override
     protected void loadData() {
+        Log.i(TAG, First + "");
         if (First) {
             mSwipeRefreshLayout.post(new Runnable() {
                 @Override
@@ -142,7 +152,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(mContext, CourseActivity.class);
-        intent.putExtra("course", ((TextView) view.findViewById(R.id.tv_item_courseName)).getText().toString() + position);
+        intent.putExtra("course", ((TextView) view.findViewById(R.id.tv_item_courseName)).getText().toString());
         intent.putExtra("position", position);
         intent.putStringArrayListExtra("list", mNevigationCourseAdapter.getList());
         startActivity(intent);
@@ -193,7 +203,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     private void createCourse(String class_name) {
         if (type == 0) {
             Teacher_Course teacher_course = new Teacher_Course();
-            teacher_course.setCode(createCode());
+            teacher_course.setCode(CodeUtils.createCode());
             teacher_course.setAccount(account);
             teacher_course.setNumbers(0);
             teacher_course.setT_name(mContext.getSharedPreferences("user", 0).getString("name", ""));
@@ -204,20 +214,10 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         }
     }
 
-    private String createCode() {
-        int code_long = (int) (1000 + Math.random() * (1000000 - 1));
-        return String.valueOf(code_long);
-    }
 
     private void ininMainCourseList(View view) {
         mMainCourseList = (RecyclerView) view.findViewById(R.id.list_main_course);
         mMainCourseList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mCourses = new ArrayList<>();
-        if (type == 0) {
-            mMainCourseAdapter = new CourseTMainCourseAdapter(mContext, mCourses);
-        } else {
-            mMainCourseAdapter = new CourseSMainCourseAdapter(mContext, mCourses);
-        }
         mMainCourseList.setAdapter(mMainCourseAdapter);
 
     }
@@ -256,15 +256,24 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     public void getCourseListOnComplete(List<Course> courses) {
         if (null != courses) {
             int start = 0;
+
             start = mCourses.size();
             mCourses.addAll(courses);
             Log.i(TAG, "getCourseListOnComplete===start=" + start + "  end=" + mCourses.size());
-            mMainCourseAdapter.notifyItemRangeInserted(start, mCourses.size());
+            if (start == 0) {
+                mNevigationCourseAdapter.notifyDataSetChanged();
+                mMainCourseAdapter.notifyDataSetChanged();
+            } else {
+                mMainCourseAdapter.notifyItemRangeInserted(start, mCourses.size());
+            }
             for (int i = start; i < mCourses.size(); ++i) {
-                mNevigationCourseAdapter.addItem(i, mCourses.get(i).getName());
+                mNevigationCourseAdapter.addItem(i, ((Course) mCourses.get(i)).getName());
             }
 
             mSwipeRefreshLayout.setRefreshing(false);
+        } else {
+            mSwipeRefreshLayout.setRefreshing(false);
+
         }
     }
 
@@ -299,6 +308,21 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
                     .create().show();
         }
         mAddDialog.dismiss();
+    }
+
+    @Override
+    public void showLoading(int typte) {
+        showLoadingDialog();
+        if (typte == 0) {
+            setLoadingText("创建班级中...");
+        } else {
+            setLoadingText("加入班级中...");
+        }
+    }
+
+    @Override
+    public void hideLoading() {
+        dismissLoadingDialog();
     }
 
 

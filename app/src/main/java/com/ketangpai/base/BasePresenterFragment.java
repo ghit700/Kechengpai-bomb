@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,5 +65,25 @@ public abstract class BasePresenterFragment<V, T extends BasePresenter<V>> exten
 
     protected abstract T createPresenter();
 
+    public void showLoadingDialog() {
+        mLoadingDialog = new AlertDialog.Builder(mContext).show();
+        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_loading, null);
+        tv_loading = (TextView) view.findViewById(R.id.tv_loading);
+        mLoadingDialog.setContentView(view);
+        mLoadingDialog.setCanceledOnTouchOutside(false);
+    }
 
+    /**
+     * 修改载入过程的文字
+     *
+     * @param text
+     */
+    public void setLoadingText(String text) {
+        tv_loading.setText(text);
+    }
+
+
+    public void dismissLoadingDialog() {
+        mLoadingDialog.dismiss();
+    }
 }

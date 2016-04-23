@@ -59,7 +59,7 @@ public class AddNoticekActivity extends BaseToolbarActivity {
                 finish();
                 break;
             case R.id.send:
-                mFragment.sendNotice();
+                mFragment.publishNotice();
                 break;
             case R.id.data:
                 IntentUtils.openDocument(mFragment);

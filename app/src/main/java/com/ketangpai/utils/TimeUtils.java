@@ -20,4 +20,10 @@ public class TimeUtils {
         Date date = new Date(calendar.getTimeInMillis());
         return simpleDateFormat.format(date);
     }
+
+    public static String getNoticeTime(long time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日 HH:mm");
+        Date date = new Date(time);
+        return simpleDateFormat.format(date);
+    }
 }

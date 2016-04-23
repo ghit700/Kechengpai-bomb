@@ -170,13 +170,13 @@ public class AddHomeWorkFragment extends BaseFragment implements View.OnClickLis
             Uri uri = data.getData();
             String fileName = FileUtils.getFileName(uri);
             int fileType = FileUtils.getFileType(fileName);
-            String size = FileUtils.getFileSize(uri);
-            DocumentFile file = new DocumentFile(fileType, fileName, size);
+//            String size = FileUtils.getFileSize(uri);
+            DocumentFile file = new DocumentFile(fileType, fileName, "1111");
             file.setPath(uri.getPath());
-            for (int i = 0; i < 10; ++i) {
-
-                mDataAdapter.addItem(mDataList.size(), file);
-            }
+//            for (int i = 0; i < 10; ++i) {
+//
+//                mDataAdapter.addItem(mDataList.size(), file);
+//            }
 
         }
     }

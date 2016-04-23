@@ -25,10 +25,16 @@ public abstract class BaseFragment extends Fragment {
         mContext = getActivity();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initVarious();
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initVarious();
         view = inflater.inflate(getLayoutId(), container, false);
         initView();
         initData();

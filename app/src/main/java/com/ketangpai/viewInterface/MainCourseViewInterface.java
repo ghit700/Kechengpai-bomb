@@ -30,4 +30,8 @@ public interface MainCourseViewInterface {
      * @param course
      */
     void addCourseOnComplete(Student_Course course);
+
+    void showLoading(int type);
+
+    void hideLoading();
 }

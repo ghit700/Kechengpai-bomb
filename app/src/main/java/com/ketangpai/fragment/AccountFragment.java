@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +21,15 @@ import com.ketangpai.activity.AccountUpdateActivity;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AccountUpdatePresenter;
+import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.utils.IntentUtils;
+import com.ketangpai.view.ActionSheetDialog;
 import com.ketangpai.viewInterface.AccountUpdateViewInterface;
+
+import java.io.File;
+
+import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by nan on 2016/3/21.
@@ -36,7 +45,9 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
     private int number;
     private String name;
     private String account;
-    private int REQUEST = 100;
+    private int UPDATE_REQUEST = 100;
+    private AccountFragment mFragment;
+    private String File_Path;
 
     @Override
     protected void initVarious() {
@@ -46,6 +57,7 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
         type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
         number = mContext.getSharedPreferences("user", 0).getInt("number", -1);
+        mFragment = this;
     }
 
     @Override
@@ -108,26 +120,25 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
             case R.id.ll_account_name:
                 intent = new Intent(mContext, AccountUpdateActivity.class);
                 intent.putExtra("columnName", "姓名");
-                startActivityForResult(intent, REQUEST);
+                startActivityForResult(intent, UPDATE_REQUEST);
                 break;
             case R.id.ll_account_school:
                 intent = new Intent(mContext, AccountUpdateActivity.class);
                 intent.putExtra("columnName", "学校");
-                startActivityForResult(intent, REQUEST);
+                startActivityForResult(intent, UPDATE_REQUEST);
                 break;
             case R.id.ll_account_userIcon:
-//                showUpdateHeadDialog("修改头像","拍照","从相册中选择")
-                IntentUtils.openImageFile(this);
+                showUpdateHeadDialog("选择图片", "拍照", "从相册中选择");
                 break;
             case R.id.ll_account_sid:
                 intent = new Intent(mContext, AccountUpdateActivity.class);
                 intent.putExtra("columnName", "学号");
-                startActivityForResult(intent, REQUEST);
+                startActivityForResult(intent, UPDATE_REQUEST);
                 break;
             case R.id.ll_account_password:
                 intent = new Intent(mContext, AccountUpdateActivity.class);
                 intent.putExtra("columnName", "密码");
-                startActivityForResult(intent, REQUEST);
+                startActivityForResult(intent, UPDATE_REQUEST);
                 break;
 
             default:
@@ -135,15 +146,42 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    private void showUpdateHeadDialog(String title, String photo, String album) {
+        new ActionSheetDialog(mContext)
+                .builder()
+                .setTitle(title)
+                .setCancelable(true)
+                .setCanceledOnTouchOutside(true)
+                .addSheetItem(photo, ActionSheetDialog.SheetItemColor.Red, new ActionSheetDialog.OnSheetItemClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        File_Path = IntentUtils.openCamera(mFragment);
+                    }
+                })
+                .addSheetItem(album, ActionSheetDialog.SheetItemColor.Red, new ActionSheetDialog.OnSheetItemClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        IntentUtils.openImageFile(mFragment);
+                    }
+                })
+                .show();
+    }
 
-        if (requestCode == IntentUtils.OPEN_IMGAE && resultCode == getActivity().RESULT_OK) {
-            Log.i("===w", data.getData().getPath());
-            ImageLoaderUtils.display(mContext, img_account_user, data.getData().getPath());
+    @Override
+    public void onActivityResult(int requsetCode, int resultCode, Intent data) {
+
+        if (requsetCode == IntentUtils.OPEN_IMGAE && resultCode == getActivity().RESULT_OK) {
+            Uri uri=data.getData();
+            File file= FileUtils.getFileByUri(getActivity(),uri);
+            ImageLoaderUtils.display(mContext, img_account_user,file.getAbsolutePath());
+
         }
 
-        if (requestCode == REQUEST && resultCode == AccountUpdateActivity.RESULT_OK) {
+        if (requsetCode == IntentUtils.CAMERA_REQUEST && requsetCode == getActivity().RESULT_OK) {
+
+        }
+
+        if (requsetCode == UPDATE_REQUEST && resultCode == AccountUpdateActivity.RESULT_OK) {
             if (null != data.getStringExtra("columnCode") && null != data.getStringExtra("columnValue")) {
                 String columnCode = data.getStringExtra("columnCode");
                 String columnValue = data.getStringExtra("columnValue");
@@ -166,7 +204,7 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
                 }
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requsetCode, resultCode, data);
     }
 
 }

@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/tv_t_homework_add_backgroud"
+                android:background="@drawable/backgroud_accout_item"
                 android:padding="8dp">
 
     <TextView

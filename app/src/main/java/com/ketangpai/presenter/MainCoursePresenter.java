@@ -57,22 +57,26 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
     public void createCourse(Context context, final Teacher_Course course) {
         if (isViewAttached()) {
             mainCourseViewInterface = getView();
+            mainCourseViewInterface.showLoading(0);
+
             courseModel.createCourse(context, course, new SaveListener() {
                 @Override
                 public void onSuccess() {
                     mainCourseViewInterface.createCourseOnComplete(course);
+                    mainCourseViewInterface.hideLoading();
+
                 }
 
                 @Override
                 public void onFailure(int i, String s) {
                     Log.i(MainCourseFragment.TAG, "createCourse " + s);
                     mainCourseViewInterface.createCourseOnComplete(null);
+                    mainCourseViewInterface.hideLoading();
 
                 }
             });
 
-        }
-        {
+        } else {
             Log.i(MainCourseFragment.TAG, "没有连接到view");
         }
     }
@@ -80,16 +84,20 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
     public void addCourse(final Context context, String code, String acccount) {
         if (isViewAttached()) {
             mainCourseViewInterface = getView();
+            mainCourseViewInterface.showLoading(1);
             courseModel.addCourse(context, code, acccount, new ResultCallback() {
                 @Override
                 public void onSuccess(Object object) {
                     mainCourseViewInterface.addCourseOnComplete((Student_Course) object);
+                    mainCourseViewInterface.hideLoading();
                 }
 
                 @Override
                 public void onFailure(String e) {
                     Log.i(MainCourseFragment.TAG, "addCourse " + e);
                     mainCourseViewInterface.addCourseOnComplete(null);
+                    mainCourseViewInterface.hideLoading();
+
                 }
             });
         } else {

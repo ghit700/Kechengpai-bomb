@@ -79,6 +79,5 @@ public class NotificationFragment extends BaseFragment implements OnItemClickLis
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.i(Constant.LOG_TAG, view.toString());
     }
 }

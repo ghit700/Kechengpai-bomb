@@ -71,7 +71,7 @@ public class CourseModelImpl implements CourseModel {
 
     @Override
     public void addCourse(final Context context, final String code, final String account, final ResultCallback resultCallback) {
-        Log.i(MainCourseFragment.TAG, "addCourse code=" + code );
+        Log.i(MainCourseFragment.TAG, "addCourse code=" + code);
         String sql = "select * from Teacher_Course where code=?";
         BmobQuery<Teacher_Course> query = new BmobQuery<Teacher_Course>();
         query.doSQLQuery(context, sql, new SQLQueryListener<Teacher_Course>() {
@@ -82,6 +82,11 @@ public class CourseModelImpl implements CourseModel {
                 if (null != list) {
                     if (list.size() > 0) {
                         Teacher_Course teacher_course = list.get(0);
+
+                        int numbers = teacher_course.getNumbers();
+                        teacher_course.setNumbers(++numbers);
+                        teacher_course.update(context);
+
                         final Student_Course course = new Student_Course();
                         course.setC_id(teacher_course.getC_id());
                         course.setName(teacher_course.getName());

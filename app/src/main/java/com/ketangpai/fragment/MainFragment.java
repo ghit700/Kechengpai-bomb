@@ -4,11 +4,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.nan.ketangpai.R;
+import com.shamanland.fab.ShowHideOnScroll;
 
 /**
  * Created by nan on 2016/3/19.
@@ -49,6 +52,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     protected void initListener() {
         mCourseText.setOnClickListener(this);
         mMessageText.setOnClickListener(this);
+
     }
 
     @Override
@@ -98,14 +102,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         if (v.getId() == R.id.tv_main_course) {
             ((AppCompatActivity) mContext).getSupportActionBar().setTitle("课堂");
 
-            mFragmentManager.beginTransaction().replace(R.id.fragment_main_mainContainer, mCouresFragment).commit();
+            mFragmentManager.beginTransaction().replace(R.id.fragment_main_mainContainer, mCouresFragment).addToBackStack("1").commit();
             ((TextView) v).setTextColor(getResources().getColor(R.color.colorBottomTextSelected));
             mMessageText.setTextColor(getResources().getColor(R.color.colorBottomTextNoSelected));
 
         } else {
             ((AppCompatActivity) mContext).getSupportActionBar().setTitle("私信");
 
-            mFragmentManager.beginTransaction().replace(R.id.fragment_main_mainContainer, mMessageFragment).commit();
+            mFragmentManager.beginTransaction().replace(R.id.fragment_main_mainContainer, mMessageFragment).addToBackStack("1").commit();
             ((TextView) v).setTextColor(getResources().getColor(R.color.colorBottomTextSelected));
             mCourseText.setTextColor(getResources().getColor(R.color.colorBottomTextNoSelected));
         }

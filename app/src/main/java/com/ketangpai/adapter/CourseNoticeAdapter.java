@@ -8,7 +8,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
+import com.ketangpai.bean.Notice;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.MyPopupMenu;
 
 import java.util.List;
@@ -16,10 +18,10 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/17.
  */
-public class CourseNoticeAdapter extends BaseAdapter<String> implements PopupMenu.OnMenuItemClickListener {
+public class CourseNoticeAdapter extends BaseAdapter<Notice> implements PopupMenu.OnMenuItemClickListener {
 
 
-    public CourseNoticeAdapter(Context mContext, List<String> mDataList) {
+    public CourseNoticeAdapter(Context mContext, List<Notice> mDataList) {
         super(mContext, mDataList);
     }
 
@@ -30,7 +32,7 @@ public class CourseNoticeAdapter extends BaseAdapter<String> implements PopupMen
 
 
     @Override
-    protected void bindData(ViewHolder holder, int position, String s) {
+    protected void bindData(ViewHolder holder, int position, Notice s) {
         TextView mNoticeTitleText = (TextView) holder.getViewById(R.id.tv_notice_title);
         TextView mNoticeTimeText = (TextView) holder.getViewById(R.id.tv_notice_publishTime);
         TextView mNoticeContentText = (TextView) holder.getViewById(R.id.tv_notice_content);
@@ -47,7 +49,9 @@ public class CourseNoticeAdapter extends BaseAdapter<String> implements PopupMen
         });
 
         //初始化值
-
+        mNoticeTitleText.setText(s.getTitle());
+        mNoticeContentText.setText(s.getContent());
+        mNoticeTimeText.setText(TimeUtils.getNoticeTime(s.getTime()));
     }
 
     @Override
@@ -63,7 +67,6 @@ public class CourseNoticeAdapter extends BaseAdapter<String> implements PopupMen
         }
         return true;
     }
-
 
 
 }

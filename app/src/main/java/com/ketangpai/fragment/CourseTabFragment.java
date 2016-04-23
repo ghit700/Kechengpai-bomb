@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,6 +25,7 @@ import com.ketangpai.adapter.CourseTHomeworkAdapter;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.DocumentFile;
+import com.ketangpai.bean.Notice;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.FileUtils;
@@ -50,15 +52,26 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
     private List mTabContents;
     private int mPosition;
     private Animation mAddCloseAnim, mAddOpenAnim;
+    private int type;
+    private final int REQUEST = 11;
+
 
     private CourseTabFragment getInstance() {
         return this;
     }
 
     @Override
+    protected void initVarious() {
+        super.initVarious();
+        type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
-        mPublishBtn.startAnimation(mAddCloseAnim);
+        if (type == 0) {
+            mPublishBtn.startAnimation(mAddCloseAnim);
+        }
     }
 
     public void setPosition(int position) {
@@ -78,26 +91,28 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     protected void initView() {
-        mPublishBtn = (FloatingActionButton) view.findViewById(R.id.btn_course_tab_publish);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fresh_course_tab);
         mTabList = (RecyclerView) view.findViewById(R.id.list_course_tab);
+        if (type == 0) {
+            mPublishBtn = (FloatingActionButton) view.findViewById(R.id.btn_course_tab_publish);
+            mPublishBtn.setOnClickListener(this);
+            mPublishBtn.setVisibility(View.VISIBLE);
+            mTabList.setOnTouchListener(new ShowHideOnScroll(mPublishBtn));
+            initAnim();
+        }
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fresh_course_tab);
         initTabList();
     }
 
     @Override
     protected void initData() {
-        initAnim();
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     protected void initListener() {
-
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mTabAdapter.setOnItemClickListener(this);
-        mPublishBtn.setOnClickListener(this);
-        mTabList.setOnTouchListener(new ShowHideOnScroll(mPublishBtn));
     }
 
     @Override
@@ -122,9 +137,7 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
                 break;
             case 2:
                 mTabAdapter = new CourseNoticeAdapter(context, mTabContents);
-                for (int i = 0; i < 10; ++i) {
-                    mTabAdapter.addItem(i, "111");
-                }
+
                 break;
             case 3:
                 mTabAdapter = new CourseTExamAdapter(context, mTabContents);
@@ -157,7 +170,7 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
                         IntentUtils.openDocument(getInstance());
                         break;
                     case 2:
-                        startActivity(new Intent(mContext, AddNoticekActivity.class));
+                        startActivityForResult(new Intent(mContext, AddNoticekActivity.class),REQUEST);
                         break;
                     case 3:
                         break;
@@ -214,10 +227,15 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
             Uri uri = data.getData();
             String fileName = FileUtils.getFileName(uri);
             int fileType = FileUtils.getFileType(fileName);
-            String size = FileUtils.getFileSize(uri);
-            DocumentFile documentFile = new DocumentFile(fileType, fileName, size);
+//            String size = FileUtils.getFileSize(uri);
+            DocumentFile documentFile = new DocumentFile(fileType, fileName, "100");
             documentFile.setPath(uri.getPath());
             mTabAdapter.addItem(mTabContents.size(), documentFile);
+        }
+
+        if (requestCode == REQUEST && resultCode == AddNoticeFragment.RESULT) {
+            Notice notice = (Notice) data.getSerializableExtra("notice");
+            mTabAdapter.addItem(0, notice);
         }
 
         mPublishBtn.startAnimation(mAddCloseAnim);

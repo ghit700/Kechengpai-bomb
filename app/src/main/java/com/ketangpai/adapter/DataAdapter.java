@@ -3,9 +3,11 @@ package com.ketangpai.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
+import com.ketangpai.bean.DataFile;
 import com.ketangpai.bean.DocumentFile;
 import com.ketangpai.nan.ketangpai.R;
 
@@ -15,7 +17,7 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/27.
  */
-public class DataAdapter extends BaseAdapter<DocumentFile> {
+public class DataAdapter extends BaseAdapter<DataFile> {
 
     public DataAdapter(Context mContext, List mDataList) {
         super(mContext, mDataList);
@@ -27,9 +29,11 @@ public class DataAdapter extends BaseAdapter<DocumentFile> {
     }
 
     @Override
-    protected void bindData(ViewHolder holder, int position, DocumentFile item) {
-        TextView fileName = (TextView) holder.getViewById(R.id.data_fileName);
-        TextView fileSize = (TextView) holder.getViewById(R.id.data_fileSize);
+    protected void bindData(ViewHolder holder, int position, DataFile item) {
+        TextView fileName = (TextView) holder.getViewById(R.id.tv_data_fileName);
+        TextView fileSize = (TextView) holder.getViewById(R.id.tv_data_fileSize);
+        TextView tv_data_progress = (TextView) holder.getViewById(R.id.tv_data_progess);
+        ProgressBar pb_data = (ProgressBar) holder.getViewById(R.id.pb_data);
 
         holder.itemView.setBackgroundResource(typedValue.resourceId);
         fileName.setText(item.getName());

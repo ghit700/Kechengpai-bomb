@@ -14,13 +14,11 @@
 
     <EditText
         android:id="@+id/et_addDialog_courseName"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_addDialog_title"
         android:layout_marginTop="10dp"
         android:hint="请输入班级邀请码"
-        android:textCursorDrawable="@color/colorPrimary"
         android:textSize="14sp"/>
 
     <Button

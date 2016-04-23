@@ -280,6 +280,8 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
                     .setMessage("已存在相同的用户名,请重新输入")
                     .setPositiveButton("确认", null).show();
         } else if (type >= 0) {
+            mName.setText(mUser.getAccount());
+            mPassword.setText(mUser.getPassword());
             RegisterDialog.dismiss();
             new AlertDialog.Builder(mContext).setTitle("注册成功")
                     .setMessage("恭喜您,注册成功课程派")

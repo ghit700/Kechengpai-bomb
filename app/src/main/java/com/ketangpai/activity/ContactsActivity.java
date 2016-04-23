@@ -46,6 +46,7 @@ public class ContactsActivity extends BaseToolbarActivity {
     @Override
     protected void initToolbar() {
         super.initToolbar();
+        getSupportActionBar().setTitle("通讯录");
     }
 
     @Override

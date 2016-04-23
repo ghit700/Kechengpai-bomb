@@ -145,6 +145,9 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
             case R.id.notify:
                 startActivity(new Intent(mContext, NotificationActivity.class));
                 break;
+            case R.id.contacts:
+                startActivity(new Intent(mContext, ContactsActivity.class));
+                break;
         }
         return true;
     }
@@ -232,6 +235,7 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         boolean isOpen = mDrawerContainer.isDrawerVisible(mfl_main_drawerContent);
         menu.findItem(R.id.search).setVisible(!isOpen);
         menu.findItem(R.id.notify).setVisible(!isOpen);
+        menu.findItem(R.id.contacts).setVisible(!isOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
