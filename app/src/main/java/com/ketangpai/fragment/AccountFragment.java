@@ -19,13 +19,17 @@ import android.widget.TextView;
 
 import com.ketangpai.activity.AccountUpdateActivity;
 import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.bean.User;
+import com.ketangpai.constant.Constant;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.presenter.AccountPresenter;
 import com.ketangpai.presenter.AccountUpdatePresenter;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.view.ActionSheetDialog;
 import com.ketangpai.viewInterface.AccountUpdateViewInterface;
+import com.ketangpai.viewInterface.AccountViewInterface;
 
 import java.io.File;
 
@@ -34,8 +38,9 @@ import cn.bmob.v3.datatype.BmobFile;
 /**
  * Created by nan on 2016/3/21.
  */
-public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInterface, AccountUpdatePresenter> implements View.OnClickListener {
+public class AccountFragment extends BasePresenterFragment<AccountViewInterface, AccountPresenter> implements View.OnClickListener, AccountViewInterface {
 
+    public static final String TAG = "===AccountFragment";
     RelativeLayout mUserIcon, mName, mShool, mNumber, mPassword;
     TextView tv_account, tv_school, tv_name, tv_number;
     ImageView img_account_user;
@@ -45,6 +50,7 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
     private int number;
     private String name;
     private String account;
+    private String u_id;
     private int UPDATE_REQUEST = 100;
     private AccountFragment mFragment;
     private String File_Path;
@@ -57,6 +63,7 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
         type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
         number = mContext.getSharedPreferences("user", 0).getInt("number", -1);
+        u_id = mContext.getSharedPreferences("user", 0).getString("u_id", "");
         mFragment = this;
     }
 
@@ -109,11 +116,6 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
     }
 
     @Override
-    protected AccountUpdatePresenter createPresenter() {
-        return new AccountUpdatePresenter();
-    }
-
-    @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
@@ -155,6 +157,10 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
                 .addSheetItem(photo, ActionSheetDialog.SheetItemColor.Red, new ActionSheetDialog.OnSheetItemClickListener() {
                     @Override
                     public void onClick(int which) {
+                        File file = new File(Constant.ALBUM_PATH + Constant.MAIN_Folder + Constant.PHOTO_Folder);
+                        if (!file.exists()) {
+                            file.mkdirs();
+                        }
                         File_Path = IntentUtils.openCamera(mFragment);
                     }
                 })
@@ -170,18 +176,25 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
     @Override
     public void onActivityResult(int requsetCode, int resultCode, Intent data) {
 
+
         if (requsetCode == IntentUtils.OPEN_IMGAE && resultCode == getActivity().RESULT_OK) {
-            Uri uri=data.getData();
-            File file= FileUtils.getFileByUri(getActivity(),uri);
-            ImageLoaderUtils.display(mContext, img_account_user,file.getAbsolutePath());
-
+            Uri uri = data.getData();
+            File file = FileUtils.getFileByUri(getActivity(), uri);
+            ImageLoaderUtils.displayFile(mContext, img_account_user, file);
+            User user = new User();
+            user.setObjectId(u_id);
+            mPresenter.uploadUserLogo(mContext, file, user);
         }
 
-        if (requsetCode == IntentUtils.CAMERA_REQUEST && requsetCode == getActivity().RESULT_OK) {
-
+        if (requsetCode == IntentUtils.CAMERA_REQUEST && resultCode == getActivity().RESULT_OK) {
+            File file = new File(File_Path);
+            ImageLoaderUtils.displayFile(mContext, img_account_user, file);
+            User user = new User();
+            user.setObjectId(u_id);
+            mPresenter.uploadUserLogo(mContext, file, user);
         }
 
-        if (requsetCode == UPDATE_REQUEST && resultCode == AccountUpdateActivity.RESULT_OK) {
+        if (requsetCode == UPDATE_REQUEST && resultCode == 0) {
             if (null != data.getStringExtra("columnCode") && null != data.getStringExtra("columnValue")) {
                 String columnCode = data.getStringExtra("columnCode");
                 String columnValue = data.getStringExtra("columnValue");
@@ -207,6 +220,32 @@ public class AccountFragment extends BasePresenterFragment<AccountUpdateViewInte
         super.onActivityResult(requsetCode, resultCode, data);
     }
 
+    @Override
+    public void showUploadLogoDialong() {
+        showLoadingDialog();
+        setLoadingText("上传头像中...");
+    }
+
+    @Override
+    public void hideUploadLogoDialong() {
+        dismissLoadingDialog();
+    }
+
+    @Override
+    public void uploadLogoOnComplete(int ret) {
+        Log.i(TAG, "uploadLogoOnComplete ret=" + ret);
+        if (ret > 0) {
+
+        } else {
+            new AlertDialog.Builder(mContext).setTitle("上传头像失败").
+                    setPositiveButton("确认", null).show();
+        }
+    }
+
+    @Override
+    protected AccountPresenter createPresenter() {
+        return new AccountPresenter();
+    }
 }
 
 

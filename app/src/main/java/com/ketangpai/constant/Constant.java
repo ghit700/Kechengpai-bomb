@@ -10,8 +10,10 @@ import java.io.File;
 public class Constant {
 
 
-    public final static String MAIN_Folder = "ketangpai";
-    public final static String DATA_Folder = "data";
-    public final static String PHOTO_Folder = "photo";
-    public static final String ALBUM_PATH = Environment.getExternalStorageState() + File.separator + MAIN_Folder + File.separator;
+    public final static String MAIN_Folder = "ketangpai" + File.separator;
+    public final static String DATA_Folder = "data" + File.separator;
+    public final static String PHOTO_Folder = "photo" + File.separator;
+    public static final String ALBUM_PATH = Environment.getExternalStorageDirectory() + File.separator + MAIN_Folder + File.separator;
+
+
 }

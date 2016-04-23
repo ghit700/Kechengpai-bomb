@@ -22,7 +22,7 @@ public class IntentUtils {
 
     public static final int OPEN_DOCUMENT_REQUEST = 1;
     public static final int OPEN_IMGAE = 2;
-    public static final int   CAMERA_REQUEST = 101;
+    public static final int CAMERA_REQUEST = 101;
 
 
     /**
@@ -50,7 +50,7 @@ public class IntentUtils {
         //仅返回可以打开流的文件
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
-        fragment.startActivityForResult(intent, OPEN_DOCUMENT_REQUEST);
+        fragment.startActivityForResult(intent, OPEN_IMGAE);
     }
 
 
@@ -61,7 +61,7 @@ public class IntentUtils {
      * @return
      */
     public static String openCamera(BaseFragment fragment) {
-        String File_Path = Constant.ALBUM_PATH + Constant.PHOTO_Folder + System.currentTimeMillis() + ".jpg";
+        String File_Path = Constant.ALBUM_PATH + Constant.MAIN_Folder + Constant.PHOTO_Folder + "logo" + ".jpg";
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(File_Path))); //文件的名字
         fragment.startActivityForResult(intent, CAMERA_REQUEST);

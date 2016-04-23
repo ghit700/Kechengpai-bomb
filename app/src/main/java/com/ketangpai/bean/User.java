@@ -11,6 +11,15 @@ public class User extends BmobObject {
     protected String name;
     protected Integer type;
     private Integer number;
+    private String path="";
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public Integer getNumber() {
         return number;
@@ -59,9 +68,6 @@ public class User extends BmobObject {
     public void setType(Integer type) {
         this.type = type;
     }
-
-
-
 
 
 }

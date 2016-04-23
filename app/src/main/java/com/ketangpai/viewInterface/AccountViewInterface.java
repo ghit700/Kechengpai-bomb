@@ -8,5 +8,5 @@ public interface AccountViewInterface {
 
     void hideUploadLogoDialong();
 
-    void hideUploadLogoOnComplete(String );
+    void uploadLogoOnComplete(int ret);
 }

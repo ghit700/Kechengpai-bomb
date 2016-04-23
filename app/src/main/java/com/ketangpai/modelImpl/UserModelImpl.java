@@ -5,17 +5,21 @@ import android.util.Log;
 
 import com.ketangpai.Callback.ResultsCallback;
 import com.ketangpai.bean.User;
+import com.ketangpai.fragment.AccountFragment;
 import com.ketangpai.fragment.AccountUpdateFragment;
 import com.ketangpai.model.UserModel;
 
+import java.io.File;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SQLQueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * Created by nan on 2016/4/16.
@@ -77,8 +81,25 @@ public class UserModelImpl implements UserModel {
         }
 
         user.update(context, u_id, resultCallback);
-
-
     }
+
+    @Override
+    public void uploadUserLogo(final Context context, File file, final User user, final UpdateListener resultCallback) {
+        Log.i(AccountFragment.TAG, "uploadUserLogo filepath=" + file.getAbsolutePath() + " name=" + file.getName());
+        final BmobFile bmobFile = new BmobFile(file);
+        bmobFile.upload(context, new UploadFileListener() {
+            @Override
+            public void onSuccess() {
+                user.setPath(bmobFile.getFileUrl(context));
+                user.update(context, user.getObjectId(), resultCallback);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.i(AccountFragment.TAG,s);
+            }
+        });
+    }
+
 
 }

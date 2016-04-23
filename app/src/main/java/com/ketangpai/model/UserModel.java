@@ -5,6 +5,8 @@ import android.content.Context;
 import com.ketangpai.Callback.ResultsCallback;
 import com.ketangpai.bean.User;
 
+import java.io.File;
+
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -17,4 +19,6 @@ public interface UserModel {
     public void register(Context context, User user, SaveListener resultCallback);
 
     public void updateUserInfo(Context context, String u_id, String columnName, String columnValue, UpdateListener resultCallback);
+
+    public void uploadUserLogo(Context context, File file, User user, UpdateListener resultCallback);
 }
