@@ -24,7 +24,6 @@ public class SplashAcitvity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Log.i("wu","111");
 
         String account = getSharedPreferences("user", 0).getString("account", "");
         String password = getSharedPreferences("user", 0).getString("password", "");

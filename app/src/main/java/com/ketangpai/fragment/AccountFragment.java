@@ -126,6 +126,13 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
 
     }
 
+
+    @Override
+    public void onStop() {
+        getActivity().setResult(ACCOUNT_RESULT);
+        super.onStop();
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent;

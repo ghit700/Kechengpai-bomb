@@ -110,10 +110,14 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
 
     @Override
     protected void initData() {
+        Log.i("===initData ","111");
         File file = new File(Constant.LOGO_FOLDER);
         if (!file.exists()) {
+            Log.i("===initData ","111");
+
             ImageLoaderUtils.display(mContext, mUserIconImg, path);
         } else {
+            Log.i("===initData ","113");
 
             ImageLoaderUtils.displayNoDisk(mContext, mUserIconImg, Constant.LOGO_FOLDER);
         }
@@ -269,9 +273,9 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("=====  onActivityResult", requestCode + "  " + resultCode);
         if (requestCode == ACCOUNT_REQUEST && resultCode == AccountFragment.ACCOUNT_RESULT) {
-            ImageLoaderUtils.display(mContext, mUserIconImg, Constant.LOGO_FOLDER);
+            Log.i("====","111");
+            ImageLoaderUtils.displayNoDisk(mContext, mUserIconImg, Constant.LOGO_FOLDER);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

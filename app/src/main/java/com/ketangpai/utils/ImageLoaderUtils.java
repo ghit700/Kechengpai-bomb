@@ -41,8 +41,14 @@ public class ImageLoaderUtils {
         if (imageView == null) {
             throw new IllegalArgumentException("argument error");
         }
-        Glide.with(context).load(url).placeholder(R.drawable.da8e974dc_r).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE)
-                .error(R.drawable.da8e974dc_r).crossFade().into(imageView);
+        Glide.with(context)
+                .load(url).
+                placeholder(R.drawable.da8e974dc_r).
+                skipMemoryCache(true).centerCrop().
+                diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(R.drawable.da8e974dc_r).
+                crossFade().
+                into(imageView);
     }
 
 
