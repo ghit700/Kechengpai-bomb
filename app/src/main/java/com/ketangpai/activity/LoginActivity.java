@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ketangpai.base.BasePresenterActivity;
@@ -24,7 +25,6 @@ import com.ketangpai.utils.ActivityCollector;
 import com.ketangpai.viewInterface.LoginViewInterface;
 
 import cn.bmob.v3.listener.SaveListener;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by nan on 2016/3/9.
@@ -37,7 +37,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
     private EditText mName, mPassword;
     private TextView mRegister;
     private Button mBtn_login;
-    private CircleImageView mUserIconImg;
+    private ImageView mUserIconImg;
 
     //变量
     //软键盘
@@ -64,7 +64,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
         initEtNameAndPassword();
         mBtn_login = (Button) findViewById(R.id.btn_login_login);
         mRegister = (TextView) findViewById(R.id.tv_login_register);
-        mUserIconImg = (CircleImageView) findViewById(R.id.img_login_logo);
+        mUserIconImg = (ImageView) findViewById(R.id.img_login_logo);
     }
 
     @Override
@@ -308,6 +308,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
         editor.putInt("number", mUser.getNumber());
         editor.putString("name", mUser.getName());
         editor.putString("u_id", mUser.getObjectId());
+        editor.putString("path", mUser.getPath());
         editor.commit();
         startActivity(new Intent(mContext, MainActivity.class));
         finish();

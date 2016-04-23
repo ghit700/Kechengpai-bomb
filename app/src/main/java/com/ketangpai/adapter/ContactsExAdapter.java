@@ -15,7 +15,6 @@ import com.ketangpai.nan.ketangpai.R;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by nan on 2016/3/18.
@@ -121,11 +120,11 @@ public class ContactsExAdapter extends BaseExpandableListAdapter {
     }
 
     class ViewHolderGroupUser {
-        private CircleImageView itemUserIcon;
+        private ImageView itemUserIcon;
         private TextView itemUserName;
 
         public ViewHolderGroupUser(View view) {
-            itemUserIcon = (CircleImageView) view.findViewById(R.id.img_message_itemUserIcon);
+            itemUserIcon = (ImageView) view.findViewById(R.id.img_message_itemUserIcon);
             itemUserName = (TextView) view.findViewById(R.id.tv_messagme_itemUserName);
         }
     }

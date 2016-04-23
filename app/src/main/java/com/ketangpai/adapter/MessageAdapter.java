@@ -10,7 +10,6 @@ import com.ketangpai.nan.ketangpai.R;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by nan on 2016/4/17.
@@ -28,7 +27,7 @@ public class MessageAdapter extends BaseAdapter {
 
     @Override
     protected void bindData(ViewHolder holder, int position, Object item) {
-        CircleImageView img_message = (CircleImageView) holder.getViewById(R.id.img_message);
+        ImageView img_message = (ImageView) holder.getViewById(R.id.img_message);
         TextView tv_message_name = (TextView) holder.getViewById(R.id.tv_message_name);
         TextView tv_message_time = (TextView) holder.getViewById(R.id.tv_message_time);
         TextView tv_message_content = (TextView) holder.getViewById(R.id.tv_message_content);

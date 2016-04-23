@@ -22,13 +22,13 @@
             android:textColor="@android:color/black"
             android:textSize="18sp"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/img_account_user"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/da8e974dc_r"></de.hdodenhof.circleimageview.CircleImageView>
+            android:src="@drawable/da8e974dc_r"></ImageView>
 
     </RelativeLayout>
 

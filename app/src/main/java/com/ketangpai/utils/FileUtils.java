@@ -2,12 +2,15 @@ package com.ketangpai.utils;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 
 /**
@@ -139,6 +142,29 @@ public class FileUtils {
         }
         return null;
     }
+
+
+    public static void overloadFile( File sourse, File target) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(target, false);
+            FileInputStream fileInputStream = new FileInputStream(sourse);
+
+            byte[] data = new byte[128];
+            while ((fileInputStream.read(data, 0, data.length)) != -1) {
+                fileOutputStream.write(data);
+            }
+
+
+            fileOutputStream.flush();
+            fileOutputStream.getFD().sync();
+            fileInputStream.close();
+            fileOutputStream.close();
+        } catch (Exception e) {
+
+        }
+    }
+
+    ;
 
 
 }

@@ -5,7 +5,7 @@
                 android:padding="15dp"
     >
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/img_chat_receiver_userIcon"
         android:layout_width="30dp"
         android:layout_height="30dp"

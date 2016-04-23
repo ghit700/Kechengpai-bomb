@@ -5,7 +5,7 @@
     >
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/img_login_logo"
         android:layout_width="100dp"
         android:layout_height="100dp"

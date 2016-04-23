@@ -2,6 +2,7 @@ package com.ketangpai.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
@@ -9,7 +10,6 @@ import com.ketangpai.nan.ketangpai.R;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by nan on 2016/3/21.
@@ -53,13 +53,13 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     protected void bindData(ViewHolder holder, int position, Object item) {
         //初始化view
-        CircleImageView UserImg;
+        ImageView UserImg;
         TextView text;
         if(getItemViewType(position)==0){
-             UserImg= (CircleImageView) holder.getViewById(R.id.img_chat_acceptor_userIcon);
+             UserImg= (ImageView) holder.getViewById(R.id.img_chat_acceptor_userIcon);
              text= (TextView) holder.getViewById(R.id.tv_chat_acceptor_text);
         }else{
-            UserImg= (CircleImageView) holder.getViewById(R.id.img_chat_receiver_userIcon);
+            UserImg= (ImageView) holder.getViewById(R.id.img_chat_receiver_userIcon);
             text= (TextView) holder.getViewById(R.id.tv_chat_receiver_text);
         }
 

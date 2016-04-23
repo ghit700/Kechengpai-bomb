@@ -40,14 +40,17 @@ import com.ketangpai.activity.SearchActivity;
 import com.ketangpai.adapter.NevigationCourseAdapter;
 import com.ketangpai.adapter.NotificationAdapter;
 import com.ketangpai.bean.Course;
+import com.ketangpai.constant.Constant;
+import com.ketangpai.fragment.AccountFragment;
 import com.ketangpai.fragment.CourseFragment;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.utils.ImageLoaderUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by nan on 2016/3/15.
@@ -61,7 +64,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     protected Toolbar mToolbar;
     protected RecyclerView mDrawerCourseList;
     protected ImageView mExitLoginImg;
-    private CircleImageView mUserIconImg;
+    private ImageView mUserIconImg;
     protected TextView mDrawerCourseText, mDrawerMessageText, mUserNameText;
 
     //adapter
@@ -71,6 +74,8 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     //courselist
     protected ArrayList<String> mNevigationCourses;
     protected String name;
+    private final int ACCOUNT_REQUEST = 1;
+    private String path;
 
     //主界面打开的类型
     public final static int COURSE = 1;
@@ -89,13 +94,14 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     protected void initVariables() {
         super.initVariables();
         name = getSharedPreferences("user", 0).getString("name", "");
+        path = getSharedPreferences("user", 0).getString("path", "");
     }
 
     @Override
     protected void initView() {
         initToolBar();
         initDrawerContent();
-        mUserIconImg = (CircleImageView) findViewById(R.id.img_main_userIcon);
+        mUserIconImg = (ImageView) findViewById(R.id.img_main_userIcon);
         mExitLoginImg = (ImageView) findViewById(R.id.img_main_exitLogin);
         mfl_main_drawerContent = (FrameLayout) findViewById(R.id.fl_main_drawerContent);
         mDrawerContainer = (DrawerLayout) findViewById(R.id.drawer_main_container);
@@ -104,6 +110,13 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
 
     @Override
     protected void initData() {
+        File file = new File(Constant.LOGO_FOLDER);
+        if (!file.exists()) {
+            ImageLoaderUtils.display(mContext, mUserIconImg, path);
+        } else {
+
+            ImageLoaderUtils.displayNoDisk(mContext, mUserIconImg, Constant.LOGO_FOLDER);
+        }
 
     }
 
@@ -152,7 +165,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
         Intent intent = new Intent(mContext, CourseActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("course", course);
-        intent.putExtra("list",mNevigationCourses);
+        intent.putExtra("list", mNevigationCourses);
         startActivity(intent);
     }
 
@@ -178,7 +191,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
 
     protected void initDrawerContent() {
         initDrawerCourseList();
-        mUserIconImg = (CircleImageView) findViewById(R.id.img_main_userIcon);
+        mUserIconImg = (ImageView) findViewById(R.id.img_main_userIcon);
         mExitLoginImg = (ImageView) findViewById(R.id.img_main_exitLogin);
         mUserNameText = (TextView) findViewById(R.id.tv_main_userName);
         mDrawerCourseText = (TextView) findViewById(R.id.tv_main_drawerCourse);
@@ -194,8 +207,8 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mDrawerCourseList.setLayoutManager(linearLayoutManager);
         if (null != getIntent().getStringArrayListExtra("list")) {
-            mNevigationCourses=getIntent().getStringArrayListExtra("list");
-        }else{
+            mNevigationCourses = getIntent().getStringArrayListExtra("list");
+        } else {
             mNevigationCourses = new ArrayList<>();
         }
         mNevigationCourseAdapter = new NevigationCourseAdapter(mContext, mNevigationCourses);
@@ -251,9 +264,17 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     protected void startAccountActivity() {
 
         Intent intent = new Intent(mContext, AccountActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, ACCOUNT_REQUEST);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("=====  onActivityResult", requestCode + "  " + resultCode);
+        if (requestCode == ACCOUNT_REQUEST && resultCode == AccountFragment.ACCOUNT_RESULT) {
+            ImageLoaderUtils.display(mContext, mUserIconImg, Constant.LOGO_FOLDER);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     public NevigationCourseAdapter getNevigationCourseAdapter() {
         return mNevigationCourseAdapter;
