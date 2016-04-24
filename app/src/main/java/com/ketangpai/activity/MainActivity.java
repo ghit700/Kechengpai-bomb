@@ -25,7 +25,7 @@ import com.ketangpai.utils.ActivityCollector;
 /**
  * Created by nan on 2016/3/9.
  */
-public class MainActivity extends DrawerBaseActivity implements View.OnClickListener, OnItemClickListener, View.OnTouchListener {
+public class MainActivity extends DrawerBaseActivity implements View.OnClickListener, View.OnTouchListener {
 
 
     //    view
@@ -119,10 +119,7 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
     }
 
 
-    @Override
-    public void onItemClick(View view, int position) {
-        super.onItemClick(view, position);
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

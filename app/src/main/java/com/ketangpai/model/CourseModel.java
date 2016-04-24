@@ -14,7 +14,7 @@ import cn.bmob.v3.listener.SaveListener;
 public interface CourseModel {
     void queryCourseList(Context context, String account, int type, ResultsCallback resultsCallback);
 
-    void createCourse(Context context, Teacher_Course course, SaveListener resultCallback);
+    void createCourse(Context context, Teacher_Course course, ResultCallback resultCallback);
 
     void addCourse(Context context, String code, String account, ResultCallback resultCallback);
 }

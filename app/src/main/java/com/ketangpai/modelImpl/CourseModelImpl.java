@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.ketangpai.Callback.ResultCallback;
 import com.ketangpai.Callback.ResultsCallback;
+import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.MainCourseFragment;
@@ -17,6 +18,7 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -64,9 +66,30 @@ public class CourseModelImpl implements CourseModel {
     }
 
     @Override
-    public void createCourse(Context context, Teacher_Course course, SaveListener resultCallback) {
+    public void createCourse(final Context context, final Teacher_Course course, final ResultCallback resultCallback) {
         Log.i(MainCourseFragment.TAG, "createCourse account=" + course.getAccount() + " id=" + course.getObjectId());
-        course.save(context, resultCallback);
+        course.save(context, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                BmobQuery<Teacher_Course> query = new BmobQuery<Teacher_Course>();
+                query.getObject(context, course.getObjectId(), new GetListener<Teacher_Course>() {
+                    @Override
+                    public void onSuccess(Teacher_Course o) {
+                        resultCallback.onSuccess(o);
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                        resultCallback.onFailure(s);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                resultCallback.onFailure(s);
+            }
+        });
     }
 
     @Override

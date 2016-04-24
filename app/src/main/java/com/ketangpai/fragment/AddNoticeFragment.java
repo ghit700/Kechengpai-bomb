@@ -31,12 +31,15 @@ import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.FullyLinearLayoutManager;
+import com.ketangpai.view.LinearLayoutManagerForScrollView;
 import com.ketangpai.viewInterface.AddNoticeViewInterface;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by nan on 2016/3/27.
@@ -55,16 +58,18 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
     DataAdapter mAddNoticeDataAdapter;
 
     //变量
-    List mDataList;
-    StringBuffer paths;
-    TextView tv_data_progress;
-    ProgressBar pb_data;
+    private List mDataList;
+    private List<BmobFile> mFiles;
+    private TextView tv_data_progress;
+    private ProgressBar pb_data;
+    private int c_id;
     public static final int RESULT = 12;
 
     @Override
     protected void initVarious() {
         super.initVarious();
-        paths = new StringBuffer();
+        mFiles = new ArrayList();
+        c_id = getActivity().getIntent().getIntExtra("c_id", -1);
     }
 
     @Override
@@ -124,9 +129,12 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
         if (requestCode == IntentUtils.OPEN_DOCUMENT_REQUEST && resultCode == getActivity().RESULT_OK) {
             Uri uri = data.getData();
             File file = FileUtils.getFileByUri((Activity) mContext, uri);
-            mPresenter.uploadAttachment(mContext, file);
+            BmobFile bmobFile = new BmobFile(file);
+            Log.i("====", bmobFile.getFilename());
+            mPresenter.uploadAttachment(mContext, bmobFile);
             DataFile dataFile = new DataFile(file.getName(), FileUtils.getFileSize(file.length()));
-            mAddNoticeDataAdapter.addItem(mDataList.size(), dataFile);
+//            mAddNoticeDataAdapter.addItem(mDataList.size(), dataFile);
+            mAddNoticeDataAdapter.addItem(mDataList.size(), bmobFile);
         }
     }
 
@@ -137,23 +145,23 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
     public void publishNotice() {
         if (!etNoticeTitle.getText().toString().equals("")) {
             Notice notice = new Notice();
-            notice.setC_id(37);
+            notice.setC_id(c_id);
             notice.setContent(etAddNoticeContent.getText().toString());
             notice.setTitle(etNoticeTitle.getText().toString());
             notice.setTime(System.currentTimeMillis());
-            notice.setPaths(paths.toString());
+            notice.setFiles(mFiles);
             mPresenter.publishNotice(mContext, notice);
         } else {
             new AlertDialog.Builder(mContext).setTitle("发布公告失败").setMessage("公告标题不能为空")
-                    .setPositiveButton("确认",null).create().show();
+                    .setPositiveButton("确认", null).create().show();
         }
     }
 
     @Override
-    public void uploadAttachmentOnComplete(String fileUrl) {
-        paths.append(fileUrl).append(";");
-        pb_data.setVisibility(View.GONE);
-        tv_data_progress.setVisibility(View.GONE);
+    public void uploadAttachmentOnComplete(BmobFile bmobFile) {
+        mFiles.add(bmobFile);
+//        pb_data.setVisibility(View.GONE);
+//        tv_data_progress.setVisibility(View.GONE);
     }
 
     @Override

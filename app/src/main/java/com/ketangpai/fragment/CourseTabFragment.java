@@ -24,6 +24,7 @@ import com.ketangpai.adapter.CourseTExamAdapter;
 import com.ketangpai.adapter.CourseTHomeworkAdapter;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.DocumentFile;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.listener.OnItemClickListener;
@@ -54,7 +55,11 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
     private Animation mAddCloseAnim, mAddOpenAnim;
     private int type;
     private final int REQUEST = 11;
+    private int c_id;
 
+    public void setC_id(int c_id) {
+        this.c_id = c_id;
+    }
 
     private CourseTabFragment getInstance() {
         return this;
@@ -78,9 +83,10 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
         this.mPosition = position;
     }
 
-    public static CourseTabFragment newInstance(int positon) {
+    public static CourseTabFragment newInstance(int positon, int c_id) {
         CourseTabFragment fragment = new CourseTabFragment();
         fragment.setPosition(positon);
+        fragment.setC_id(c_id);
         return fragment;
     }
 
@@ -170,7 +176,9 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
                         IntentUtils.openDocument(getInstance());
                         break;
                     case 2:
-                        startActivityForResult(new Intent(mContext, AddNoticekActivity.class),REQUEST);
+                        Intent intent = new Intent(mContext, AddNoticekActivity.class);
+                        intent.putExtra("c_id", c_id);
+                        startActivityForResult(intent, REQUEST);
                         break;
                     case 3:
                         break;
@@ -203,7 +211,9 @@ public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayou
                 startActivity(new Intent(mContext, DataActivity.class));
                 break;
             case 2:
-                startActivity(new Intent(mContext, NoticeActivity.class));
+                Intent intent = new Intent(mContext, NoticeActivity.class);
+                intent.putExtra("notice", (Notice) mTabContents.get(position));
+                startActivity(intent);
                 break;
             case 3:
                 break;

@@ -23,8 +23,8 @@ public class CourseActivity extends DrawerBaseActivity {
 
     //变量
     private String mCourseName;
-    private int resultIntent;
-
+    private int mC_id;
+    private CourseFragment mFragment;
 
     @Override
     protected int getContentViewId() {
@@ -36,6 +36,7 @@ public class CourseActivity extends DrawerBaseActivity {
         super.initVariables();
         if (getIntent().getStringExtra("course") != null) {
             mCourseName = getIntent().getStringExtra("course");
+            mC_id = getIntent().getIntExtra("c_id", -1);
 
         }
 
@@ -43,7 +44,8 @@ public class CourseActivity extends DrawerBaseActivity {
 
     @Override
     protected Fragment getLayoutFragment() {
-        return new CourseFragment();
+        mFragment = new CourseFragment();
+        return mFragment;
     }
 
     @Override
@@ -54,7 +56,6 @@ public class CourseActivity extends DrawerBaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        setSelectItemView(getIntent().getIntExtra("position", -1));
     }
 
     @Override
@@ -67,7 +68,6 @@ public class CourseActivity extends DrawerBaseActivity {
 
     }
 
-
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -79,24 +79,13 @@ public class CourseActivity extends DrawerBaseActivity {
 
 
     @Override
-    public void onItemClick(View view, int position) {
-        mCourseName = ((TextView) view.findViewById(R.id.tv_item_drawerCourseName)).getText().toString();
-        getSupportActionBar().setTitle(mCourseName);
-        mDrawerContainer.closeDrawer(Gravity.LEFT);
-        setSelectItemView(position);
-    }
-
-
-    public void setSelectItemView(int positon) {
-        mDrawerCourseList.smoothScrollToPosition(positon);
-        mNevigationCourseAdapter.setSelectPosition(positon);
-        mNevigationCourseAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     protected void initToolBar() {
         super.initToolBar();
         getSupportActionBar().setTitle(mCourseName);
+    }
+
+    public int getC_id() {
+        return mC_id;
     }
 
 

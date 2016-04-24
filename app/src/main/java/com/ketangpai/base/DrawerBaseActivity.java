@@ -55,25 +55,23 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/15.
  */
-public abstract class DrawerBaseActivity extends BaseActivity implements View.OnClickListener, OnItemClickListener, View.OnTouchListener {
+public abstract class DrawerBaseActivity extends BaseActivity implements View.OnClickListener, View.OnTouchListener {
 
     //导航界面
     protected FrameLayout mfl_main_drawerContent;
     protected DrawerLayout mDrawerContainer;
     //view
     protected Toolbar mToolbar;
-    protected RecyclerView mDrawerCourseList;
     protected ImageView mExitLoginImg;
     private ImageView mUserIconImg;
     protected TextView mDrawerCourseText, mDrawerMessageText, mUserNameText;
 
-    //adapter
-    protected NevigationCourseAdapter mNevigationCourseAdapter;
 
     //变量
     //courselist
-    protected ArrayList<String> mNevigationCourses;
+
     protected String name;
+    private String account;
     private final int ACCOUNT_REQUEST = 1;
     private String path;
 
@@ -95,6 +93,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
         super.initVariables();
         name = getSharedPreferences("user", 0).getString("name", "");
         path = getSharedPreferences("user", 0).getString("path", "");
+        account = getSharedPreferences("user", 0).getString("account", "");
     }
 
     @Override
@@ -110,14 +109,11 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
 
     @Override
     protected void initData() {
-        Log.i("===initData ","111");
         File file = new File(Constant.LOGO_FOLDER);
         if (!file.exists()) {
-            Log.i("===initData ","111");
 
             ImageLoaderUtils.display(mContext, mUserIconImg, path);
         } else {
-            Log.i("===initData ","113");
 
             ImageLoaderUtils.displayNoDisk(mContext, mUserIconImg, Constant.LOGO_FOLDER);
         }
@@ -128,7 +124,6 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     protected void initListener() {
         mDrawerMessageText.setOnClickListener(this);
         mDrawerCourseText.setOnClickListener(this);
-        mNevigationCourseAdapter.setOnItemClickListener(this);
         mExitLoginImg.setOnClickListener(this);
         mUserIconImg.setOnClickListener(this);
         //拦截点击事件，不让在导航界面的点击事件传递到mainContent中
@@ -159,21 +154,6 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
 
 
     @Override
-    public void onItemClick(View view, int position) {
-        startCourseActivity(mNevigationCourses.get(position), position);
-
-    }
-
-
-    private void startCourseActivity(String course, int position) {
-        Intent intent = new Intent(mContext, CourseActivity.class);
-        intent.putExtra("position", position);
-        intent.putExtra("course", course);
-        intent.putExtra("list", mNevigationCourses);
-        startActivity(intent);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
@@ -194,7 +174,6 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     }
 
     protected void initDrawerContent() {
-        initDrawerCourseList();
         mUserIconImg = (ImageView) findViewById(R.id.img_main_userIcon);
         mExitLoginImg = (ImageView) findViewById(R.id.img_main_exitLogin);
         mUserNameText = (TextView) findViewById(R.id.tv_main_userName);
@@ -203,20 +182,6 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
 
         mUserNameText.setText(name);
 
-    }
-
-
-    protected void initDrawerCourseList() {
-        mDrawerCourseList = (RecyclerView) findViewById(R.id.list_main_drawer_course);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        mDrawerCourseList.setLayoutManager(linearLayoutManager);
-        if (null != getIntent().getStringArrayListExtra("list")) {
-            mNevigationCourses = getIntent().getStringArrayListExtra("list");
-        } else {
-            mNevigationCourses = new ArrayList<>();
-        }
-        mNevigationCourseAdapter = new NevigationCourseAdapter(mContext, mNevigationCourses);
-        mDrawerCourseList.setAdapter(mNevigationCourseAdapter);
     }
 
 
@@ -257,6 +222,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 getSharedPreferences("user", 0).edit().clear().commit();
+                getSharedPreferences("user", 0).edit().putString("account", account).commit();
                 startActivity(new Intent(mContext, LoginActivity.class));
                 finish();
             }
@@ -274,13 +240,11 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ACCOUNT_REQUEST && resultCode == AccountFragment.ACCOUNT_RESULT) {
-            Log.i("====","111");
+            Log.i("====", "111");
             ImageLoaderUtils.displayNoDisk(mContext, mUserIconImg, Constant.LOGO_FOLDER);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public NevigationCourseAdapter getNevigationCourseAdapter() {
-        return mNevigationCourseAdapter;
-    }
+
 }

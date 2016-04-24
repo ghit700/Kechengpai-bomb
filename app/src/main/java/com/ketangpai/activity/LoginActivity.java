@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,9 +21,11 @@ import android.widget.TextView;
 
 import com.ketangpai.base.BasePresenterActivity;
 import com.ketangpai.bean.User;
+import com.ketangpai.constant.Constant;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.LoginPresenter;
 import com.ketangpai.utils.ActivityCollector;
+import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.viewInterface.LoginViewInterface;
 
 import cn.bmob.v3.listener.SaveListener;
@@ -47,6 +51,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
     private int type = 0;
     private AlertDialog RegisterDialog;
     private User mUser;
+    private String account;
 
 
     @Override
@@ -57,6 +62,8 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
     @Override
     protected void initVariables() {
         super.initVariables();
+        account = getSharedPreferences("user", 0).getString("account", "");
+
     }
 
     @Override
@@ -65,6 +72,8 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
         mBtn_login = (Button) findViewById(R.id.btn_login_login);
         mRegister = (TextView) findViewById(R.id.tv_login_register);
         mUserIconImg = (ImageView) findViewById(R.id.img_login_logo);
+
+
     }
 
     @Override
@@ -139,6 +148,27 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
         nameDrawableLeft.setBounds(0, 0, 45, 45);
         mName.setCompoundDrawables(nameDrawableLeft, null, null, null);
         mName.setCompoundDrawablePadding(20);
+
+        mName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!account.equals("") && account.equals(mName.getText().toString())) {
+                    ImageLoaderUtils.displayNoDisk(mContext, mUserIconImg, Constant.LOGO_FOLDER);
+                } else {
+                    ImageLoaderUtils.display(mContext, mUserIconImg, "");
+                }
+            }
+        });
 
         mPassword = (EditText) findViewById(R.id.et_login_password);
         Drawable passwordDrawableLeft = getResources().getDrawable(R.drawable.icon_user_password);

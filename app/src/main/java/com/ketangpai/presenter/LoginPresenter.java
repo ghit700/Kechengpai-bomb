@@ -3,6 +3,7 @@ package com.ketangpai.presenter;
 import android.content.Context;
 import android.util.Log;
 
+import com.ketangpai.Callback.ResultCallback;
 import com.ketangpai.Callback.ResultsCallback;
 import com.ketangpai.activity.LoginActivity;
 import com.ketangpai.base.BasePresenter;
@@ -12,8 +13,11 @@ import com.ketangpai.modelImpl.UserModelImpl;
 import com.ketangpai.viewInterface.LoginViewInterface;
 
 
+import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -29,22 +33,18 @@ public class LoginPresenter extends BasePresenter<LoginViewInterface> {
         userModel = new UserModelImpl();
     }
 
-    public void login(Context context, String account, String password) {
+    public void login(final Context context, String account, String password) {
         if (isViewAttached()) {
             loginViewInterface = getView();
-            userModel.login(context, account, password, new ResultsCallback() {
+            userModel.login(context, account, password, new ResultCallback() {
                 @Override
-                public void onSuccess(List list) {
-                    if (list.size() > 0) {
-                        loginViewInterface.login((User) list.get(0));
-                    } else {
-                        loginViewInterface.login(null);
-                    }
+                public void onSuccess(Object object) {
+                    loginViewInterface.login((User) object);
                 }
 
                 @Override
-                public void onFailure(BmobException e) {
-                    Log.i(LoginActivity.TAG, "login  " + e.getMessage());
+                public void onFailure(String e) {
+                    Log.i(LoginActivity.TAG, "login  " + e);
                 }
             });
         } else {

@@ -29,6 +29,7 @@ import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Course;
@@ -70,7 +71,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     //判断是老师还是学生
     private int type;
     private String account;
-    private NevigationCourseAdapter mNevigationCourseAdapter;
     private boolean First = true;
 
 
@@ -86,7 +86,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
         initAddBtnAnim();
-        mNevigationCourseAdapter = ((MainActivity) getActivity()).getNevigationCourseAdapter();
         if (type == 0) {
             mCourses = new ArrayList<Teacher_Course>();
             mMainCourseAdapter = new CourseTMainCourseAdapter(mContext, mCourses);
@@ -152,9 +151,8 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(mContext, CourseActivity.class);
-        intent.putExtra("course", ((TextView) view.findViewById(R.id.tv_item_courseName)).getText().toString());
-        intent.putExtra("position", position);
-        intent.putStringArrayListExtra("list", mNevigationCourseAdapter.getList());
+        intent.putExtra("course", ((Course) mCourses.get(position)).getName());
+        intent.putExtra("c_id", ((Course) mCourses.get(position)).getC_id());
         startActivity(intent);
     }
 
@@ -248,7 +246,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     public void onRefresh() {
         mMainCourseAdapter.clearData();
-        mNevigationCourseAdapter.clearData();
         mPresenter.getCourseList(mContext, account, type);
     }
 
@@ -261,13 +258,9 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
             mCourses.addAll(courses);
             Log.i(TAG, "getCourseListOnComplete===start=" + start + "  end=" + mCourses.size());
             if (start == 0) {
-                mNevigationCourseAdapter.notifyDataSetChanged();
                 mMainCourseAdapter.notifyDataSetChanged();
             } else {
                 mMainCourseAdapter.notifyItemRangeInserted(start, mCourses.size());
-            }
-            for (int i = start; i < mCourses.size(); ++i) {
-                mNevigationCourseAdapter.addItem(i, ((Course) mCourses.get(i)).getName());
             }
 
             mSwipeRefreshLayout.setRefreshing(false);
@@ -282,7 +275,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         if (null != course) {
             mMainCourseAdapter.addItem(0, course);
             mMainCourseList.smoothScrollToPosition(0);
-            mNevigationCourseAdapter.addItem(0, course.getName());
             sendToast("创建班级成功");
 
         } else {
@@ -299,7 +291,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         if (null != course) {
             Log.i(TAG, "addCourseOnComplete");
             mMainCourseAdapter.addItem(0, course);
-            mNevigationCourseAdapter.addItem(0, course.getName());
             mMainCourseList.smoothScrollToPosition(0);
             sendToast("加入班级成功");
         } else {

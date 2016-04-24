@@ -59,22 +59,21 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
             mainCourseViewInterface = getView();
             mainCourseViewInterface.showLoading(0);
 
-            courseModel.createCourse(context, course, new SaveListener() {
+            courseModel.createCourse(context, course, new ResultCallback() {
                 @Override
-                public void onSuccess() {
-                    mainCourseViewInterface.createCourseOnComplete(course);
+                public void onSuccess(Object object) {
+                    mainCourseViewInterface.createCourseOnComplete((Teacher_Course) object);
                     mainCourseViewInterface.hideLoading();
-
                 }
 
                 @Override
-                public void onFailure(int i, String s) {
-                    Log.i(MainCourseFragment.TAG, "createCourse " + s);
+                public void onFailure(String e) {
+                    Log.i(MainCourseFragment.TAG, "createCourse " + e);
                     mainCourseViewInterface.createCourseOnComplete(null);
                     mainCourseViewInterface.hideLoading();
-
                 }
             });
+
 
         } else {
             Log.i(MainCourseFragment.TAG, "没有连接到view");

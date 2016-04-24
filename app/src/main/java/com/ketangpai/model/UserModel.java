@@ -2,6 +2,7 @@ package com.ketangpai.model;
 
 import android.content.Context;
 
+import com.ketangpai.Callback.ResultCallback;
 import com.ketangpai.Callback.ResultsCallback;
 import com.ketangpai.bean.User;
 
@@ -14,7 +15,7 @@ import cn.bmob.v3.listener.UpdateListener;
  * Created by nan on 2016/4/16.
  */
 public interface UserModel {
-    public void login(Context context, String account, String password, ResultsCallback ResultsCallback);
+    public void login(Context context, String account, String password, ResultCallback ResultCallback);
 
     public void register(Context context, User user, SaveListener resultCallback);
 

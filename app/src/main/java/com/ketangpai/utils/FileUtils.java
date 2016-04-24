@@ -143,8 +143,15 @@ public class FileUtils {
         return null;
     }
 
+    public static void createNewFile(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
 
-    public static void overloadFile( File sourse, File target) {
+
+    public static void overloadFile(File sourse, File target) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(target, false);
             FileInputStream fileInputStream = new FileInputStream(sourse);

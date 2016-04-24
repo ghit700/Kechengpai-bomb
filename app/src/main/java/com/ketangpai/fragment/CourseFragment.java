@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.ketangpai.activity.CourseActivity;
 import com.ketangpai.adapter.CourseTabsPagerAdapter;
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.nan.ketangpai.R;
@@ -16,9 +17,17 @@ public class CourseFragment extends BaseFragment {
     //view
     private SlidingTabLayout mTabs;
     private ViewPager mTabViewPager;
+    private int mC_id;
 
     //adpter
     private CourseTabsPagerAdapter mCourseTabsPagerAdapter;
+
+
+    @Override
+    protected void initVarious() {
+        super.initVarious();
+        mC_id = ((CourseActivity) getActivity()).getC_id();
+    }
 
     @Override
     protected int getLayoutId() {
@@ -50,7 +59,7 @@ public class CourseFragment extends BaseFragment {
         mTabViewPager = (ViewPager) view.findViewById(R.id.vp_course_content);
 
 
-        mCourseTabsPagerAdapter = new CourseTabsPagerAdapter(((AppCompatActivity) mContext).getSupportFragmentManager(), mContext);
+        mCourseTabsPagerAdapter = new CourseTabsPagerAdapter(((AppCompatActivity) mContext).getSupportFragmentManager(), mContext, mC_id);
         mTabViewPager.setAdapter(mCourseTabsPagerAdapter);
         mTabs.setViewPager(mTabViewPager);
         mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -66,6 +75,8 @@ public class CourseFragment extends BaseFragment {
         });
 
 
-
     }
+
+
+    ;
 }

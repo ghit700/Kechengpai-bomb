@@ -3,11 +3,14 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
+import com.ketangpai.Callback.ResultCallback;
 import com.ketangpai.Callback.ResultsCallback;
 import com.ketangpai.bean.User;
+import com.ketangpai.constant.Constant;
 import com.ketangpai.fragment.AccountFragment;
 import com.ketangpai.fragment.AccountUpdateFragment;
 import com.ketangpai.model.UserModel;
+import com.ketangpai.utils.FileUtils;
 
 import java.io.File;
 import java.util.List;
@@ -16,6 +19,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -28,7 +32,7 @@ public class UserModelImpl implements UserModel {
 
 
     @Override
-    public void login(Context context, String account, String password, final ResultsCallback resultsCallback) {
+    public void login(final Context context, String account, String password, final ResultCallback resultCallback) {
 
 
         Log.i(AccountUpdateFragment.TAG, "login account=" + account + " password=" + password);
@@ -39,9 +43,28 @@ public class UserModelImpl implements UserModel {
             public void done(BmobQueryResult<User> bmobQueryResult, BmobException e) {
                 List list = bmobQueryResult.getResults();
                 if (null != list) {
-                    resultsCallback.onSuccess(list);
+                    final User user = (User) list.get(0);
+                    if (!"".equals(user.getPath())) {
+                        FileUtils.createNewFile(Constant.PHOTO_FOLDER);
+                        final BmobFile bmobFile = new BmobFile("logo.jpg", "", user.getPath());
+                        bmobFile.download(context, new File(Constant.LOGO_FOLDER), new DownloadFileListener() {
+                            @Override
+                            public void onSuccess(String s) {
+                                Log.i("=====", "filename=" + bmobFile.getFilename());
+
+                                resultCallback.onSuccess(user);
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                resultCallback.onFailure(s);
+                            }
+                        });
+                    } else {
+                        resultCallback.onSuccess(user);
+                    }
                 } else {
-                    resultsCallback.onFailure(e);
+                    resultCallback.onFailure(e.getMessage());
                 }
             }
         }, password, account);
@@ -96,7 +119,7 @@ public class UserModelImpl implements UserModel {
 
             @Override
             public void onFailure(int i, String s) {
-                Log.i(AccountFragment.TAG,s);
+                Log.i(AccountFragment.TAG, s);
             }
         });
     }
