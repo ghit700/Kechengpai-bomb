@@ -2,41 +2,29 @@ package com.ketangpai.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.ketangpai.activity.AddNoticekActivity;
 import com.ketangpai.adapter.DataAdapter;
-import com.ketangpai.base.BaseAdapter;
-import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenterFragment;
-import com.ketangpai.bean.DataFile;
-import com.ketangpai.bean.DocumentFile;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AddNoticePresenter;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.IntentUtils;
-import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.FullyLinearLayoutManager;
-import com.ketangpai.view.LinearLayoutManagerForScrollView;
 import com.ketangpai.viewInterface.AddNoticeViewInterface;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import cn.bmob.v3.datatype.BmobFile;
@@ -64,12 +52,17 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
     private ProgressBar pb_data;
     private int c_id;
     public static final int RESULT = 12;
+    private int mValue = 0;
+    private Notice notice;
 
     @Override
     protected void initVarious() {
         super.initVarious();
         mFiles = new ArrayList();
         c_id = getActivity().getIntent().getIntExtra("c_id", -1);
+        if (null != getActivity().getIntent().getSerializableExtra("notice")) {
+            notice = (Notice) getActivity().getIntent().getSerializableExtra("notice");
+        }
     }
 
     @Override
@@ -130,11 +123,9 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
             Uri uri = data.getData();
             File file = FileUtils.getFileByUri((Activity) mContext, uri);
             BmobFile bmobFile = new BmobFile(file);
-            Log.i("====", bmobFile.getFilename());
+
             mPresenter.uploadAttachment(mContext, bmobFile);
-            DataFile dataFile = new DataFile(file.getName(), FileUtils.getFileSize(file.length()));
-//            mAddNoticeDataAdapter.addItem(mDataList.size(), dataFile);
-            mAddNoticeDataAdapter.addItem(mDataList.size(), bmobFile);
+            mAddNoticeDataAdapter.addItem(mDataList.size(), file.getName());
         }
     }
 
@@ -143,7 +134,9 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
      * 发布公告
      */
     public void publishNotice() {
-        if (!etNoticeTitle.getText().toString().equals("")) {
+        if (0 != mValue && 100 != mValue) {
+            new AlertDialog.Builder(mContext).setTitle("文件还没上传完毕,请稍等...").setPositiveButton("确认", null).show();
+        } else if (!etNoticeTitle.getText().toString().equals("")) {
             Notice notice = new Notice();
             notice.setC_id(c_id);
             notice.setContent(etAddNoticeContent.getText().toString());
@@ -166,6 +159,7 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
 
     @Override
     public void onProgress(int value) {
+        this.mValue = value;
 //        BaseAdapter.ViewHolder viewHolder = (BaseAdapter.ViewHolder) listAddNoticeData.getChildViewHolder(listAddNoticeData.getChildAt(mDataList.size()));
 //        tv_data_progress = ((TextView) viewHolder.getViewById(R.id.tv_data_progess));
 //        tv_data_progress.setText(value + "%");

@@ -11,6 +11,18 @@ import com.ketangpai.nan.ketangpai.R;
  * Created by Administrator on 2016/4/15.
  */
 public class DataActivity extends BaseToolbarActivity {
+
+    private String mDataName;
+
+    @Override
+    protected void initVariables() {
+        super.initVariables();
+        if (null != getIntent().getStringExtra("name")) {
+
+            mDataName = getIntent().getStringExtra("name");
+        }
+    }
+
     @Override
     protected Fragment getLayoutFragment() {
         return new DataFragment();
@@ -42,10 +54,9 @@ public class DataActivity extends BaseToolbarActivity {
     }
 
 
-
     @Override
     protected void initToolbar() {
         super.initToolbar();
-        getSupportActionBar().setTitle("一分一秒");
+        getSupportActionBar().setTitle(mDataName);
     }
 }

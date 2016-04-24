@@ -1,26 +1,20 @@
 package com.ketangpai.activity;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.ketangpai.base.BaseActivity;
-import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BaseToolbarActivity;
-import com.ketangpai.fragment.AddHomeWorkFragment;
+import com.ketangpai.fragment.AddHomeworkFragment;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.IntentUtils;
-
-import java.util.Calendar;
 
 /**
  * Created by nan on 2016/3/27.
  */
 public class AddHomeWorkActivity extends BaseToolbarActivity {
 
-    private AddHomeWorkFragment mFragment;
+    private AddHomeworkFragment mFragment;
 
     @Override
     protected int getContentViewId() {
@@ -29,7 +23,7 @@ public class AddHomeWorkActivity extends BaseToolbarActivity {
 
     @Override
     protected Fragment getLayoutFragment() {
-        mFragment = new AddHomeWorkFragment();
+        mFragment = new AddHomeworkFragment();
         return mFragment;
     }
 

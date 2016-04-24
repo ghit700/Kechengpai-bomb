@@ -13,12 +13,12 @@
         android:src="@mipmap/ic_launcher"/>
 
     <TextView
-        android:layout_marginTop="4dp"
         android:id="@+id/tv_share_fileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/img_share_picImg"
         android:text="幸福总结"
         android:textSize="16sp"/>

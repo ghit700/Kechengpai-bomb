@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.provider.DocumentFile;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +16,6 @@ import android.widget.TimePicker;
 
 import com.ketangpai.adapter.DataAdapter;
 import com.ketangpai.base.BaseFragment;
-import com.ketangpai.bean.DocumentFile;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.IntentUtils;
@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/27.
  */
-public class AddHomeWorkFragment extends BaseFragment implements View.OnClickListener {
+public class AddHomeworkFragment extends BaseFragment implements View.OnClickListener {
 
     //view
     EditText etHomeworkTitle;
@@ -171,8 +171,8 @@ public class AddHomeWorkFragment extends BaseFragment implements View.OnClickLis
             String fileName = FileUtils.getFileName(uri);
             int fileType = FileUtils.getFileType(fileName);
 //            String size = FileUtils.getFileSize(uri);
-            DocumentFile file = new DocumentFile(fileType, fileName, "1111");
-            file.setPath(uri.getPath());
+//            DocumentFile file = new DocumentFile(fileType, fileName, "1111");
+//            file.setPath(uri.getPath());
 //            for (int i = 0; i < 10; ++i) {
 //
 //                mDataAdapter.addItem(mDataList.size(), file);

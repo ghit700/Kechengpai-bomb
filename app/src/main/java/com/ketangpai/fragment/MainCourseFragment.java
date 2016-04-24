@@ -42,6 +42,8 @@ import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -252,8 +254,8 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     public void getCourseListOnComplete(List<Course> courses) {
         if (null != courses) {
+            Collections.reverse(courses);
             int start = 0;
-
             start = mCourses.size();
             mCourses.addAll(courses);
             Log.i(TAG, "getCourseListOnComplete===start=" + start + "  end=" + mCourses.size());

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/17.
  */
-public class CourseNoticeAdapter extends BaseAdapter<Notice> implements PopupMenu.OnMenuItemClickListener {
+public class CourseNoticeAdapter extends BaseAdapter<Notice> {
 
 
     public CourseNoticeAdapter(Context mContext, List<Notice> mDataList) {
@@ -32,7 +32,7 @@ public class CourseNoticeAdapter extends BaseAdapter<Notice> implements PopupMen
 
 
     @Override
-    protected void bindData(ViewHolder holder, int position, Notice s) {
+    protected void bindData(ViewHolder holder, final int position, final Notice s) {
         TextView mNoticeTitleText = (TextView) holder.getViewById(R.id.tv_notice_title);
         TextView mNoticeTimeText = (TextView) holder.getViewById(R.id.tv_notice_publishTime);
         TextView mNoticeContentText = (TextView) holder.getViewById(R.id.tv_notice_content);
@@ -40,7 +40,23 @@ public class CourseNoticeAdapter extends BaseAdapter<Notice> implements PopupMen
 
         //设置点击事件
         final MyPopupMenu mNoticeEditPopupMenu = new MyPopupMenu(mContext, mNoticeEdit, R.menu.notice_edit_menu);
-        mNoticeEditPopupMenu.setOnMenuItemClickListener(this);
+        mNoticeEditPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.notice_delete_menu:
+                        s.delete(mContext);
+                        deleteItem(position);
+                        break;
+                    case R.id.notice_edit_menu:
+                        break;
+
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
         mNoticeEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,20 +68,6 @@ public class CourseNoticeAdapter extends BaseAdapter<Notice> implements PopupMen
         mNoticeTitleText.setText(s.getTitle());
         mNoticeContentText.setText(s.getContent());
         mNoticeTimeText.setText(TimeUtils.getNoticeTime(s.getTime()));
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.notice_edit_menu:
-                break;
-            case R.id.notice_delete_menu:
-                break;
-
-            default:
-                break;
-        }
-        return true;
     }
 
 

@@ -67,4 +67,11 @@ public class IntentUtils {
         fragment.startActivityForResult(intent, CAMERA_REQUEST);
         return File_Path;
     }
+
+    public static void openFile(BaseFragment fragment, Uri uri) {
+        Intent intent = new Intent();
+        intent.setType("application/*");
+        intent.setData(uri);
+        fragment.startActivity(intent);
+    }
 }

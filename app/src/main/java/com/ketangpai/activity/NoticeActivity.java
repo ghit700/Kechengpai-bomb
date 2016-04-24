@@ -3,6 +3,7 @@ package com.ketangpai.activity;
 import android.support.v4.app.Fragment;
 
 import com.ketangpai.base.BaseToolbarActivity;
+import com.ketangpai.bean.Notice;
 import com.ketangpai.fragment.NoticeFragment;
 import com.ketangpai.nan.ketangpai.R;
 
@@ -18,6 +19,12 @@ public class NoticeActivity extends BaseToolbarActivity {
     @Override
     protected Fragment getLayoutFragment() {
         return new NoticeFragment();
+    }
+
+    @Override
+    protected void initVariables() {
+        super.initVariables();
+
     }
 
     @Override
@@ -43,6 +50,8 @@ public class NoticeActivity extends BaseToolbarActivity {
     @Override
     protected void initToolbar() {
         super.initToolbar();
-        getSupportActionBar().setTitle("1111");
+        if (null != getIntent().getSerializableExtra("notice")) {
+            getSupportActionBar().setTitle(((Notice) getIntent().getSerializableExtra("notice")).getTitle());
+        }
     }
 }

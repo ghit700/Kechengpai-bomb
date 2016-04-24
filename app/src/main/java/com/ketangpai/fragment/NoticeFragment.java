@@ -1,25 +1,30 @@
 package com.ketangpai.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
+import com.ketangpai.activity.DataActivity;
 import com.ketangpai.adapter.DataAdapter;
 import com.ketangpai.base.BaseFragment;
-import com.ketangpai.bean.DataFile;
+import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
+import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.FullyLinearLayoutManager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+
+import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by Administrator on 2016/4/15.
  */
-public class NoticeFragment extends BaseFragment {
+public class NoticeFragment extends BaseFragment implements OnItemClickListener {
 
     //view
     private TextView tv_notice_time;
@@ -30,16 +35,16 @@ public class NoticeFragment extends BaseFragment {
     private DataAdapter mDataAdapter;
 
     //变量
-    private List<DataFile> mDataList;
+    private List<String> mDataList;
     private Notice mNotice;
-    private List<DataFile> mFiles;
+    private List<BmobFile> mFiles;
 
     @Override
     protected void initVarious() {
         super.initVarious();
         if (null != getActivity().getIntent().getSerializableExtra("notice")) {
             mNotice = (Notice) getActivity().getIntent().getSerializableExtra("notice");
-
+            mFiles = mNotice.getFiles();
         }
     }
 
@@ -53,18 +58,20 @@ public class NoticeFragment extends BaseFragment {
         tv_notice_time = (TextView) view.findViewById(R.id.tv_notice_publishTime);
         tv_notice_content = (TextView) view.findViewById(R.id.tv_notice_content);
         initNoticeDataList();
+
+        tv_notice_time.setText(TimeUtils.getNoticeTime(mNotice.getTime()));
+        tv_notice_content.setText(mNotice.getContent());
+
     }
 
     @Override
     protected void initData() {
-        Calendar calendar = Calendar.getInstance();
-        tv_notice_time.setText(TimeUtils.getCurrentDateFormat(calendar) + "  " + TimeUtils.getCurrentTimeFormat(calendar));
 
     }
 
     @Override
     protected void initListener() {
-
+        mDataAdapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -72,13 +79,25 @@ public class NoticeFragment extends BaseFragment {
 
     }
 
+
     private void initNoticeDataList() {
         list_notice_data = (RecyclerView) view.findViewById(R.id.list_notice_data);
         list_notice_data.setLayoutManager(new FullyLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mDataList = new ArrayList<DataFile>();
-//        for (int i = 0; i <file_names.length ; ++i) {
-//            DataFile
-//        }
+        mDataList = new ArrayList<String>();
+        for (BmobFile f : mFiles) {
+            mDataList.add(f.getFilename());
 
+        }
+        mDataAdapter = new DataAdapter(mContext, mDataList);
+        list_notice_data.setAdapter(mDataAdapter);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        BmobFile bmobFile=mFiles.get(position);
+      Intent  intent = new Intent(mContext, DataActivity.class);
+        intent.putExtra("name", bmobFile.getFilename());
+        intent.putExtra("url", bmobFile.getFileUrl(mContext));
+        startActivity(intent);
     }
 }

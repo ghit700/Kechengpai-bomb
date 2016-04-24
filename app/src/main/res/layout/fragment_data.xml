@@ -16,7 +16,8 @@
     <TextView
         android:id="@+id/tv_data_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
 
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
@@ -25,24 +26,16 @@
         android:textSize="20sp"/>
 
 
-    <TextView
-        android:id="@+id/tv_data_size"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:text="20MB"
-        android:textSize="14sp"/>
+
 
 
     <Button
-        android:id="@+id/btn_data_preview"
+        android:id="@+id/btn_data_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="@color/colorPrimary"
-        android:text="在线预览"
+        android:text="下载"
         android:textColor="#ffffff"
         android:textSize="20sp"/>
 
@@ -50,7 +43,7 @@
         android:id="@+id/btn_data_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="@drawable/backgroud_accout_item"
         android:text="删除"
         android:textColor="#ff0000"
         android:textSize="20sp"/>
