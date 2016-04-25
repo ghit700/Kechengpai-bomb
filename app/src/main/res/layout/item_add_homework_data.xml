@@ -12,36 +12,19 @@
         android:layout_marginTop="10dp"
         android:text="123123123"/>
 
-
     <TextView
-
-        android:id="@+id/tv_data_progess"
+        android:id="@+id/tv_data_fileSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_data_fileName"
-        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/tv_data_fileName"
-        android:text="111"
-        android:visibility="gone"/>
-
-    <ProgressBar
-        android:id="@+id/pb_data"
-
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="250dp"
-        android:layout_height="10dp"
-        android:layout_below="@id/tv_data_fileName"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_toRightOf="@id/tv_data_progess"
-        android:visibility="gone"/>
+        android:text="121"/>
 
     <ImageView
-        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/tv_data_fileName"
+        android:layout_below="@id/tv_data_fileSize"
         android:background="#eeeeee"/>
 </RelativeLayout>

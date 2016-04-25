@@ -8,7 +8,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
+import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.MyPopupMenu;
 
 import java.util.List;
@@ -16,10 +18,10 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/16.
  */
-public class CourseTHomeworkAdapter extends BaseAdapter<String> implements PopupMenu.OnMenuItemClickListener {
+public class CourseTHomeworkAdapter extends BaseAdapter<Teacher_Homework> implements PopupMenu.OnMenuItemClickListener {
 
 
-    public CourseTHomeworkAdapter(Context mContext, List<String> mDataList) {
+    public CourseTHomeworkAdapter(Context mContext, List<Teacher_Homework> mDataList) {
         super(mContext, mDataList);
     }
 
@@ -30,7 +32,7 @@ public class CourseTHomeworkAdapter extends BaseAdapter<String> implements Popup
 
 
     @Override
-    protected void bindData(ViewHolder holder, int position, String s) {
+    protected void bindData(ViewHolder holder, int position, Teacher_Homework s) {
         //初始化view
         TextView mTypeText = (TextView) holder.getViewById(R.id.tv_t_homework_type);
         TextView mPublishTimeText = (TextView) holder.getViewById(R.id.tv_t_homework_publishTime);
@@ -56,8 +58,19 @@ public class CourseTHomeworkAdapter extends BaseAdapter<String> implements Popup
         });
 
         //初始化view的值
+        mPublishTimeText.setText(TimeUtils.getNoticeTime(s.getP_time()));
+        mEndTimeText.setText(TimeUtils.getNoticeTime(s.getE_time()));
+        mTitleText.setText(s.getTitle());
+        mContentText.setText(s.getContent());
+        mCheckCountText.setText(String.valueOf(s.getCheck_count()));
+        mNoCheckCountText.setText(String.valueOf(s.getNo_check_count()));
+        mNoPostCountText.setText(String.valueOf(s.getNo_hander_count()));
+        if (0 < s.getFiles().size()) {
+            mAccessoryText.setText(s.getFiles().size() + "个附件");
+        } else {
+            mAccessoryText.setText("没有附件");
 
-
+        }
     }
 
 

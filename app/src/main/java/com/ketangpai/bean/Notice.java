@@ -13,14 +13,23 @@ public class Notice extends BmobObject implements Serializable {
     private Integer c_id;
     private String title;
     private String content;
+    private Integer n_id;
     private long time;
-    private List<BmobFile> files;
+    private List<Data> files;
 
-    public List<BmobFile> getFiles() {
+    public Integer getN_id() {
+        return n_id;
+    }
+
+    public void setN_id(Integer n_id) {
+        this.n_id = n_id;
+    }
+
+    public List<Data> getFiles() {
         return files;
     }
 
-    public void setFiles(List<BmobFile> files) {
+    public void setFiles(List<Data> files) {
         this.files = files;
     }
 

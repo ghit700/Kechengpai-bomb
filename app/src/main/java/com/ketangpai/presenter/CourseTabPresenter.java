@@ -9,10 +9,13 @@ import com.ketangpai.Callback.UploadFileResultCallback;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Data;
+import com.ketangpai.bean.Homework;
 import com.ketangpai.fragment.CourseTabFragment;
 import com.ketangpai.model.DataModel;
+import com.ketangpai.model.HomeworkModel;
 import com.ketangpai.model.NoticeModel;
 import com.ketangpai.modelImpl.DataModelImpl;
+import com.ketangpai.modelImpl.HomeworkModelImpl;
 import com.ketangpai.modelImpl.NoticeModelImpl;
 import com.ketangpai.viewInterface.CourseTabViewInterface;
 
@@ -30,9 +33,10 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
     CourseTabViewInterface courseTabViewInterface;
     NoticeModel noticeModel;
     DataModel dataModel;
+    HomeworkModel homeworkModel;
 
     public CourseTabPresenter() {
-
+        homeworkModel = new HomeworkModelImpl();
         dataModel = new DataModelImpl();
         noticeModel = new NoticeModelImpl();
     }
@@ -88,6 +92,23 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
                 @Override
                 public void onFailure(BmobException e) {
                     Log.i(CourseTabFragment.TAG, "getDataList " + e);
+                }
+            });
+        }
+    }
+
+    public void getHomeworkList(Context context, int c_id) {
+        if (isViewAttached()) {
+            courseTabViewInterface = getView();
+            homeworkModel.getHomeworkList(context, c_id, new ResultsCallback() {
+                @Override
+                public void onSuccess(List list) {
+                    courseTabViewInterface.getHomeworkListOnComplete(list);
+                }
+
+                @Override
+                public void onFailure(BmobException e) {
+                    Log.i(CourseTabFragment.TAG, "getHomeworkList " + e);
                 }
             });
         }

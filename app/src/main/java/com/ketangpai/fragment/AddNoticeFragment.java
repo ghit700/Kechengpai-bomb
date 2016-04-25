@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.ketangpai.activity.AddNoticekActivity;
 import com.ketangpai.adapter.DataAdapter;
 import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AddNoticePresenter;
@@ -47,9 +48,8 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
 
     //变量
     private List mDataList;
-    private List<BmobFile> mFiles;
-    private TextView tv_data_progress;
-    private ProgressBar pb_data;
+    private List<Data> mFiles;
+
     private int c_id;
     public static final int RESULT = 12;
     private int mValue = 0;
@@ -125,7 +125,7 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
             BmobFile bmobFile = new BmobFile(file);
 
             mPresenter.uploadAttachment(mContext, bmobFile);
-            mAddNoticeDataAdapter.addItem(mDataList.size(), file.getName());
+            mAddNoticeDataAdapter.addItem(mDataList.size(), new Data(FileUtils.getFileSize(file.length()),file.getName()));
         }
     }
 
@@ -142,7 +142,7 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
             notice.setContent(etAddNoticeContent.getText().toString());
             notice.setTitle(etNoticeTitle.getText().toString());
             notice.setTime(System.currentTimeMillis());
-            notice.setFiles(mFiles);
+            notice.addAllUnique("files",mFiles);
             mPresenter.publishNotice(mContext, notice);
         } else {
             new AlertDialog.Builder(mContext).setTitle("发布公告失败").setMessage("公告标题不能为空")
@@ -151,20 +151,16 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
     }
 
     @Override
-    public void uploadAttachmentOnComplete(BmobFile bmobFile) {
-        mFiles.add(bmobFile);
-//        pb_data.setVisibility(View.GONE);
-//        tv_data_progress.setVisibility(View.GONE);
+    public void uploadAttachmentOnComplete(Data data) {
+        data.setC_id(c_id);
+        mFiles.add(data);
+
     }
 
     @Override
     public void onProgress(int value) {
         this.mValue = value;
-//        BaseAdapter.ViewHolder viewHolder = (BaseAdapter.ViewHolder) listAddNoticeData.getChildViewHolder(listAddNoticeData.getChildAt(mDataList.size()));
-//        tv_data_progress = ((TextView) viewHolder.getViewById(R.id.tv_data_progess));
-//        tv_data_progress.setText(value + "%");
-//        pb_data = ((ProgressBar) viewHolder.getViewById(R.id.pb_data));
-//        pb_data.setProgress(value);
+
     }
 
     @Override

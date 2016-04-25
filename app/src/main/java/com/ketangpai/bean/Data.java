@@ -11,8 +11,13 @@ public class Data extends BmobObject {
     private String url;
     private Integer c_id;
 
+    public Data() {
+    }
 
-
+    public Data(String size, String name) {
+        this.size = size;
+        this.name = name;
+    }
 
     public String getSize() {
         return size;

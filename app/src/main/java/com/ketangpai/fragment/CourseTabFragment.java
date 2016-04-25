@@ -9,6 +9,7 @@ import android.support.v4.provider.DocumentFile;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,6 +27,7 @@ import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Homework;
 import com.ketangpai.bean.Notice;
+import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.CourseTabPresenter;
@@ -36,6 +38,8 @@ import com.shamanland.fab.ShowHideOnScroll;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -140,6 +144,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
         switch (position) {
             case 0:
                 mTabAdapter = new CourseTHomeworkAdapter(context, mTabContents);
+                mPresenter.getHomeworkList(context, c_id);
                 break;
             case 1:
                 mTabAdapter = new CourseDataAdapter(context, mTabContents);
@@ -172,15 +177,18 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                Intent intent;
                 switch (mPosition) {
                     case 0:
-                        startActivity(new Intent(mContext, AddHomeWorkActivity.class));
+                        intent = new Intent(mContext, AddHomeWorkActivity.class);
+                        intent.putExtra("c_id", c_id);
+                        startActivityForResult(intent, REQUEST);
                         break;
                     case 1:
                         IntentUtils.openDocument(getInstance());
                         break;
                     case 2:
-                        Intent intent = new Intent(mContext, AddNoticekActivity.class);
+                        intent = new Intent(mContext, AddNoticekActivity.class);
                         intent.putExtra("c_id", c_id);
                         startActivityForResult(intent, REQUEST);
                         break;
@@ -258,6 +266,12 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
         if (requestCode == REQUEST && resultCode == AddNoticeFragment.RESULT) {
             Notice notice = (Notice) data.getSerializableExtra("notice");
             mTabAdapter.addItem(0, notice);
+            mTabList.smoothScrollToPosition(0);
+        }
+        if (requestCode == REQUEST && resultCode == AddHomeworkFragment.RESULT) {
+            Teacher_Homework homework = (Teacher_Homework) data.getSerializableExtra("homework");
+            mTabAdapter.addItem(0, homework);
+            mTabList.smoothScrollToPosition(0);
         }
 
         mPublishBtn.startAnimation(mAddCloseAnim);
@@ -278,6 +292,8 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getHomeworkListOnComplete(List<Homework> homeworks) {
+        Collections.reverse(homeworks);
+
         mTabContents.addAll(homeworks);
         mTabAdapter.notifyDataSetChanged();
     }
@@ -297,6 +313,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getDataListOnComplete(List datas) {
+        Collections.reverse(datas);
         mTabContents.addAll(datas);
         mTabAdapter.notifyDataSetChanged();
 
@@ -304,12 +321,16 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getNoticeListOnComplete(List<Notice> notices) {
+        Collections.reverse(notices);
+
         mTabContents.addAll(notices);
         mTabAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void getExamkListOnComplete(List exams) {
+        Collections.reverse(exams);
+
         mTabContents.addAll(exams);
         mTabAdapter.notifyDataSetChanged();
     }

@@ -1,5 +1,6 @@
 package com.ketangpai.viewInterface;
 
+import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
 
 import cn.bmob.v3.datatype.BmobFile;
@@ -11,7 +12,7 @@ public interface AddNoticeViewInterface {
     /**
      * 上传附件完成
      */
-    void uploadAttachmentOnComplete(BmobFile bmobFile);
+    void uploadAttachmentOnComplete(Data data);
 
     /**
      * 显示文件上传的百分比

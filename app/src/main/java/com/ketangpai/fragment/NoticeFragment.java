@@ -22,7 +22,8 @@ import java.util.List;
 import cn.bmob.v3.datatype.BmobFile;
 
 /**
- * Created by Administrator on 2016/4/15.
+ * Created by Administra
+ * tor on 2016/4/15.
  */
 public class NoticeFragment extends BaseFragment implements OnItemClickListener {
 
@@ -35,16 +36,15 @@ public class NoticeFragment extends BaseFragment implements OnItemClickListener 
     private DataAdapter mDataAdapter;
 
     //变量
-    private List<String> mDataList;
+    private List<Data> mDataList;
     private Notice mNotice;
-    private List<BmobFile> mFiles;
 
     @Override
     protected void initVarious() {
         super.initVarious();
         if (null != getActivity().getIntent().getSerializableExtra("notice")) {
             mNotice = (Notice) getActivity().getIntent().getSerializableExtra("notice");
-            mFiles = mNotice.getFiles();
+            mDataList = mNotice.getFiles();
         }
     }
 
@@ -83,21 +83,20 @@ public class NoticeFragment extends BaseFragment implements OnItemClickListener 
     private void initNoticeDataList() {
         list_notice_data = (RecyclerView) view.findViewById(R.id.list_notice_data);
         list_notice_data.setLayoutManager(new FullyLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mDataList = new ArrayList<String>();
-        for (BmobFile f : mFiles) {
-            mDataList.add(f.getFilename());
-
+        if (null == mDataList) {
+            mDataList = new ArrayList<Data>();
         }
+
         mDataAdapter = new DataAdapter(mContext, mDataList);
         list_notice_data.setAdapter(mDataAdapter);
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        BmobFile bmobFile=mFiles.get(position);
-      Intent  intent = new Intent(mContext, DataActivity.class);
-        intent.putExtra("name", bmobFile.getFilename());
-        intent.putExtra("url", bmobFile.getFileUrl(mContext));
+        Data bmobFile = mDataList.get(position);
+        Intent intent = new Intent(mContext, DataActivity.class);
+        intent.putExtra("name", bmobFile.getName());
+        intent.putExtra("url", bmobFile.getUrl());
         startActivity(intent);
     }
 }
