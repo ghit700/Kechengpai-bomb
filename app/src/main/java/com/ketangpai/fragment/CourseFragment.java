@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.ketangpai.activity.CourseActivity;
 import com.ketangpai.adapter.CourseTabsPagerAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.bean.Course;
+import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.view.SlidingTabLayout;
 
@@ -17,7 +19,7 @@ public class CourseFragment extends BaseFragment {
     //view
     private SlidingTabLayout mTabs;
     private ViewPager mTabViewPager;
-    private int mC_id;
+    private Course mCourse;
 
     //adpter
     private CourseTabsPagerAdapter mCourseTabsPagerAdapter;
@@ -26,7 +28,7 @@ public class CourseFragment extends BaseFragment {
     @Override
     protected void initVarious() {
         super.initVarious();
-        mC_id = ((CourseActivity) getActivity()).getC_id();
+        mCourse = ((CourseActivity) getActivity()).getCourse();
     }
 
     @Override
@@ -59,7 +61,7 @@ public class CourseFragment extends BaseFragment {
         mTabViewPager = (ViewPager) view.findViewById(R.id.vp_course_content);
 
 
-        mCourseTabsPagerAdapter = new CourseTabsPagerAdapter(((AppCompatActivity) mContext).getSupportFragmentManager(), mContext, mC_id);
+        mCourseTabsPagerAdapter = new CourseTabsPagerAdapter(((AppCompatActivity) mContext).getSupportFragmentManager(), mContext, mCourse);
         mTabViewPager.setAdapter(mCourseTabsPagerAdapter);
         mTabs.setViewPager(mTabViewPager);
         mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {

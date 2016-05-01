@@ -5,6 +5,7 @@ import android.app.Application;
 import com.ketangpai.utils.AppContextUtils;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobInstallation;
 
 
 /**
@@ -16,5 +17,6 @@ public class kechengpaiApp extends Application {
         super.onCreate();
         AppContextUtils.initContext(this);
         Bmob.initialize(this, "9d323483ab61f93c20e553ba404ee1a7");
+
     }
 }

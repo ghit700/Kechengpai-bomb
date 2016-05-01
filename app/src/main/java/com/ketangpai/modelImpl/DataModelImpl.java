@@ -3,9 +3,8 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
-import com.ketangpai.Callback.UploadFileResultCallback;
+import com.ketangpai.callback.ResultsCallback;
+import com.ketangpai.callback.UploadFileResultCallback;
 import com.ketangpai.bean.Data;
 import com.ketangpai.fragment.CourseTabFragment;
 import com.ketangpai.model.DataModel;

@@ -2,13 +2,14 @@ package com.ketangpai.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -16,10 +17,23 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.ketangpai.base.DrawerBaseActivity;
-import com.ketangpai.fragment.MainFragment;
-import com.ketangpai.listener.OnItemClickListener;
+import com.ketangpai.bean.Installation;
+import com.ketangpai.event.NotificationEvent;
+import com.ketangpai.fragment.ContactsFragment;
+import com.ketangpai.fragment.MainCourseFragment;
+import com.ketangpai.fragment.MessageFragment;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.ActivityCollector;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
+
+import cn.bmob.push.BmobPush;
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 
 
 /**
@@ -37,9 +51,15 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
     //   变量
     //保存点击的时间
     private long exitTime;
-    private MainFragment mMainFragment;
     //actionbar开关对象
     private ActionBarDrawerToggle mDrawerToggle;
+    private String account;
+    private Menu mMenu;
+    private boolean haveNotify = false;
+    private MainCourseFragment mMainCourseFragment;
+    private ContactsFragment mContactsFragment;
+    private MessageFragment mMessageFragment;
+
 
     @Override
     protected int getContentViewId() {
@@ -48,10 +68,12 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
 
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        ActivityCollector.finishAllActivity();
         super.onCreate(savedInstanceState, persistentState);
-
+        EventBus.getDefault().register(this);
     }
+
+
+    ;
 
     @Override
     protected void onResume() {
@@ -59,15 +81,28 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
 
         if (getIntent().getIntExtra("type", -1) != -1) {
             int type = getIntent().getIntExtra("type", -1);
-            mMainFragment.changeText(type);
             selectNevigationText(type);
         }
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected void initVariables() {
         super.initVariables();
-        mMainFragment = new MainFragment();
+        // 使用推送服务时的初始化操作
+        BmobInstallation.getCurrentInstallation(this).save();
+        registerAccount();
+        // 启动推送服务
+        BmobPush.startWork(this);
+        account = getSharedPreferences("user", 0).getString("account", "");
+        mMainCourseFragment = new MainCourseFragment();
+        mContactsFragment = new ContactsFragment();
+        mMessageFragment = new MessageFragment();
     }
 
     @Override
@@ -75,10 +110,10 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         super.initView();
     }
 
-
     @Override
     protected void initData() {
         super.initData();
+
         initDrawerToggle();
         selectNevigationText(DrawerBaseActivity.COURSE);
     }
@@ -92,6 +127,7 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
 
     }
 
+
     @Override
     protected void loadData() {
 
@@ -103,22 +139,23 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.tv_main_drawerCourse:
                 mDrawerContainer.closeDrawer(Gravity.LEFT);
-                mMainFragment.changeText(DrawerBaseActivity.COURSE);
                 selectNevigationText(DrawerBaseActivity.COURSE);
+
                 return;
 
             case R.id.tv_main_drawerMessage:
                 mDrawerContainer.closeDrawer(Gravity.LEFT);
-                mMainFragment.changeText(DrawerBaseActivity.MESSAGE);
                 selectNevigationText(DrawerBaseActivity.MESSAGE);
                 return;
+
+            case R.id.tv_main_contacts:
+                mDrawerContainer.closeDrawer(Gravity.LEFT);
+                selectNevigationText(DrawerBaseActivity.CONTACTS);
             default:
                 break;
         }
         super.onClick(v);
     }
-
-
 
 
     @Override
@@ -140,14 +177,15 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
                 break;
 
             case R.id.notify:
-                startActivity(new Intent(mContext, NotificationActivity.class));
+                setNotifyOff();
+                Intent intent = new Intent(mContext, NotificationActivity.class);
+                startActivity(intent);
                 break;
-            case R.id.contacts:
-                startActivity(new Intent(mContext, ContactsActivity.class));
-                break;
+
         }
         return true;
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -168,7 +206,6 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         return super.onKeyDown(keyCode, event);
     }
 
-
     @Override
     protected void initToolBar() {
         super.initToolBar();
@@ -176,19 +213,33 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
 
     }
 
+
     @Override
     protected Fragment getLayoutFragment() {
-        return mMainFragment;
+
+        return new MainCourseFragment();
     }
 
     private void selectNevigationText(int type) {
         if (type == DrawerBaseActivity.COURSE) {
             mDrawerCourseText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
             mDrawerMessageText.setBackgroundColor(getResources().getColor(android.R.color.white));
+            mDrawerContactsText.setBackgroundColor(getResources().getColor(android.R.color.white));
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mMainCourseFragment).commit();
+            getSupportActionBar().setTitle("课程");
+        } else if (type == DrawerBaseActivity.CONTACTS) {
+            mDrawerCourseText.setBackgroundColor(getResources().getColor(R.color.white));
+            mDrawerMessageText.setBackgroundColor(getResources().getColor(android.R.color.white));
+            mDrawerContactsText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mContactsFragment).commit();
+            getSupportActionBar().setTitle("通讯录");
 
         } else {
             mDrawerMessageText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
             mDrawerCourseText.setBackgroundColor(getResources().getColor(android.R.color.white));
+            mDrawerContactsText.setBackgroundColor(getResources().getColor(android.R.color.white));
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mMessageFragment).commit();
+            getSupportActionBar().setTitle("私信");
 
         }
     }
@@ -232,14 +283,56 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         boolean isOpen = mDrawerContainer.isDrawerVisible(mfl_main_drawerContent);
         menu.findItem(R.id.search).setVisible(!isOpen);
         menu.findItem(R.id.notify).setVisible(!isOpen);
-        menu.findItem(R.id.contacts).setVisible(!isOpen);
+        if (haveNotify) {
+            menu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications_on);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.base_toolbar_menu, menu);
+        mMenu = menu;
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void registerAccount() {
+        BmobQuery<Installation> bmobQuery = new BmobQuery<Installation>();
+        bmobQuery.addWhereEqualTo("installationId", BmobInstallation.getCurrentInstallation(this).getInstallationId());
+        bmobQuery.findObjects(this, new FindListener<Installation>() {
+            @Override
+            public void onSuccess(List<Installation> list) {
+                if (null != list) {
+                    Installation installation = list.get(0);
+                    installation.setAccount(account);
+                    installation.update(mContext);
+                } else {
+                    Log.i("===MainActivity", "registerAccount list null");
+
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Log.i("===MainActivity", "registerAccount " + s);
+            }
+        });
+    }
+
+    public void setNotifyOn() {
+        haveNotify = true;
+        mMenu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications_on);
+    }
+
+    public void setNotifyOff() {
+        haveNotify = false;
+        mMenu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications);
+
+    }
+
+    @Subscribe
+    public void onNotificationEvent(NotificationEvent event) {
+        setNotifyOn();
     }
 
 

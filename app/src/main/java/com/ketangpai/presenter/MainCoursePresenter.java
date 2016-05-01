@@ -1,23 +1,23 @@
 package com.ketangpai.presenter;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
+import com.ketangpai.callback.ResultCallback;
+import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.MainCourseFragment;
 import com.ketangpai.model.CourseModel;
+import com.ketangpai.model.HomeworkModel;
 import com.ketangpai.modelImpl.CourseModelImpl;
+import com.ketangpai.modelImpl.HomeworkModelImpl;
 import com.ketangpai.viewInterface.MainCourseViewInterface;
 
 import java.util.List;
 
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by Administrator on 2016/4/19.
@@ -80,11 +80,11 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
         }
     }
 
-    public void addCourse(final Context context, String code, String acccount) {
+    public void addCourse(final Context context, String code, String acccount, String name, int number) {
         if (isViewAttached()) {
             mainCourseViewInterface = getView();
             mainCourseViewInterface.showLoading(1);
-            courseModel.addCourse(context, code, acccount, new ResultCallback() {
+            courseModel.addCourse(context, code, acccount, name, number, new ResultCallback() {
                 @Override
                 public void onSuccess(Object object) {
                     mainCourseViewInterface.addCourseOnComplete((Student_Course) object);

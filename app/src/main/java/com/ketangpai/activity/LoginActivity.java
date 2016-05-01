@@ -273,6 +273,8 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
             new AlertDialog.Builder(mContext).setTitle("登录失败")
                     .setMessage("用户名或密码错误,请重新输入")
                     .setPositiveButton("确认", null).show();
+            dismissLoadingDialog();
+
         }
     }
 

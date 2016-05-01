@@ -2,6 +2,7 @@ package com.ketangpai.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ketangpai.nan.ketangpai.R;
+
+import org.greenrobot.eventbus.EventBus;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by nan on 2016/3/14.
@@ -35,12 +40,20 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(getLayoutId(), container, false);
+        ButterKnife.inject(this, view);
         initView();
         initData();
         initListener();
         loadData();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     protected void initVarious() {
@@ -62,6 +75,8 @@ public abstract class BaseFragment extends Fragment {
     protected void sendToast(String text) {
         Toast.makeText(mContext, text, Toast.LENGTH_LONG).show();
     }
+
+
 
 
 }

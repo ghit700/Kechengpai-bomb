@@ -22,7 +22,7 @@ public class AccountUpdateActivity extends BaseToolbarActivity {
 
     @Override
     protected int getContentViewId() {
-        return R.layout.activity_base_nevigation;
+        return R.layout.activity_base_course_add_tab;
     }
 
     @Override

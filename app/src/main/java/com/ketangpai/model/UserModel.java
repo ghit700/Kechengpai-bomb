@@ -2,8 +2,7 @@ package com.ketangpai.model;
 
 import android.content.Context;
 
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
+import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.bean.User;
 
 import java.io.File;

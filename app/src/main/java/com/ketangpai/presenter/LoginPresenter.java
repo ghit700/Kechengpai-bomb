@@ -3,8 +3,7 @@ package com.ketangpai.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
+import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.activity.LoginActivity;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.bean.User;
@@ -13,12 +12,6 @@ import com.ketangpai.modelImpl.UserModelImpl;
 import com.ketangpai.viewInterface.LoginViewInterface;
 
 
-import java.io.File;
-import java.util.List;
-import java.util.Objects;
-
-import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -39,6 +32,7 @@ public class LoginPresenter extends BasePresenter<LoginViewInterface> {
             userModel.login(context, account, password, new ResultCallback() {
                 @Override
                 public void onSuccess(Object object) {
+
                     loginViewInterface.login((User) object);
                 }
 

@@ -1,9 +1,4 @@
-package com.ketangpai.Callback;
-
-import java.util.List;
-import java.util.Objects;
-
-import cn.bmob.v3.exception.BmobException;
+package com.ketangpai.callback;
 
 /**
  * 返回的是对象

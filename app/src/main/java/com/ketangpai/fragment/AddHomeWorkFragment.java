@@ -7,7 +7,6 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.provider.DocumentFile;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,12 +16,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.ketangpai.activity.AddNoticekActivity;
+import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.DataAdapter;
-import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Data;
-import com.ketangpai.bean.Teacher_Homework;
+import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AddHomeworkPresenter;
@@ -62,7 +60,8 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
     private int mDay;
     private int mHour;
     private int mMinute;
-    private int c_id;
+
+    private Teacher_Course course;
     public static final int RESULT = 13;
     private int mValue = 0;
     private Calendar mCalendar;
@@ -70,7 +69,7 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
     @Override
     protected void initVarious() {
         super.initVarious();
-        c_id = getActivity().getIntent().getIntExtra("c_id", -1);
+        course = (Teacher_Course) getActivity().getIntent().getSerializableExtra("course");
         mFiles = new ArrayList<>();
     }
 
@@ -190,8 +189,13 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
             Uri uri = data.getData();
             File file = FileUtils.getFileByUri((Activity) mContext, uri);
             BmobFile bmobFile = new BmobFile(file);
+            Data data1 = new Data();
+            data1.setC_id(course.getC_id());
+            data1.setName(file.getName());
+            data1.setSize(FileUtils.getFileSize(file.length()));
+            data1.setUrl(file.getAbsolutePath());
             mPresenter.uploadAttachment(mContext, bmobFile);
-            mDataAdapter.addItem(mDataList.size(), new Data(FileUtils.getFileSize(file.length()), file.getName()));
+            mDataAdapter.addItem(mDataList.size(), data1);
 
         }
     }
@@ -204,17 +208,17 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
             new AlertDialog.Builder(mContext).setTitle("文件还没上传完毕,请稍等...").setPositiveButton("确认", null).show();
         } else if (!etHomeworkTitle.getText().toString().equals("")) {
             Teacher_Homework homework = new Teacher_Homework();
-            homework.setC_id(c_id);
+            homework.setC_id(course.getC_id());
             homework.setContent(etAddHomeworkContent.getText().toString());
             homework.setTitle(etHomeworkTitle.getText().toString());
             homework.setP_time(System.currentTimeMillis());
             homework.setE_time(mCalendar.getTimeInMillis());
             homework.setCheck_count(0);
             homework.setNo_check_count(0);
-            homework.setNo_hander_count(0);
+            homework.setNo_hander_count(course.getNumbers());
             homework.setFiles(mFiles);
             homework.addAllUnique("files", mFiles);
-            mPresenter.publishHomework(mContext, homework);
+            mPresenter.publishHomework(mContext, homework, course.getC_id(), course.getName());
         } else {
             new AlertDialog.Builder(mContext).setTitle("发布公告失败").setMessage("公告标题不能为空")
                     .setPositiveButton("确认", null).create().show();

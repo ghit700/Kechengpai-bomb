@@ -5,28 +5,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.provider.DocumentFile;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.ketangpai.activity.AddHomeWorkActivity;
 import com.ketangpai.activity.AddNoticekActivity;
 import com.ketangpai.activity.DataActivity;
 import com.ketangpai.activity.NoticeActivity;
+import com.ketangpai.activity.HomeWorkActivity;
 import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.CourseNoticeAdapter;
 import com.ketangpai.adapter.CourseTExamAdapter;
-import com.ketangpai.adapter.CourseTHomeworkAdapter;
+import com.ketangpai.adapter.CourseHomeworkAdapter;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Data;
-import com.ketangpai.bean.Homework;
 import com.ketangpai.bean.Notice;
+import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
@@ -38,7 +36,6 @@ import com.shamanland.fab.ShowHideOnScroll;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,14 +55,19 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     //变量
     private List mTabContents;
     private int mPosition;
-    private Animation mAddCloseAnim, mAddOpenAnim;
     private int type;
     private final int REQUEST = 11;
     private int c_id;
+    private String c_name;
+    private Course course;
     private ProgressDialog mUploadDialog;
 
     public void setC_id(int c_id) {
         this.c_id = c_id;
+    }
+
+    public void setC_name(String c_name) {
+        this.c_name = c_name;
     }
 
     private CourseTabFragment getInstance() {
@@ -76,24 +78,24 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     protected void initVarious() {
         super.initVarious();
         type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
+        c_id = course.getC_id();
+        c_name = course.getName();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (type == 0) {
-            mPublishBtn.startAnimation(mAddCloseAnim);
-        }
+
     }
 
     public void setPosition(int position) {
         this.mPosition = position;
     }
 
-    public static CourseTabFragment newInstance(int positon, int c_id) {
+    public static CourseTabFragment newInstance(int positon, Course course) {
         CourseTabFragment fragment = new CourseTabFragment();
         fragment.setPosition(positon);
-        fragment.setC_id(c_id);
+        fragment.setCourse(course);
         return fragment;
     }
 
@@ -110,7 +112,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             mPublishBtn.setOnClickListener(this);
             mPublishBtn.setVisibility(View.VISIBLE);
             mTabList.setOnTouchListener(new ShowHideOnScroll(mPublishBtn));
-            initAnim();
         }
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fresh_course_tab);
         initTabList();
@@ -143,19 +144,38 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     public void changeTabAdaterByPosition(int position, Context context) {
         switch (position) {
             case 0:
-                mTabAdapter = new CourseTHomeworkAdapter(context, mTabContents);
-                mPresenter.getHomeworkList(context, c_id);
+                mTabAdapter = new CourseHomeworkAdapter(context, mTabContents, type);
+                if (type == 0) {
+                    mPresenter.getHomeworkList(context, c_id);
+                    mPublishBtn.setImageResource(R.drawable.category_1004);
+                } else {
+                    mPresenter.getHomeworkListToStudent(context, c_id, ((Student_Course) course).getAdd_time());
+                }
                 break;
             case 1:
                 mTabAdapter = new CourseDataAdapter(context, mTabContents);
                 mPresenter.getDataList(context, c_id);
+                if (type == 0) {
+                    mPublishBtn.setImageResource(R.drawable.category_1002);
+                }
+
                 break;
             case 2:
-                mTabAdapter = new CourseNoticeAdapter(context, mTabContents);
-                mPresenter.getNoticeList(context, c_id);
+                mTabAdapter = new CourseNoticeAdapter(context, mTabContents, type);
+                if (type == 0) {
+                    mPresenter.getNoticeList(context, c_id);
+                    mPublishBtn.setImageResource(R.drawable.category_1003);
+                } else {
+                    mPresenter.getNoticeListToStudent(mContext, (Student_Course) course);
+                }
+
                 break;
             case 3:
-                mTabAdapter = new CourseTExamAdapter(context, mTabContents);
+                mTabAdapter = new CourseTExamAdapter(context, mTabContents, type);
+                if (type == 0) {
+                    mPublishBtn.setImageResource(R.drawable.category_1001);
+                }
+
                 break;
 
             default:
@@ -165,48 +185,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     }
 
-    private void initAnim() {
-        mAddCloseAnim = AnimationUtils.loadAnimation(mContext, R.anim.fab_rotate_close);
-        mAddOpenAnim = AnimationUtils.loadAnimation(mContext, R.anim.fab_rotate_open);
-
-        mAddOpenAnim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Intent intent;
-                switch (mPosition) {
-                    case 0:
-                        intent = new Intent(mContext, AddHomeWorkActivity.class);
-                        intent.putExtra("c_id", c_id);
-                        startActivityForResult(intent, REQUEST);
-                        break;
-                    case 1:
-                        IntentUtils.openDocument(getInstance());
-                        break;
-                    case 2:
-                        intent = new Intent(mContext, AddNoticekActivity.class);
-                        intent.putExtra("c_id", c_id);
-                        startActivityForResult(intent, REQUEST);
-                        break;
-                    case 3:
-                        break;
-
-                    default:
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-    }
 
     @Override
     public void onRefresh() {
@@ -219,7 +197,9 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
         switch (mPosition) {
 
             case 0:
-
+                intent = new Intent(mContext, HomeWorkActivity.class);
+                intent.putExtra("homework", (Teacher_Homework) mTabContents.get(position));
+                startActivity(intent);
                 break;
             case 1:
                 intent = new Intent(mContext, DataActivity.class);
@@ -242,7 +222,28 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_course_tab_publish) {
-            mPublishBtn.startAnimation(mAddOpenAnim);
+            Intent intent;
+            switch (mPosition) {
+                case 0:
+                    intent = new Intent(mContext, AddHomeWorkActivity.class);
+                    intent.putExtra("course", course);
+                    startActivityForResult(intent, REQUEST);
+                    break;
+                case 1:
+                    IntentUtils.openDocument(getInstance());
+                    break;
+                case 2:
+                    intent = new Intent(mContext, AddNoticekActivity.class);
+                    intent.putExtra("c_id", c_id);
+                    intent.putExtra("c_name", c_name);
+                    startActivityForResult(intent, REQUEST);
+                    break;
+                case 3:
+                    break;
+
+                default:
+                    break;
+            }
         }
 
     }
@@ -259,7 +260,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             data1.setSize(FileUtils.getFileSize(file.length()));
             data1.setUrl(file.getAbsolutePath());
             mTabAdapter.addItem(0, data1);
-            mPresenter.uploadData(mContext, data1);
+            mPresenter.uploadData(mContext, data1, c_id, c_name);
             showUploadDialog();
         }
 
@@ -274,7 +275,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             mTabList.smoothScrollToPosition(0);
         }
 
-        mPublishBtn.startAnimation(mAddCloseAnim);
 
     }
 
@@ -291,7 +291,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     }
 
     @Override
-    public void getHomeworkListOnComplete(List<Homework> homeworks) {
+    public void getHomeworkListOnComplete(List<Teacher_Homework> homeworks) {
         Collections.reverse(homeworks);
 
         mTabContents.addAll(homeworks);
@@ -333,6 +333,10 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
         mTabContents.addAll(exams);
         mTabAdapter.notifyDataSetChanged();
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     @Override

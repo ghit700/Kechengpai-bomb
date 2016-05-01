@@ -44,9 +44,7 @@ public abstract class BaseAdapter<E> extends RecyclerView.Adapter<BaseAdapter.Vi
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getItemCount()) {
-            return -1;
-        }
+
         return super.getItemViewType(position);
     }
 
@@ -63,7 +61,6 @@ public abstract class BaseAdapter<E> extends RecyclerView.Adapter<BaseAdapter.Vi
 
     protected abstract int getItemLayoutId(int viewType);
 
-    ;
 
     @Override
     public void onBindViewHolder(BaseAdapter.ViewHolder holder, int position) {
@@ -72,7 +69,9 @@ public abstract class BaseAdapter<E> extends RecyclerView.Adapter<BaseAdapter.Vi
 
     }
 
-    protected abstract void bindData(ViewHolder holder, int position, E item);
+    protected  void bindData(ViewHolder holder, int position, E item){
+
+    };
 
     @Override
     public int getItemCount() {

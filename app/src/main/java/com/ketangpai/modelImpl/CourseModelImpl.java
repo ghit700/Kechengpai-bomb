@@ -1,12 +1,10 @@
 package com.ketangpai.modelImpl;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
-import com.ketangpai.bean.Course;
+import com.ketangpai.callback.ResultCallback;
+import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.MainCourseFragment;
@@ -93,7 +91,7 @@ public class CourseModelImpl implements CourseModel {
     }
 
     @Override
-    public void addCourse(final Context context, final String code, final String account, final ResultCallback resultCallback) {
+    public void addCourse(final Context context, final String code, final String account, final String name, final int number, final ResultCallback resultCallback) {
         Log.i(MainCourseFragment.TAG, "addCourse code=" + code);
         String sql = "select * from Teacher_Course where code=?";
         BmobQuery<Teacher_Course> query = new BmobQuery<Teacher_Course>();
@@ -116,6 +114,9 @@ public class CourseModelImpl implements CourseModel {
                         course.setAccount(account);
                         course.setTeacher(teacher_course.getT_name());
                         course.setCode(code);
+                        course.setStudent_name(name);
+                        course.setStudent_number(number);
+                        course.setAdd_time(System.currentTimeMillis());
                         course.save(context, new SaveListener() {
                             @Override
                             public void onSuccess() {

@@ -10,6 +10,15 @@ public class Data extends BmobObject {
     private String name;
     private String url;
     private Integer c_id;
+    private Integer d_id;
+
+    public Integer getD_id() {
+        return d_id;
+    }
+
+    public void setD_id(Integer d_id) {
+        this.d_id = d_id;
+    }
 
     public Data() {
     }

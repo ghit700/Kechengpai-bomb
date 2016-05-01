@@ -18,8 +18,7 @@
             android:layout_alignParentTop="true">
 
             <include
-                layout="@layout/toolbar"
-                ></include>
+                layout="@layout/toolbar"></include>
         </FrameLayout>
 
         <FrameLayout

@@ -27,10 +27,8 @@ public class SearchTwoLineAdapter extends BaseAdapter {
         //view的初始化
         TextView title = (TextView) holder.getViewById(R.id.tv_item_search_title);
         TextView content = (TextView) holder.getViewById(R.id.tv_item_search_content);
-        LinearLayout linearLayout = (LinearLayout) holder.getViewById(R.id.ll_item_search);
 
         //view的赋值
-        linearLayout.setBackgroundResource(typedValue.resourceId);
     }
 
 

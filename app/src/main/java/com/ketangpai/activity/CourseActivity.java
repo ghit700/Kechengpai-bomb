@@ -8,35 +8,37 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ketangpai.base.BasePresenter;
+import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.base.DrawerBaseActivity;
+import com.ketangpai.bean.Course;
+import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.CourseFragment;
 import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by nan on 2016/3/16.
  */
-public class CourseActivity extends DrawerBaseActivity {
+public class CourseActivity extends BaseToolbarActivity {
 
 
     //view
 
 
     //变量
-    private String mCourseName;
-    private int mC_id;
+    private Course mCourse;
     private CourseFragment mFragment;
+
 
     @Override
     protected int getContentViewId() {
-        return R.layout.activity_base_nevigation;
+        return R.layout.activity_base_course_add_tab;
     }
 
     @Override
     protected void initVariables() {
         super.initVariables();
-        if (getIntent().getStringExtra("course") != null) {
-            mCourseName = getIntent().getStringExtra("course");
-            mC_id = getIntent().getIntExtra("c_id", -1);
+        if (getIntent().getSerializableExtra("course") != null) {
+            mCourse = (Course) getIntent().getSerializableExtra("course");
 
         }
 
@@ -68,25 +70,15 @@ public class CourseActivity extends DrawerBaseActivity {
 
     }
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            default:
-                break;
-        }
-    }
-
 
     @Override
-    protected void initToolBar() {
-        super.initToolBar();
-        getSupportActionBar().setTitle(mCourseName);
+    protected void initToolbar() {
+        super.initToolbar();
+        getSupportActionBar().setTitle(mCourse.getName());
+
     }
 
-    public int getC_id() {
-        return mC_id;
+    public Course getCourse() {
+        return mCourse;
     }
-
-
 }

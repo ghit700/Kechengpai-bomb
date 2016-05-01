@@ -3,21 +3,23 @@ package com.ketangpai.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.ketangpai.Callback.AttachmentResultCallback;
+import com.ketangpai.callback.AttachmentResultCallback;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.fragment.AddNoticeFragment;
 import com.ketangpai.model.FileModel;
 import com.ketangpai.model.NoticeModel;
+import com.ketangpai.model.NotificationModel;
 import com.ketangpai.modelImpl.FileModelImpl;
 import com.ketangpai.modelImpl.NoticeModelImpl;
+import com.ketangpai.modelImpl.NotificationModelImpl;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.viewInterface.AddNoticeViewInterface;
 
-import java.io.File;
-
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
@@ -27,9 +29,11 @@ public class AddNoticePresenter extends BasePresenter<AddNoticeViewInterface> {
 
     NoticeModel noticeModel;
     FileModel fileModel;
+    NotificationModel notificationModel;
     AddNoticeViewInterface addNoticeViewInterface;
 
     public AddNoticePresenter() {
+        notificationModel = new NotificationModelImpl();
         noticeModel = new NoticeModelImpl();
         fileModel = new FileModelImpl();
     }
@@ -62,12 +66,25 @@ public class AddNoticePresenter extends BasePresenter<AddNoticeViewInterface> {
         }
     }
 
-    public void publishNotice(Context context, final Notice notice) {
+    public void publishNotice(final Context context, final Notice notice, final int c_id, final String c_name) {
         if (isViewAttached()) {
             addNoticeViewInterface = getView();
             noticeModel.publishNotice(context, notice, new SaveListener() {
                 @Override
                 public void onSuccess() {
+
+                    BmobQuery<Notice> query = new BmobQuery<Notice>();
+                    query.getObject(context, notice.getObjectId(), new GetListener<Notice>() {
+                        @Override
+                        public void onSuccess(Notice notice) {
+                            notificationModel.publishNofication(context, notice, c_id, c_name);
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+
+                        }
+                    });
                     addNoticeViewInterface.publishNoticeOnComplete(notice);
                 }
 

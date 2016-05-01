@@ -2,11 +2,7 @@ package com.ketangpai.model;
 
 import android.content.Context;
 
-import com.ketangpai.Callback.AttachmentResultCallback;
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
-
-import java.io.File;
+import com.ketangpai.callback.AttachmentResultCallback;
 
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.DownloadFileListener;

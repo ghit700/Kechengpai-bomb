@@ -2,13 +2,9 @@ package com.ketangpai.model;
 
 import android.content.Context;
 
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
-import com.ketangpai.Callback.UploadFileResultCallback;
+import com.ketangpai.callback.ResultsCallback;
+import com.ketangpai.callback.UploadFileResultCallback;
 import com.ketangpai.bean.Data;
-
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * Created by nan on 2016/4/24.

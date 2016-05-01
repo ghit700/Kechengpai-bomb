@@ -64,7 +64,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     protected Toolbar mToolbar;
     protected ImageView mExitLoginImg;
     private ImageView mUserIconImg;
-    protected TextView mDrawerCourseText, mDrawerMessageText, mUserNameText;
+    protected TextView mDrawerCourseText, mDrawerMessageText, mUserNameText, mDrawerContactsText;
 
 
     //变量
@@ -78,6 +78,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
     //主界面打开的类型
     public final static int COURSE = 1;
     public final static int MESSAGE = 2;
+    public final static int CONTACTS = 3;
     //notificationlist
     protected List mNotificationContents;
 
@@ -126,6 +127,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
         mDrawerCourseText.setOnClickListener(this);
         mExitLoginImg.setOnClickListener(this);
         mUserIconImg.setOnClickListener(this);
+        mDrawerContactsText.setOnClickListener(this);
         //拦截点击事件，不让在导航界面的点击事件传递到mainContent中
         mfl_main_drawerContent.setOnTouchListener(this);
     }
@@ -179,8 +181,9 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
         mUserNameText = (TextView) findViewById(R.id.tv_main_userName);
         mDrawerCourseText = (TextView) findViewById(R.id.tv_main_drawerCourse);
         mDrawerMessageText = (TextView) findViewById(R.id.tv_main_drawerMessage);
-
+        mDrawerContactsText = (TextView) findViewById(R.id.tv_main_contacts);
         mUserNameText.setText(name);
+        mDrawerCourseText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
 
     }
 

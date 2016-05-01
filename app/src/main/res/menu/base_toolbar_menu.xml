@@ -3,18 +3,16 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/contacts"
-          android:icon="@android:drawable/ic_dialog_map"
-          app:showAsAction="always"
-          android:title=""></item>
 
-    <item android:id="@+id/search"
-          android:icon="@drawable/ic_search"
-          app:showAsAction="always"
-          android:title=""></item>
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title=""
+        app:showAsAction="always"></item>
 
-    <item android:id="@+id/notify"
-          android:icon="@drawable/ic_notifications"
-          app:showAsAction="always"
-          android:title=""></item>
+    <item
+        android:id="@+id/notify"
+        android:icon="@drawable/ic_notifications"
+        android:title=""
+        app:showAsAction="always"></item>
 </menu>

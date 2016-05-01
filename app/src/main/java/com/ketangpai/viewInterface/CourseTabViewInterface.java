@@ -1,7 +1,7 @@
 package com.ketangpai.viewInterface;
 
-import com.ketangpai.bean.Homework;
 import com.ketangpai.bean.Notice;
+import com.ketangpai.bean.Teacher_Homework;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * Created by nan on 2016/4/24.
  */
 public interface CourseTabViewInterface {
-    void getHomeworkListOnComplete(List<Homework> homeworks);
+    void getHomeworkListOnComplete(List<Teacher_Homework> homeworks);
 
     void uploadOnProgress(int value);
 

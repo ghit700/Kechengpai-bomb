@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.bean.Course;
+import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.CourseTabFragment;
 import com.ketangpai.nan.ketangpai.R;
 
@@ -19,12 +21,12 @@ import java.util.List;
 public class CourseTabsPagerAdapter extends FragmentPagerAdapter {
 
     private String[] mCourseTabs;
-    private int c_id;
+    private Course course;
 
-    public CourseTabsPagerAdapter(FragmentManager fm, Context context, int c_id) {
+    public CourseTabsPagerAdapter(FragmentManager fm, Context context, Course course) {
         super(fm);
         mCourseTabs = context.getResources().getStringArray(R.array.course_tabs);
-        this.c_id = c_id;
+        this.course = course;
     }
 
 
@@ -43,7 +45,7 @@ public class CourseTabsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        return CourseTabFragment.newInstance(position, c_id);
+        return CourseTabFragment.newInstance(position,course);
     }
 
 

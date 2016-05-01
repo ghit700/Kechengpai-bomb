@@ -19,7 +19,7 @@ import java.util.List;
 public class CourseTExamAdapter extends BaseAdapter<String> implements PopupMenu.OnMenuItemClickListener {
 
 
-    public CourseTExamAdapter(Context mContext, List<String> mDataList) {
+    public CourseTExamAdapter(Context mContext, List<String> mDataList, int type) {
         super(mContext, mDataList);
     }
 

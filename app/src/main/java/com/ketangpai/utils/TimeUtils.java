@@ -26,4 +26,12 @@ public class TimeUtils {
         Date date = new Date(time);
         return simpleDateFormat.format(date);
     }
+
+    public static String getNotificationTime(long time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(time);
+        return simpleDateFormat.format(date);
+    }
+
+    ;
 }

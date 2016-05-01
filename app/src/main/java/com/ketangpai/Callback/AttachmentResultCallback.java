@@ -1,6 +1,5 @@
-package com.ketangpai.Callback;
+package com.ketangpai.callback;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.datatype.BmobFile;
 
 /**

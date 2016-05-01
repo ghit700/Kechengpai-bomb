@@ -2,11 +2,9 @@ package com.ketangpai.model;
 
 import android.content.Context;
 
-import com.ketangpai.Callback.ResultsCallback;
-import com.ketangpai.Callback.ResultCallback;
+import com.ketangpai.callback.ResultsCallback;
+import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.bean.Teacher_Course;
-
-import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by Administrator on 2016/4/19.
@@ -16,5 +14,5 @@ public interface CourseModel {
 
     void createCourse(Context context, Teacher_Course course, ResultCallback resultCallback);
 
-    void addCourse(Context context, String code, String account, ResultCallback resultCallback);
+    void addCourse(Context context, String code, String account, String name, int number, ResultCallback resultCallback);
 }

@@ -10,6 +10,10 @@ import android.widget.Toast;
 import com.ketangpai.utils.ActivityCollector;
 import com.ketangpai.nan.ketangpai.R;
 
+import org.greenrobot.eventbus.EventBus;
+
+import butterknife.ButterKnife;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -20,9 +24,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initVariables();
         setContentView(getContentViewId());
+        ButterKnife.inject(this);
         initView();
         initData();
         initListener();
@@ -64,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
-
+        ButterKnife.reset(this);
     }
 
     protected void showToast(String text, int duration) {

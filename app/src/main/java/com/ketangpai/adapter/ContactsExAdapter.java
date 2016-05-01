@@ -35,13 +35,13 @@ public class ContactsExAdapter extends BaseExpandableListAdapter {
     @Override
     public int getGroupCount() {
 //        return mMessageGroups.size();
-    return 10;
+        return 10;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
 //        return mMessagmeGroupUsers.get(groupPosition).size();
-    return 10;
+        return 10;
     }
 
     @Override

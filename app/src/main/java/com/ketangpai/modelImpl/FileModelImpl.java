@@ -3,13 +3,11 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
-import com.ketangpai.Callback.AttachmentResultCallback;
-import com.ketangpai.Callback.ResultCallback;
+import com.ketangpai.callback.AttachmentResultCallback;
 import com.ketangpai.constant.Constant;
 import com.ketangpai.fragment.AddNoticeFragment;
 import com.ketangpai.fragment.DataFragment;
 import com.ketangpai.model.FileModel;
-import com.ketangpai.utils.FileUtils;
 
 import java.io.File;
 

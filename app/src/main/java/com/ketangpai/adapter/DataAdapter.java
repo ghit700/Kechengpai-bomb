@@ -1,39 +1,43 @@
 package com.ketangpai.adapter;
 
 import android.content.Context;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Data;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.utils.ImageLoaderUtils;
 
 import java.util.List;
 
 /**
- * Created by nan on 2016/3/27.
+ * Created by nan on 2016/3/17.
  */
 public class DataAdapter extends BaseAdapter<Data> {
 
-    public DataAdapter(Context mContext, List mDataList) {
+    public DataAdapter(Context mContext, List<Data> mDataList) {
         super(mContext, mDataList);
     }
 
     @Override
     protected int getItemLayoutId(int viewType) {
-        return R.layout.item_add_homework_data;
+        return R.layout.item_list_data;
     }
 
     @Override
     protected void bindData(ViewHolder holder, int position, Data item) {
-        TextView fileName = (TextView) holder.getViewById(R.id.tv_data_fileName);
-        TextView tv_data_fileSize = (TextView) holder.getViewById(R.id.tv_data_fileSize);
+        TextView mFileNameText = (TextView) holder.getViewById(R.id.tv_share_fileName);
+        ImageView mFilePicImg = (ImageView) holder.getViewById(R.id.img_share_picImg);
+        TextView mFileSize = (TextView) holder.getViewById(R.id.tv_share_fileSize);
 
-        holder.itemView.setBackgroundResource(typedValue.resourceId);
-        fileName.setText(item.getName());
-        tv_data_fileSize.setText(item.getSize() + "MB");
+        mFileNameText.setText(item.getName());
+        mFileSize.setText(item.getSize() + "MB");
+
+        ImageLoaderUtils.display(mContext, mFilePicImg, item.getUrl());
 
 
     }
+
 
 }

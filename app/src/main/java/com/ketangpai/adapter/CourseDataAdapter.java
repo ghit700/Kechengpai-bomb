@@ -32,7 +32,6 @@ public class CourseDataAdapter extends BaseAdapter<Data> {
         ImageView mFilePicImg = (ImageView) holder.getViewById(R.id.img_share_picImg);
         TextView mFileSize = (TextView) holder.getViewById(R.id.tv_share_fileSize);
 
-        holder.itemView.setBackgroundResource(typedValue.resourceId);
         mFileNameText.setText(item.getName());
         mFileSize.setText(item.getSize() + "MB");
 

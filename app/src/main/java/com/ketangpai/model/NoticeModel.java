@@ -2,12 +2,8 @@ package com.ketangpai.model;
 
 import android.content.Context;
 
-import com.ketangpai.Callback.AttachmentResultCallback;
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
+import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.bean.Notice;
-
-import java.io.File;
 
 import cn.bmob.v3.listener.SaveListener;
 
@@ -18,4 +14,6 @@ public interface NoticeModel {
     void publishNotice(Context context, Notice notice, SaveListener resultCallback);
 
     void getNoticeList(Context context, int c_id, ResultsCallback resultsCallback);
+
+    void getNoticeListToStudent(Context context, int c_id, long add_time, ResultsCallback resultsCallback);
 }

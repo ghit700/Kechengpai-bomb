@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ketangpai.activity.DataActivity;
+import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.DataAdapter;
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Data;
@@ -18,8 +19,6 @@ import com.ketangpai.view.FullyLinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by Administra

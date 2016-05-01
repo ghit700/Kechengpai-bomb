@@ -3,8 +3,7 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
-import com.ketangpai.Callback.ResultCallback;
-import com.ketangpai.Callback.ResultsCallback;
+import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.bean.User;
 import com.ketangpai.constant.Constant;
 import com.ketangpai.fragment.AccountFragment;
@@ -43,25 +42,30 @@ public class UserModelImpl implements UserModel {
             public void done(BmobQueryResult<User> bmobQueryResult, BmobException e) {
                 List list = bmobQueryResult.getResults();
                 if (null != list) {
-                    final User user = (User) list.get(0);
-                    if (!"".equals(user.getPath())) {
-                        FileUtils.createNewFile(Constant.PHOTO_FOLDER);
-                        final BmobFile bmobFile = new BmobFile("logo.jpg", "", user.getPath());
-                        bmobFile.download(context, new File(Constant.LOGO_FOLDER), new DownloadFileListener() {
-                            @Override
-                            public void onSuccess(String s) {
-                                Log.i("=====", "filename=" + bmobFile.getFilename());
+                    if (list.size() > 0) {
 
-                                resultCallback.onSuccess(user);
-                            }
+                        final User user = (User) list.get(0);
+                        if (!"".equals(user.getPath())) {
+                            FileUtils.createNewFile(Constant.PHOTO_FOLDER);
+                            final BmobFile bmobFile = new BmobFile("logo.jpg", "", user.getPath());
+                            bmobFile.download(context, new File(Constant.LOGO_FOLDER), new DownloadFileListener() {
+                                @Override
+                                public void onSuccess(String s) {
+                                    Log.i("=====", "filename=" + bmobFile.getFilename());
 
-                            @Override
-                            public void onFailure(int i, String s) {
-                                resultCallback.onFailure(s);
-                            }
-                        });
+                                    resultCallback.onSuccess(user);
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    resultCallback.onFailure(s);
+                                }
+                            });
+                        } else {
+                            resultCallback.onSuccess(user);
+                        }
                     } else {
-                        resultCallback.onSuccess(user);
+                        resultCallback.onSuccess(null);
                     }
                 } else {
                     resultCallback.onFailure(e.getMessage());

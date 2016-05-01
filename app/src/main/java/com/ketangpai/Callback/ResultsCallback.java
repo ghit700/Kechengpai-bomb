@@ -1,9 +1,6 @@
-package com.ketangpai.Callback;
-
-import android.util.Log;
+package com.ketangpai.callback;
 
 import java.util.List;
-import java.util.Objects;
 
 import cn.bmob.v3.exception.BmobException;
 

@@ -31,8 +31,10 @@ import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.Course;
+import com.ketangpai.bean.Notification;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Course;
+import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.MainCoursePresenter;
@@ -40,6 +42,9 @@ import com.ketangpai.utils.CodeUtils;
 import com.ketangpai.viewInterface.MainCourseViewInterface;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,7 +78,8 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     //判断是老师还是学生
     private int type;
     private String account;
-    private boolean First = true;
+    private String name;
+    private int number;
 
 
     @Override
@@ -87,6 +93,9 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         super.initVarious();
         type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
+        name = mContext.getSharedPreferences("user", 0).getString("name", "");
+        number = mContext.getSharedPreferences("user", 0).getInt("number", -1);
+
         initAddBtnAnim();
         if (type == 0) {
             mCourses = new ArrayList<Teacher_Course>();
@@ -122,23 +131,23 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
 
     @Override
     protected void loadData() {
-        Log.i(TAG, First + "");
-        if (First) {
-            mSwipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(true);
-                }
-            });
-            onRefresh();
-            First = false;
-        }
+
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
+        onRefresh();
+
     }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_add:
+                EventBus.getDefault().post(new NotificationEvent());
                 changeAddBtnAnim();
                 showAddDialog();
                 break;
@@ -153,8 +162,8 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(mContext, CourseActivity.class);
-        intent.putExtra("course", ((Course) mCourses.get(position)).getName());
-        intent.putExtra("c_id", ((Course) mCourses.get(position)).getC_id());
+        intent.putExtra("course", ((Course) mCourses.get(position)));
+
         startActivity(intent);
     }
 
@@ -210,7 +219,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
             teacher_course.setName(class_name);
             mPresenter.createCourse(mContext, teacher_course);
         } else {
-            mPresenter.addCourse(mContext, class_name, account);
+            mPresenter.addCourse(mContext, class_name, account, name, number);
         }
     }
 

@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.ketangpai.activity.AddNoticekActivity;
+import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.DataAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Data;
@@ -51,6 +51,7 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
     private List<Data> mFiles;
 
     private int c_id;
+    private String c_name;
     public static final int RESULT = 12;
     private int mValue = 0;
     private Notice notice;
@@ -60,6 +61,8 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
         super.initVarious();
         mFiles = new ArrayList();
         c_id = getActivity().getIntent().getIntExtra("c_id", -1);
+        Log.i("===", c_id + "");
+        c_name = getActivity().getIntent().getStringExtra("c_name");
         if (null != getActivity().getIntent().getSerializableExtra("notice")) {
             notice = (Notice) getActivity().getIntent().getSerializableExtra("notice");
         }
@@ -123,9 +126,13 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
             Uri uri = data.getData();
             File file = FileUtils.getFileByUri((Activity) mContext, uri);
             BmobFile bmobFile = new BmobFile(file);
-
+            Data data1 = new Data();
+            data1.setC_id(c_id);
+            data1.setName(file.getName());
+            data1.setSize(FileUtils.getFileSize(file.length()));
+            data1.setUrl(file.getAbsolutePath());
             mPresenter.uploadAttachment(mContext, bmobFile);
-            mAddNoticeDataAdapter.addItem(mDataList.size(), new Data(FileUtils.getFileSize(file.length()),file.getName()));
+            mAddNoticeDataAdapter.addItem(mDataList.size(), data1);
         }
     }
 
@@ -142,8 +149,8 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
             notice.setContent(etAddNoticeContent.getText().toString());
             notice.setTitle(etNoticeTitle.getText().toString());
             notice.setTime(System.currentTimeMillis());
-            notice.addAllUnique("files",mFiles);
-            mPresenter.publishNotice(mContext, notice);
+            notice.addAllUnique("files", mFiles);
+            mPresenter.publishNotice(mContext, notice, c_id, c_name);
         } else {
             new AlertDialog.Builder(mContext).setTitle("发布公告失败").setMessage("公告标题不能为空")
                     .setPositiveButton("确认", null).create().show();
