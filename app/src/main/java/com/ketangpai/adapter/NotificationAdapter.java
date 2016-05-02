@@ -26,13 +26,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
     protected Context mContext;
-    protected List mDataList;
+    protected List<Notification> mDataList;
     protected LayoutInflater mLayoutInflater;
     protected TypedValue typedValue;
 
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_CONTENT = 1;
+
+    public interface OnItemClickListener {
+        void onItemClick(NotificationInfo notificationInfo);
+    }
 
     OnItemClickListener onItemClickListener;
 
@@ -48,6 +52,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
     public NotificationAdapter(Context mContext, List mDataList) {
+        this.mDataList = mDataList;
+        this.mContext = mContext;
+        mLayoutInflater = LayoutInflater.from(mContext);
         mKeyedSections = new SparseArray();
         reorderSections();
     }
@@ -83,7 +90,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             time.setText(notification.getTime());
 
         } else {
-            Log.i("===wu", "content");
 
             TextView courseName = (TextView) holder.getViewById(R.id.item_notification_courseName);
             TextView content = (TextView) holder.getViewById(R.id.item_notification_content);
@@ -91,14 +97,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             ll_notification.setBackgroundResource(typedValue.resourceId);
 
+            final NotificationInfo notificationInfo = findSectionItemAtPosition(position);
+
             ll_notification.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getOnItemClickListener().onItemClick(v, position);
+                    getOnItemClickListener().onItemClick(notificationInfo);
                 }
             });
-
-            NotificationInfo notificationInfo = findSectionItemAtPosition(position);
             if (null != notificationInfo) {
                 courseName.setText(notificationInfo.getC_name());
                 content.setText(notificationInfo.getContent());
@@ -139,7 +145,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void reorderSections() {
         mKeyedSections.clear();
         int startPosition = 0;
-        for (Object message : mDataList) {
+        for (Notification message : mDataList) {
             mKeyedSections.put(startPosition, message);
             startPosition += ((Notification) message).getCount();
         }
@@ -161,13 +167,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         private SparseArray<View> mViews;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+
             mViews = new SparseArray<View>();
         }
 
@@ -178,14 +184,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 mViews.put(viewId, view);
             }
             return view;
-        }
-
-
-        @Override
-        public void onClick(View v) {
-            if (getOnItemClickListener() != null) {
-                getOnItemClickListener().onItemClick(v, getPosition());
-            }
         }
 
 

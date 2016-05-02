@@ -12,8 +12,10 @@ import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.fragment.AddNoticeFragment;
 import com.ketangpai.model.FileModel;
 import com.ketangpai.model.HomeworkModel;
+import com.ketangpai.model.NotificationModel;
 import com.ketangpai.modelImpl.FileModelImpl;
 import com.ketangpai.modelImpl.HomeworkModelImpl;
+import com.ketangpai.modelImpl.NotificationModelImpl;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.viewInterface.SHomeworkViewInterface;
 
@@ -26,14 +28,17 @@ public class SHomeworkPresenter extends BasePresenter<SHomeworkViewInterface> {
     SHomeworkViewInterface mSHomeworkViewInterface;
     FileModel fileModel;
     HomeworkModel homeworkModel;
+    NotificationModel notificationModel;
 
     public SHomeworkPresenter() {
         fileModel = new FileModelImpl();
-        homeworkModel=new HomeworkModelImpl();
+        homeworkModel = new HomeworkModelImpl();
+        notificationModel = new NotificationModelImpl();
     }
 
     /**
      * 上传作业
+     *
      * @param context
      * @param file
      */
@@ -65,13 +70,14 @@ public class SHomeworkPresenter extends BasePresenter<SHomeworkViewInterface> {
 
     /**
      * 获取学生作业信息
+     *
      * @param context
      * @param homework
      * @param account
      */
-    public void getStudentHomework(Context context, Teacher_Homework homework,String account) {
-        if(isViewAttached()){
-            mSHomeworkViewInterface=getView();
+    public void getStudentHomework(Context context, Teacher_Homework homework, String account) {
+        if (isViewAttached()) {
+            mSHomeworkViewInterface = getView();
             homeworkModel.getStudentHomewokr(context, homework, account, new ResultCallback() {
                 @Override
                 public void onSuccess(Object object) {
@@ -86,10 +92,11 @@ public class SHomeworkPresenter extends BasePresenter<SHomeworkViewInterface> {
         }
     }
 
-    public void publishStudentHomework(Context context,Student_Homework homework){
-        if(isViewAttached()){
-            mSHomeworkViewInterface=getView();
-            homeworkModel.publishStudentHomework(context,homework);
+    public void publishStudentHomework(Context context, Student_Homework homework) {
+        if (isViewAttached()) {
+            mSHomeworkViewInterface = getView();
+            homeworkModel.publishStudentHomework(context, homework);
+
         }
     }
 

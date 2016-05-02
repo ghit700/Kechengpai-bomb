@@ -9,4 +9,19 @@ public class NotificationEvent {
     NotificationInfo notificationInfo;
     String time;
 
+    public NotificationInfo getNotificationInfo() {
+        return notificationInfo;
+    }
+
+    public void setNotificationInfo(NotificationInfo notificationInfo) {
+        this.notificationInfo = notificationInfo;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 }

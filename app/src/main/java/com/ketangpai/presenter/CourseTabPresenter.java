@@ -3,7 +3,6 @@ package com.ketangpai.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.callback.UploadFileResultCallback;
@@ -88,7 +87,7 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
                     query.getObject(context, data.getObjectId(), new GetListener<Data>() {
                         @Override
                         public void onSuccess(Data data1) {
-                            notificationModel.publishNofication(context, data1, c_id, c_name);
+                            notificationModel.publishStudentNofication(context, data1, c_id, c_name);
                         }
 
                         @Override

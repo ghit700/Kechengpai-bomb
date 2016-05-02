@@ -26,7 +26,7 @@ import cn.bmob.v3.listener.SQLQueryListener;
  */
 public class NotificationModelImpl implements NotificationModel {
     @Override
-    public void publishNofication(Context context, Object object, int c_id, String c_name) {
+    public void publishStudentNofication(Context context, Object object, int c_id, String c_name) {
         int type = 0, type_id = 0;
         String content = "";
 

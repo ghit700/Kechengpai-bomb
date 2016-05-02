@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.ketangpai.bean.Installation;
 import com.ketangpai.bean.Notification;
 import com.ketangpai.bean.NotificationInfo;
+import com.ketangpai.bean.PushMessage;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.model.NotificationModel;
 import com.ketangpai.modelImpl.NotificationModelImpl;
@@ -46,7 +47,10 @@ public class PushManager {
                         BmobQuery<Installation> query = new BmobQuery<Installation>();
                         query.addWhereEqualTo("account", student.getAccount());
                         bmobPushManager.setQuery(query);
-                        bmobPushManager.pushMessage(JSON.toJSONString(notificationInfo));
+                        PushMessage pushMessage = new PushMessage();
+                        pushMessage.setType(0);
+                        pushMessage.setObject(JSON.toJSONString(notificationInfo));
+                        bmobPushManager.pushMessage(JSON.toJSONString(pushMessage));
                     }
 
 
@@ -61,8 +65,13 @@ public class PushManager {
 
     }
 
-//    public static void publishTeacherNotification(Context context,int c_id,)
+    public static void sendMessage(Context context) {
+    }
 
+    ;
+
+
+//    public static void publishTeacherNotification(Context context,int c_id,)
 
 
 }

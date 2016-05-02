@@ -77,7 +77,7 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkViewInterface
                         @Override
                         public void onSuccess(Teacher_Homework teacher_homework) {
                             homeworkModel.createStudentHomeworkList(context, teacher_homework);
-                            notificationModel.publishNofication(context, teacher_homework, c_id, c_name);
+                            notificationModel.publishStudentNofication(context, teacher_homework, c_id, c_name);
                         }
 
                         @Override

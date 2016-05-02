@@ -1,7 +1,6 @@
 package com.ketangpai.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +42,7 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     protected int getItemLayoutId(int viewType) {
         if (viewType == 0) {
-            return R.layout.item_chat_acceptor;
+            return R.layout.item_chat_send;
         } else {
             return R.layout.item_chat_receiver;
         }

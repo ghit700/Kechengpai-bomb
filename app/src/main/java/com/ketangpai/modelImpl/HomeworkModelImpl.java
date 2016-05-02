@@ -224,6 +224,8 @@ public class HomeworkModelImpl implements HomeworkModel {
                             no_check_count++;
                             teacher_homework.setNo_check_count(no_check_count);
                             teacher_homework.update(context);
+
+
                         }
                     }
 

@@ -77,7 +77,7 @@ public class AddNoticePresenter extends BasePresenter<AddNoticeViewInterface> {
                     query.getObject(context, notice.getObjectId(), new GetListener<Notice>() {
                         @Override
                         public void onSuccess(Notice notice) {
-                            notificationModel.publishNofication(context, notice, c_id, c_name);
+                            notificationModel.publishStudentNofication(context, notice, c_id, c_name);
                         }
 
                         @Override

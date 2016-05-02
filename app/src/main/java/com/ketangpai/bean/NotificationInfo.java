@@ -7,9 +7,11 @@ import cn.bmob.v3.BmobObject;
  */
 public class NotificationInfo {
     private int type_id;
+
     private int type;
     private String content;
     private String c_name;
+
 
     public int getType_id() {
         return type_id;
@@ -19,6 +21,11 @@ public class NotificationInfo {
         this.type_id = type_id;
     }
 
+    /**
+     * 1 公告 2 作业 3 资料
+     *
+     * @return
+     */
     public int getType() {
         return type;
     }
