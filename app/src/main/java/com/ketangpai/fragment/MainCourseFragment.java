@@ -80,6 +80,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     private String account;
     private String name;
     private int number;
+    private String path;
 
 
     @Override
@@ -95,7 +96,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
         name = mContext.getSharedPreferences("user", 0).getString("name", "");
         number = mContext.getSharedPreferences("user", 0).getInt("number", -1);
-
+        path = mContext.getSharedPreferences("user", 0).getString("path", "");
         initAddBtnAnim();
         if (type == 0) {
             mCourses = new ArrayList<Teacher_Course>();
@@ -223,9 +224,9 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
             teacher_course.setNumbers(0);
             teacher_course.setT_name(mContext.getSharedPreferences("user", 0).getString("name", ""));
             teacher_course.setName(class_name);
-            mPresenter.createCourse(mContext, teacher_course);
+            mPresenter.createCourse(mContext, teacher_course,path);
         } else {
-            mPresenter.addCourse(mContext, class_name, account, name, number);
+            mPresenter.addCourse(mContext, class_name, account, name, number,path);
         }
     }
 
@@ -335,8 +336,8 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
 
     @Subscribe
     public void onNotificationEvent(NotificationEvent event) {
-        Log.i("=====","1111");
-        ((MainActivity)getActivity()).setNotifyOn();
+        Log.i("=====", "1111");
+        ((MainActivity) getActivity()).setNotifyOn();
     }
 
 

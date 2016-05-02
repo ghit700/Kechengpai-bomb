@@ -45,7 +45,8 @@
         <activity android:name="com.ketangpai.activity.CourseActivity"></activity>
         <activity
             android:name="com.ketangpai.activity.ChatActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            ></activity>
         <activity android:name="com.ketangpai.activity.NotificationActivity"></activity>
         <activity android:name="com.ketangpai.activity.AccountActivity"></activity>
         <activity android:name="com.ketangpai.activity.AddHomeWorkActivity"></activity>

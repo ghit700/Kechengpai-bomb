@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.bean.User;
+import com.ketangpai.callback.ResultsCallback;
 
 import java.io.File;
 
@@ -21,4 +22,6 @@ public interface UserModel {
     public void updateUserInfo(Context context, String u_id, String columnName, String columnValue, UpdateListener resultCallback);
 
     public void uploadUserLogo(Context context, File file, User user, UpdateListener resultCallback);
+
+    public void getUserGroup(Context context,  String account, ResultsCallback resultsCallback);
 }

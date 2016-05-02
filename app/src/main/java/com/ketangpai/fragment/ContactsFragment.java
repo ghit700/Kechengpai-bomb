@@ -9,18 +9,24 @@ import com.ketangpai.activity.ChatActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.ContactsExAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.bean.User;
+import com.ketangpai.bean.User_Group;
 import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.presenter.ContactsPresenter;
+import com.ketangpai.viewInterface.ContactsViewInterface;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nan on 2016/3/15.
  */
-public class ContactsFragment extends BaseFragment implements ExpandableListView.OnChildClickListener {
+public class ContactsFragment extends BasePresenterFragment<ContactsViewInterface, ContactsPresenter> implements ContactsViewInterface, ExpandableListView.OnChildClickListener {
 
     //view
     ExpandableListView mMessageExList;
@@ -29,8 +35,10 @@ public class ContactsFragment extends BaseFragment implements ExpandableListView
     ContactsExAdapter mContactsExAdapter;
 
     //变量
-    ArrayList<String> mGroupNames;
-    ArrayList<ArrayList<String>> mGroupItemUsers;
+    List<User_Group> mConstacts;
+    ArrayList<String> mGroupUsers;
+    ArrayList<ArrayList<User>> mGroupItemUsers;
+    private String account;
 
 
     @Override
@@ -42,12 +50,18 @@ public class ContactsFragment extends BaseFragment implements ExpandableListView
     protected void initVarious() {
         super.initVarious();
         EventBus.getDefault().register(this);
+        account = mContext.getSharedPreferences("user", 0).getString("account", "");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected ContactsPresenter createPresenter() {
+        return new ContactsPresenter();
     }
 
     @Override
@@ -69,28 +83,61 @@ public class ContactsFragment extends BaseFragment implements ExpandableListView
 
     @Override
     protected void loadData() {
-
+        mPresenter.getConstactList(mContext, account);
     }
 
     private void initMessageExList() {
-        mGroupNames = new ArrayList<>();
+        mGroupUsers = new ArrayList<>();
         mGroupItemUsers = new ArrayList<>();
-        mContactsExAdapter = new ContactsExAdapter(mContext, mGroupNames, mGroupItemUsers);
+        mContactsExAdapter = new ContactsExAdapter(mContext, mGroupUsers, mGroupItemUsers);
         mMessageExList.setAdapter(mContactsExAdapter);
 
     }
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-        Intent intent=new Intent(mContext, ChatActivity.class);
+        Intent intent = new Intent(mContext, ChatActivity.class);
         startActivity(intent);
         return true;
     }
 
     @Subscribe
     public void onNotificationEvent(NotificationEvent event) {
-        Log.i("=====","1111");
-        ((MainActivity)getActivity()).setNotifyOn();
+        ((MainActivity) getActivity()).setNotifyOn();
+    }
+
+    @Override
+    public void getContactListOnComplete(List<User_Group> user_groups) {
+        mConstacts = user_groups;
+        getUsersGroupByCourse(mConstacts);
+        mContactsExAdapter.notifyDataSetChanged();
+    }
+
+
+    public void getUsersGroupByCourse(List<User_Group> users) {
+
+
+        int preC_id = users.get(0).getC_id();
+        int i = 0;
+
+        mGroupUsers.add(users.get(0).getC_name());
+        mGroupItemUsers.add(new ArrayList<User>());
+        for (User_Group user_group : users) {
+            int nextC_id = user_group.getC_id();
+
+            if (preC_id == nextC_id) {
+
+                mGroupItemUsers.get(i).add(new User(user_group.getName(), user_group.getPath()));
+            } else {
+                preC_id = nextC_id;
+                i++;
+                mGroupUsers.add(user_group.getC_name());
+                mGroupItemUsers.add(new ArrayList<User>());
+                mGroupItemUsers.get(i).add(new User(user_group.getName(), user_group.getPath()));
+            }
+        }
+
+
     }
 
 }

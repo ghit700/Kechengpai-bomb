@@ -3,8 +3,11 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
+import com.ketangpai.bean.Teacher_Course;
+import com.ketangpai.bean.User_Group;
 import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.bean.User;
+import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.constant.Constant;
 import com.ketangpai.fragment.AccountFragment;
 import com.ketangpai.fragment.AccountUpdateFragment;
@@ -19,6 +22,7 @@ import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -119,6 +123,22 @@ public class UserModelImpl implements UserModel {
             public void onSuccess() {
                 user.setPath(bmobFile.getFileUrl(context));
                 user.update(context, user.getObjectId(), resultCallback);
+                BmobQuery<User_Group> query = new BmobQuery<User_Group>();
+                query.addWhereEqualTo("account", user.getAccount());
+                query.findObjects(context, new FindListener<User_Group>() {
+                    @Override
+                    public void onSuccess(List<User_Group> list) {
+                        if (null != list && list.size() > 0) {
+                            list.get(0).setPath(bmobFile.getFileUrl(context));
+                            list.get(0).update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
             }
 
             @Override
@@ -126,6 +146,55 @@ public class UserModelImpl implements UserModel {
                 Log.i(AccountFragment.TAG, s);
             }
         });
+    }
+
+    @Override
+    public void getUserGroup(final Context context, String account, final ResultsCallback resultsCallback) {
+//        if (type == 0) {
+//            BmobQuery<Teacher_Course> query = new BmobQuery<>();
+//            query.addWhereEqualTo("account", account);
+//            query.findObjects(context, new FindListener<Teacher_Course>() {
+//                @Override
+//                public void onSuccess(List<Teacher_Course> list) {
+//                    if (null != list && list.size() > 0) {
+//                        for (Teacher_Course course : list) {
+//                            String sql = "select * from User_Group where account!=? and c_id=?";
+//                            BmobQuery<User_Group> query=new BmobQuery<User_Group>();
+//                            query.doSQLQuery(context,);
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onError(int i, String s) {
+//                    Log.i("===getUserGroup", s);
+//                }
+//            });
+//        } else {
+//
+//        }
+
+        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='" + account + "') and account != '" + account + "'";
+
+        BmobQuery<User_Group> query = new BmobQuery<>();
+        query.doSQLQuery(context, sql, new SQLQueryListener<User_Group>() {
+            @Override
+            public void done(BmobQueryResult<User_Group> bmobQueryResult, BmobException e) {
+                if (null != bmobQueryResult) {
+                    List<User_Group> user_groups = bmobQueryResult.getResults();
+                    if (null != user_groups && user_groups.size() > 0) {
+                        resultsCallback.onSuccess(user_groups);
+                    }
+
+                } else {
+                    Log.i("===getUserGroup", e.getMessage());
+                }
+
+
+            }
+        });
+
+
     }
 
 

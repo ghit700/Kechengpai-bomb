@@ -12,7 +12,7 @@ import com.ketangpai.bean.Teacher_Course;
 public interface CourseModel {
     void queryCourseList(Context context, String account, int type, ResultsCallback resultsCallback);
 
-    void createCourse(Context context, Teacher_Course course, ResultCallback resultCallback);
+    void createCourse(Context context, Teacher_Course course, String path, ResultCallback resultCallback);
 
-    void addCourse(Context context, String code, String account, String name, int number, ResultCallback resultCallback);
+    void addCourse(Context context, String code, String account, String name, int number, String path, ResultCallback resultCallback);
 }

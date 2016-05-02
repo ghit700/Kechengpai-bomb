@@ -54,12 +54,12 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
 
     }
 
-    public void createCourse(Context context, final Teacher_Course course) {
+    public void createCourse(Context context, final Teacher_Course course, String path) {
         if (isViewAttached()) {
             mainCourseViewInterface = getView();
             mainCourseViewInterface.showLoading(0);
 
-            courseModel.createCourse(context, course, new ResultCallback() {
+            courseModel.createCourse(context, course, path, new ResultCallback() {
                 @Override
                 public void onSuccess(Object object) {
                     mainCourseViewInterface.createCourseOnComplete((Teacher_Course) object);
@@ -80,11 +80,11 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
         }
     }
 
-    public void addCourse(final Context context, String code, String acccount, String name, int number) {
+    public void addCourse(final Context context, String code, String acccount, String name, int number,String path) {
         if (isViewAttached()) {
             mainCourseViewInterface = getView();
             mainCourseViewInterface.showLoading(1);
-            courseModel.addCourse(context, code, acccount, name, number, new ResultCallback() {
+            courseModel.addCourse(context, code, acccount, name, number, path, new ResultCallback() {
                 @Override
                 public void onSuccess(Object object) {
                     mainCourseViewInterface.addCourseOnComplete((Student_Course) object);

@@ -1,5 +1,6 @@
 package com.ketangpai.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ketangpai.activity.DataActivity;
 import com.ketangpai.adapter.DataAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Student_Homework;
+import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.THomeworkDetailPresenter;
 import com.ketangpai.view.FullyLinearLayoutManager;
@@ -88,9 +91,31 @@ public class THomeworkDetailFragment extends BasePresenterFragment<THomeworkDeta
             etSHomeworkComment.setText(homework.getComment());
             etTDetailHomeworkGrade.setText(String.valueOf(homework.getGrade()));
             //不能修改et
+            etTDetailHomeworkGrade.setFocusable(false);
+            etTDetailHomeworkGrade.setFocusableInTouchMode(false);
+
+            etSHomeworkComment.setFocusable(false);
+            etSHomeworkComment.setFocusableInTouchMode(false);
+
             btnCorrectHomework.setVisibility(View.GONE);
         }
 
+
+    }
+
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        mDataAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(mContext, DataActivity.class);
+                intent.putExtra("name", mStudentHomeworks.get(position).getName());
+                intent.putExtra("url", mStudentHomeworks.get(position).getUrl());
+                startActivity(intent);
+            }
+        });
 
     }
 

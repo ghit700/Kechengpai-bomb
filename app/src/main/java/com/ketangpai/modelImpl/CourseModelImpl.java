@@ -3,6 +3,7 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
+import com.ketangpai.bean.User_Group;
 import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.bean.Student_Course;
@@ -64,7 +65,7 @@ public class CourseModelImpl implements CourseModel {
     }
 
     @Override
-    public void createCourse(final Context context, final Teacher_Course course, final ResultCallback resultCallback) {
+    public void createCourse(final Context context, final Teacher_Course course, final String path, final ResultCallback resultCallback) {
         Log.i(MainCourseFragment.TAG, "createCourse account=" + course.getAccount() + " id=" + course.getObjectId());
         course.save(context, new SaveListener() {
             @Override
@@ -73,6 +74,13 @@ public class CourseModelImpl implements CourseModel {
                 query.getObject(context, course.getObjectId(), new GetListener<Teacher_Course>() {
                     @Override
                     public void onSuccess(Teacher_Course o) {
+                        User_Group user_group = new User_Group();
+                        user_group.setC_id(o.getC_id());
+                        user_group.setC_name(o.getName());
+                        user_group.setAccount(o.getAccount());
+                        user_group.setName(o.getT_name());
+                        user_group.setPath(path);
+                        user_group.save(context);
                         resultCallback.onSuccess(o);
                     }
 
@@ -91,7 +99,7 @@ public class CourseModelImpl implements CourseModel {
     }
 
     @Override
-    public void addCourse(final Context context, final String code, final String account, final String name, final int number, final ResultCallback resultCallback) {
+    public void addCourse(final Context context, final String code, final String account, final String name, final int number, final String path, final ResultCallback resultCallback) {
         Log.i(MainCourseFragment.TAG, "addCourse code=" + code);
         String sql = "select * from Teacher_Course where code=?";
         BmobQuery<Teacher_Course> query = new BmobQuery<Teacher_Course>();
@@ -120,6 +128,13 @@ public class CourseModelImpl implements CourseModel {
                         course.save(context, new SaveListener() {
                             @Override
                             public void onSuccess() {
+                                User_Group user_group = new User_Group();
+                                user_group.setC_name(course.getName());
+                                user_group.setC_id(course.getC_id());
+                                user_group.setName(course.getStudent_name());
+                                user_group.setAccount(account);
+                                user_group.setPath(path);
+                                user_group.save(context);
                                 resultCallback.onSuccess(course);
                             }
 

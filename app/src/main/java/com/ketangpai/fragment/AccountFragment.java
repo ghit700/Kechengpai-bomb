@@ -202,6 +202,8 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
             ImageLoaderUtils.display(mContext, img_account_user, file.getPath());
             User user = new User();
             user.setObjectId(u_id);
+            user.setAccount(account);
+
             mPresenter.uploadUserLogo(mContext, file, user);
         }
 

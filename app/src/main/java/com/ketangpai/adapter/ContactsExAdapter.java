@@ -10,7 +10,9 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ketangpai.bean.User;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.utils.ImageLoaderUtils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -23,9 +25,9 @@ public class ContactsExAdapter extends BaseExpandableListAdapter {
 
     Context mContext;
     ArrayList<String> mMessageGroups;
-    ArrayList<ArrayList<String>> mMessagmeGroupUsers;
+    ArrayList<ArrayList<User>> mMessagmeGroupUsers;
 
-    public ContactsExAdapter(Context mContext, ArrayList<String> mMessageGroups, ArrayList<ArrayList<String>> mMessagmeGroupUsers) {
+    public ContactsExAdapter(Context mContext, ArrayList<String> mMessageGroups, ArrayList<ArrayList<User>> mMessagmeGroupUsers) {
         this.mContext = mContext;
         this.mMessageGroups = mMessageGroups;
         this.mMessagmeGroupUsers = mMessagmeGroupUsers;
@@ -34,14 +36,12 @@ public class ContactsExAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-//        return mMessageGroups.size();
-        return 10;
+        return mMessageGroups.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-//        return mMessagmeGroupUsers.get(groupPosition).size();
-        return 10;
+        return mMessagmeGroupUsers.get(groupPosition).size();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ContactsExAdapter extends BaseExpandableListAdapter {
             viewHolderGroup = (ViewHolderGroup) convertView.getTag();
         }
 
-//        viewHolderGroup.groupUserCount.setText(getChildrenCount(groupPosition));
+        viewHolderGroup.groupName.setText(mMessageGroups.get(groupPosition));
 
 
         return convertView;
@@ -100,7 +100,8 @@ public class ContactsExAdapter extends BaseExpandableListAdapter {
             viewHolderGroupUser = (ViewHolderGroupUser) convertView.getTag();
         }
 
-
+        ImageLoaderUtils.display(mContext, viewHolderGroupUser.itemUserIcon, mMessagmeGroupUsers.get(groupPosition).get(childPosition).getPath());
+        viewHolderGroupUser.itemUserName.setText(mMessagmeGroupUsers.get(groupPosition).get(childPosition).getName());
         return convertView;
     }
 
@@ -111,11 +112,9 @@ public class ContactsExAdapter extends BaseExpandableListAdapter {
 
     class ViewHolderGroup {
         private TextView groupName;
-        private TextView groupUserCount;
 
         public ViewHolderGroup(View view) {
             this.groupName = (TextView) view.findViewById(R.id.tv_group_name);
-            this.groupUserCount = (TextView) view.findViewById(R.id.tv_group_userCount);
         }
     }
 

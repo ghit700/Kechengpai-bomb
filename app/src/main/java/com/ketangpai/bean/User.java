@@ -11,7 +11,16 @@ public class User extends BmobObject {
     protected String name;
     protected Integer type;
     private Integer number;
-    private String path="";
+    private String path = "";
+
+    public User(String name, String path) {
+        this.name = name;
+        this.path = path;
+    }
+
+    public User() {
+        super();
+    }
 
     public String getPath() {
         return path;

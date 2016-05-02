@@ -311,8 +311,8 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getHomeworkListOnComplete(List<Teacher_Homework> homeworks) {
+        mTabContents.clear();
         Collections.reverse(homeworks);
-
         mTabContents.addAll(homeworks);
         mTabAdapter.notifyDataSetChanged();
     }
