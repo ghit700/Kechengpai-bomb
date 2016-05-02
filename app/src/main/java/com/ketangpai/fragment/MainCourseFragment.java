@@ -104,7 +104,13 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
             mCourses = new ArrayList<Student_Course>();
             mMainCourseAdapter = new CourseSMainCourseAdapter(mContext, mCourses);
         }
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -325,6 +331,12 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     public void hideLoading() {
         dismissLoadingDialog();
+    }
+
+    @Subscribe
+    public void onNotificationEvent(NotificationEvent event) {
+        Log.i("=====","1111");
+        ((MainActivity)getActivity()).setNotifyOn();
     }
 
 

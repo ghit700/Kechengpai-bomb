@@ -146,7 +146,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             case 0:
                 mTabAdapter = new CourseHomeworkAdapter(context, mTabContents, type);
                 if (type == 0) {
-                    mPresenter.getHomeworkList(context, c_id);
                     mPublishBtn.setImageResource(R.drawable.category_1004);
                 } else {
                     mPresenter.getHomeworkListToStudent(context, c_id, ((Student_Course) course).getAdd_time());
@@ -185,6 +184,26 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        switch (mPosition) {
+            case 0:
+                if (type == 0) {
+                    mPresenter.getHomeworkList(mContext, c_id);
+                }
+                break;
+
+            case 3:
+                if (type == 0) {
+                }
+
+                break;
+
+            default:
+                break;
+        }
+    }
 
     @Override
     public void onRefresh() {

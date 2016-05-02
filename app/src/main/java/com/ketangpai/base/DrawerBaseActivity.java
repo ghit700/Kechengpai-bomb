@@ -95,6 +95,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
         name = getSharedPreferences("user", 0).getString("name", "");
         path = getSharedPreferences("user", 0).getString("path", "");
         account = getSharedPreferences("user", 0).getString("account", "");
+
     }
 
     @Override

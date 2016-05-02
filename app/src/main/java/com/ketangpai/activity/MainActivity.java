@@ -332,6 +332,7 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
 
     @Subscribe
     public void onNotificationEvent(NotificationEvent event) {
+        Log.i("=====","1111");
         setNotifyOn();
     }
 

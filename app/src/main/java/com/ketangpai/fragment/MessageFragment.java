@@ -3,13 +3,19 @@ package com.ketangpai.fragment;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.ketangpai.activity.ChatActivity;
+import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.MessageAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,13 @@ public class MessageFragment extends BaseFragment implements OnItemClickListener
     protected void initVarious() {
         super.initVarious();
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -74,4 +87,11 @@ public class MessageFragment extends BaseFragment implements OnItemClickListener
         startActivity(intent);
 
     }
+
+    @Subscribe
+    public void onNotificationEvent(NotificationEvent event) {
+        Log.i("=====", "1111");
+        ((MainActivity) getActivity()).setNotifyOn();
+    }
+
 }

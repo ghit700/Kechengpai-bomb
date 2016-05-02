@@ -1,13 +1,19 @@
 package com.ketangpai.fragment;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.ketangpai.activity.ChatActivity;
+import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.ContactsExAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.nan.ketangpai.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -33,9 +39,22 @@ public class ContactsFragment extends BaseFragment implements ExpandableListView
     }
 
     @Override
+    protected void initVarious() {
+        super.initVarious();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected void initView() {
         mMessageExList = (ExpandableListView) view.findViewById(R.id.exlist_messagme);
         initMessageExList();
+
     }
 
     @Override
@@ -67,4 +86,11 @@ public class ContactsFragment extends BaseFragment implements ExpandableListView
         startActivity(intent);
         return true;
     }
+
+    @Subscribe
+    public void onNotificationEvent(NotificationEvent event) {
+        Log.i("=====","1111");
+        ((MainActivity)getActivity()).setNotifyOn();
+    }
+
 }
