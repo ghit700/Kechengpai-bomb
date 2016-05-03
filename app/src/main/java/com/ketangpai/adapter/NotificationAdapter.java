@@ -17,6 +17,7 @@ import com.ketangpai.bean.NotificationInfo;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -146,6 +147,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         mKeyedSections.clear();
         int startPosition = 0;
         for (Notification message : mDataList) {
+            Collections.reverse(message.getNotificationInfos());
             mKeyedSections.put(startPosition, message);
             startPosition += ((Notification) message).getCount();
         }

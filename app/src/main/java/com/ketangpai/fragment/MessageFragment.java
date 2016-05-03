@@ -91,6 +91,8 @@ public class MessageFragment extends BasePresenterFragment<MessageViewInterface,
         mPresenter.getNewestMessageLis(mContext, account);
     }
 
+
+
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(mContext, ChatActivity.class);

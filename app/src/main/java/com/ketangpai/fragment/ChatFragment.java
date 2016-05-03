@@ -22,6 +22,7 @@ import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.User;
 import com.ketangpai.event.ReceiveMessageEvent;
+import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.ChatPresenter;
 import com.ketangpai.viewInterface.ChatViewInterface;
@@ -35,7 +36,7 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/19.
  */
-public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatPresenter> implements ChatViewInterface, View.OnClickListener, TextWatcher {
+public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatPresenter> implements ChatViewInterface, View.OnClickListener, TextWatcher, OnItemClickListener {
 
     public final static String TAG = "====ChatFragment";
     //view
@@ -114,6 +115,7 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
         mSendTextEt.addTextChangedListener(this);
         mSendtBtn.setOnClickListener(this);
         mRl.setOnClickListener(this);
+        mChatAdapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -215,6 +217,12 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
             }
         }, 200);
 
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        mImm.hideSoftInputFromInputMethod(view.getWindowToken(), 0);
 
     }
 }
