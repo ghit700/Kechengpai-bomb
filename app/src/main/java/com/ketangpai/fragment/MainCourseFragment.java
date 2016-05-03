@@ -127,7 +127,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
 
     @Override
     protected void initData() {
-
     }
 
     @Override

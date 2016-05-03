@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +31,7 @@ import com.ketangpai.presenter.CourseTabPresenter;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.viewInterface.CourseTabViewInterface;
+import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
 
 import java.io.File;
@@ -146,7 +146,8 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             case 0:
                 mTabAdapter = new CourseHomeworkAdapter(context, mTabContents, type);
                 if (type == 0) {
-                    mPublishBtn.setImageResource(R.drawable.category_1004);
+                    mPublishBtn.setBackgroundResource(R.drawable.category_1004);
+
                 } else {
                     mPresenter.getHomeworkListToStudent(context, c_id, ((Student_Course) course).getAdd_time());
                 }
@@ -155,7 +156,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
                 mTabAdapter = new CourseDataAdapter(context, mTabContents);
                 mPresenter.getDataList(context, c_id);
                 if (type == 0) {
-                    mPublishBtn.setImageResource(R.drawable.category_1002);
+                    mPublishBtn.setBackgroundResource(R.drawable.category_1002);
                 }
 
                 break;
@@ -163,7 +164,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
                 mTabAdapter = new CourseNoticeAdapter(context, mTabContents, type);
                 if (type == 0) {
                     mPresenter.getNoticeList(context, c_id);
-                    mPublishBtn.setImageResource(R.drawable.category_1003);
+                    mPublishBtn.setBackgroundResource(R.drawable.category_1003);
                 } else {
                     mPresenter.getNoticeListToStudent(mContext, (Student_Course) course);
                 }
@@ -172,7 +173,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             case 3:
                 mTabAdapter = new CourseTExamAdapter(context, mTabContents, type);
                 if (type == 0) {
-                    mPublishBtn.setImageResource(R.drawable.category_1001);
+                    mPublishBtn.setBackgroundResource(R.drawable.category_1001);
                 }
 
                 break;
