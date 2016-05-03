@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.ketangpai.bean.Installation;
+import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.Notification;
 import com.ketangpai.bean.NotificationInfo;
 import com.ketangpai.bean.PushMessage;
@@ -65,7 +66,15 @@ public class PushManager {
 
     }
 
-    public static void sendMessage(Context context) {
+    public static void sendMessage(Context context, MessageInfo messageInfo) {
+        PushMessage pushMessage = new PushMessage();
+        pushMessage.setType(1);
+        pushMessage.setObject(JSON.toJSONString(messageInfo));
+        BmobQuery<Installation> query = new BmobQuery<Installation>();
+        query.addWhereEqualTo("account", messageInfo.getReceive_account());
+        BmobPushManager bmobPushManager = new BmobPushManager(context);
+        bmobPushManager.setQuery(query);
+        bmobPushManager.pushMessage(JSON.toJSONString(pushMessage));
     }
 
     ;

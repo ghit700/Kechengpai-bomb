@@ -13,7 +13,17 @@ public class MessageInfo extends BmobObject {
     private String send_name;
     private String receive_name;
     private String receive_account;
+    private String send_path;
 
+    public String getSend_path() {
+        return send_path;
+    }
+
+
+
+    public void setSend_path(String send_path) {
+        this.send_path = send_path;
+    }
 
     public Integer getM_id() {
         return m_id;

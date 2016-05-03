@@ -5,7 +5,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
+import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.utils.ImageLoaderUtils;
 
 import java.util.List;
 
@@ -13,15 +15,24 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/21.
  */
-public class ChatAdapter extends BaseAdapter {
+public class ChatAdapter extends BaseAdapter<MessageInfo> {
 
-    public ChatAdapter(Context mContext, List mDataList) {
+    private String mAccount;
+    private String mPath;
+
+    public ChatAdapter(Context mContext, List<MessageInfo> mDataList, String account, String path) {
         super(mContext, mDataList);
+        mAccount = account;
+        mPath = path;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (int) mDataList.get(position);
+        if (mDataList.get(position).getReceive_account().equals(mAccount)) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     @Override
@@ -30,7 +41,7 @@ public class ChatAdapter extends BaseAdapter {
     }
 
     @Override
-    public void addItem(int positon, Object item) {
+    public void addItem(int positon, MessageInfo item) {
         super.addItem(positon, item);
     }
 
@@ -50,19 +61,22 @@ public class ChatAdapter extends BaseAdapter {
     }
 
     @Override
-    protected void bindData(ViewHolder holder, int position, Object item) {
+    protected void bindData(ViewHolder holder, int position, MessageInfo item) {
         //初始化view
         ImageView UserImg;
         TextView text;
-        if(getItemViewType(position)==0){
-             UserImg= (ImageView) holder.getViewById(R.id.img_chat_acceptor_userIcon);
-             text= (TextView) holder.getViewById(R.id.tv_chat_acceptor_text);
-        }else{
-            UserImg= (ImageView) holder.getViewById(R.id.img_chat_receiver_userIcon);
-            text= (TextView) holder.getViewById(R.id.tv_chat_receiver_text);
-        }
 
-        //初始化view的值
+        if (getItemViewType(position) == 0) {
+            UserImg = (ImageView) holder.getViewById(R.id.img_chat_acceptor_userIcon);
+            text = (TextView) holder.getViewById(R.id.tv_chat_acceptor_text);
+            ImageLoaderUtils.display(mContext, UserImg, item.getSend_path());
+            text.setText(item.getContent());
+        } else {
+            UserImg = (ImageView) holder.getViewById(R.id.img_chat_receiver_userIcon);
+            text = (TextView) holder.getViewById(R.id.tv_chat_receiver_text);
+            ImageLoaderUtils.display(mContext, UserImg, mPath);
+            text.setText(item.getContent());
+        }
 
     }
 

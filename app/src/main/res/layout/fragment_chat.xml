@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:id="@+id/rl_chat"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
     >
@@ -20,7 +21,6 @@
             android:id="@+id/et_chat_sendText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="www"
             android:textSize="14sp"/>
 
         <ImageView
@@ -32,12 +32,13 @@
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_above="@id/ll_chat_sendContainer"
         android:id="@+id/refesh_chat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_chat_sendContainer">
 
         <android.support.v7.widget.RecyclerView
+
             android:id="@+id/list_chat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

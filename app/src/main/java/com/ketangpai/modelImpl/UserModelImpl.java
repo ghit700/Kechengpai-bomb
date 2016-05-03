@@ -131,6 +131,7 @@ public class UserModelImpl implements UserModel {
                         if (null != list && list.size() > 0) {
                             list.get(0).setPath(bmobFile.getFileUrl(context));
                             list.get(0).update(context);
+                            context.getSharedPreferences("user", 0).edit().putString("path", bmobFile.getFileUrl(context)).commit();
                         }
                     }
 

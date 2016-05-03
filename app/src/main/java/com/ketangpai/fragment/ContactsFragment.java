@@ -15,6 +15,7 @@ import com.ketangpai.bean.User_Group;
 import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.ContactsPresenter;
+import com.ketangpai.utils.NetUtils;
 import com.ketangpai.viewInterface.ContactsViewInterface;
 
 import org.greenrobot.eventbus.EventBus;
@@ -83,7 +84,11 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
 
     @Override
     protected void loadData() {
-        mPresenter.getConstactList(mContext, account);
+        if (NetUtils.hasNetworkConnection()) {
+            mPresenter.getConstactList(mContext, account);
+        } else {
+            sendToast("没有网络连接");
+        }
     }
 
     private void initMessageExList() {
@@ -97,6 +102,7 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
         Intent intent = new Intent(mContext, ChatActivity.class);
+        intent.putExtra("send_user", mGroupItemUsers.get(groupPosition).get(childPosition));
         startActivity(intent);
         return true;
     }
@@ -127,13 +133,13 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
 
             if (preC_id == nextC_id) {
 
-                mGroupItemUsers.get(i).add(new User(user_group.getName(), user_group.getPath()));
+                mGroupItemUsers.get(i).add(new User(user_group.getAccount(), user_group.getName(), user_group.getPath()));
             } else {
                 preC_id = nextC_id;
                 i++;
                 mGroupUsers.add(user_group.getC_name());
                 mGroupItemUsers.add(new ArrayList<User>());
-                mGroupItemUsers.get(i).add(new User(user_group.getName(), user_group.getPath()));
+                mGroupItemUsers.get(i).add(new User(user_group.getAccount(), user_group.getName(), user_group.getPath()));
             }
         }
 

@@ -8,35 +8,53 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ketangpai.adapter.ChatAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.bean.MessageInfo;
+import com.ketangpai.bean.User;
+import com.ketangpai.event.ReceiveMessageEvent;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.presenter.ChatPresenter;
+import com.ketangpai.viewInterface.ChatViewInterface;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nan on 2016/3/19.
  */
-public class ChatFragment extends BaseFragment implements View.OnClickListener, TextWatcher {
+public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatPresenter> implements ChatViewInterface, View.OnClickListener, TextWatcher {
 
+    public final static String TAG = "====ChatFragment";
     //view
     EditText mSendTextEt;
     ImageView mSendtBtn;
     RecyclerView mChatList;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    RelativeLayout mRl;
 
     //adapter
     ChatAdapter mChatAdapter;
 
     //变量
-    ArrayList mChatRecondList;
-    InputMethodManager mImm;
+    List<MessageInfo> mChatRecondList;
+    private String name;
+    private String path;
+    private String account;
+    private User mSend_User;
+    private InputMethodManager mImm;
 
     @Override
     protected int getLayoutId() {
@@ -44,33 +62,49 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     @Override
+    protected void initVarious() {
+        super.initVarious();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        EventBus.getDefault().register(this);
+        mImm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        account = mContext.getSharedPreferences("user", 0).getString("account", "");
+        name = mContext.getSharedPreferences("user", 0).getString("name", "");
+        path = mContext.getSharedPreferences("user", 0).getString("path", "");
+        if (null != getActivity().getIntent().getSerializableExtra("send_user")) {
+            mSend_User = (User) getActivity().getIntent().getSerializableExtra("send_user");
+        }
+
+
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected void initView() {
         mSendtBtn = (ImageView) view.findViewById(R.id.img_chat_send);
         mSendTextEt = (EditText) view.findViewById(R.id.et_chat_sendText);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refesh_chat);
+        mRl = (RelativeLayout) view.findViewById(R.id.rl_chat);
         initChatList();
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
 
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(true);
-            }
-        });
+//        mSwipeRefreshLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                mSwipeRefreshLayout.setRefreshing(true);
+//            }
+//        });
     }
 
     @Override
     protected void initData() {
-        mImm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        for (int i = 0; i < 10; ++i) {
-            if (i % 2 == 0) {
-                mChatRecondList.add(0);
-            } else {
-                mChatRecondList.add(1);
-            }
-        }
         mChatList.scrollToPosition(9);
     }
 
@@ -78,21 +112,21 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener, 
     protected void initListener() {
         mSendTextEt.setOnClickListener(this);
         mSendTextEt.addTextChangedListener(this);
-
+        mSendtBtn.setOnClickListener(this);
+        mRl.setOnClickListener(this);
     }
 
     @Override
     protected void loadData() {
-
+        mPresenter.getChatRecondList(mContext, account, mSend_User.getAccount());
     }
 
     private void initChatList() {
         mChatList = (RecyclerView) view.findViewById(R.id.list_chat);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mChatList.setLayoutManager(linearLayoutManager);
         mChatRecondList = new ArrayList();
-        mChatAdapter = new ChatAdapter(mContext, mChatRecondList);
+        mChatAdapter = new ChatAdapter(mContext, mChatRecondList, account, path);
         mChatList.setAdapter(mChatAdapter);
     }
 
@@ -100,13 +134,38 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.et_chat_sendText:
-                mImm.showSoftInput(v, InputMethodManager.SHOW_FORCED);
                 break;
-            case R.id.list_chat:
+            case R.id.img_chat_send:
+                sendMessage();
                 break;
-
+            case R.id.rl_chat:
+                mImm.hideSoftInputFromInputMethod(v.getWindowToken(), 0);
+                break;
             default:
                 break;
+        }
+    }
+
+    private void sendMessage() {
+        String content = mSendTextEt.getText().toString();
+        mSendTextEt.setText("");
+        if (!content.equals("")) {
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setContent(content);
+            messageInfo.setTime(System.currentTimeMillis());
+            messageInfo.setReceive_account(mSend_User.getAccount());
+            messageInfo.setReceive_name(mSend_User.getName());
+            messageInfo.setSend_account(account);
+            messageInfo.setSend_name(name);
+            messageInfo.setSend_path(path);
+            mChatAdapter.addItem(mChatRecondList.size(), messageInfo);
+            mPresenter.sendMessage(mContext, messageInfo, mSend_User.getPath());
+            mChatList.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mChatList.smoothScrollToPosition(mChatRecondList.size());
+                }
+            }, 200);
         }
     }
 
@@ -127,5 +186,35 @@ public class ChatFragment extends BaseFragment implements View.OnClickListener, 
         } else {
             mSendtBtn.setImageResource(R.drawable.ic_send_light);
         }
+    }
+
+    @Override
+    protected ChatPresenter createPresenter() {
+        return new ChatPresenter();
+    }
+
+    @Override
+    public void getChatRecondListOnComplete(List<MessageInfo> messageInfos) {
+        mChatRecondList.addAll(messageInfos);
+        mChatAdapter.notifyDataSetChanged();
+        mChatList.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mChatList.smoothScrollToPosition(mChatRecondList.size());
+            }
+        }, 200);
+    }
+
+    @Subscribe
+    public void onReceiveMessageEvent(ReceiveMessageEvent event) {
+        mChatAdapter.addItem(mChatRecondList.size(), event.getMessageInfo());
+        mChatList.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mChatList.smoothScrollToPosition(mChatRecondList.size());
+            }
+        }, 200);
+
+
     }
 }

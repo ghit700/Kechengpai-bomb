@@ -8,6 +8,7 @@ import android.view.View;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.base.DrawerBaseActivity;
+import com.ketangpai.bean.User;
 import com.ketangpai.fragment.ChatFragment;
 import com.ketangpai.nan.ketangpai.R;
 
@@ -15,6 +16,8 @@ import com.ketangpai.nan.ketangpai.R;
  * Created by nan on 2016/3/18.
  */
 public class ChatActivity extends BaseToolbarActivity {
+
+    private User mSend_User;
 
     @Override
     protected int getContentViewId() {
@@ -27,27 +30,15 @@ public class ChatActivity extends BaseToolbarActivity {
     }
 
     @Override
-    protected void initView() {
-        super.initView();
+    protected void initVariables() {
+        super.initVariables();
+        mSend_User = (User) getIntent().getSerializableExtra("send_user");
     }
+
 
     @Override
-    protected void initData() {
-        super.initData();
+    protected void initToolbar() {
+        super.initToolbar();
+        getSupportActionBar().setTitle(mSend_User.getName());
     }
-
-    @Override
-    protected void initListener() {
-        super.initListener();
-    }
-
-    @Override
-    protected void loadData() {
-
-    }
-
-
-
-
-
 }

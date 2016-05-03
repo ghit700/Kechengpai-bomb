@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -30,6 +31,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected int getContentViewId() {
         return R.layout.activity_search;
+    }
+
+    @Override
+    protected void initVariables() {
+        super.initVariables();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
     }
 
     @Override

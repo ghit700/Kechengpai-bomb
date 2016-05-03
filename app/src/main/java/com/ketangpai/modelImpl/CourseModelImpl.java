@@ -53,10 +53,14 @@ public class CourseModelImpl implements CourseModel {
             query.doSQLQuery(context, sql, new SQLQueryListener<Student_Course>() {
                 @Override
                 public void done(BmobQueryResult<Student_Course> bmobQueryResult, BmobException e) {
-                    List<Student_Course> list = bmobQueryResult.getResults();
-                    if (null != list) {
-                        resultsCallback.onSuccess(list);
-                    } else {
+                    if(null!=bmobQueryResult){
+                        List<Student_Course> list = bmobQueryResult.getResults();
+                        if (null != list) {
+                            resultsCallback.onSuccess(list);
+                        } else {
+                            resultsCallback.onFailure(e);
+                        }
+                    }else{
                         resultsCallback.onFailure(e);
                     }
                 }

@@ -32,6 +32,11 @@ public class TimeUtils {
         Date date = new Date(time);
         return simpleDateFormat.format(date);
     }
+    public static String getNewestMessageTime(long time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
+        Date date = new Date(time);
+        return simpleDateFormat.format(date);
+    }
 
     ;
 }

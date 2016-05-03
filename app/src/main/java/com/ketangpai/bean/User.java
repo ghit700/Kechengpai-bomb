@@ -13,9 +13,10 @@ public class User extends BmobObject {
     private Integer number;
     private String path = "";
 
-    public User(String name, String path) {
+    public User(String account, String name, String path) {
         this.name = name;
         this.path = path;
+        this.account = account;
     }
 
     public User() {

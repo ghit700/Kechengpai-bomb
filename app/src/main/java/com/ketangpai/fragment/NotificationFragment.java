@@ -20,9 +20,11 @@ import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.NotificationPresenter;
+import com.ketangpai.utils.NetUtils;
 import com.ketangpai.viewInterface.NotificationViewInterface;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -65,13 +67,6 @@ public class NotificationFragment extends BasePresenterFragment<NotificationView
     @Override
     protected void initData() {
         mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshLayout.setRefreshing(true);
-            }
-        });
-        onRefresh();
 
 
     }
@@ -84,7 +79,18 @@ public class NotificationFragment extends BasePresenterFragment<NotificationView
 
     @Override
     protected void loadData() {
+        if (NetUtils.hasNetworkConnection()) {
 
+            mRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mRefreshLayout.setRefreshing(true);
+                }
+            });
+            onRefresh();
+        } else {
+            sendToast("没有网络连接");
+        }
     }
 
     private void initNotificationList() {
@@ -103,6 +109,7 @@ public class NotificationFragment extends BasePresenterFragment<NotificationView
         mRefreshLayout.setRefreshing(false);
         mNotificationList.clear();
         mNotificationList.addAll(notifications);
+        Collections.reverse(mNotificationList);
         mNotificationAdapter.reorderSections();
         mNotificationAdapter.notifyDataSetChanged();
     }

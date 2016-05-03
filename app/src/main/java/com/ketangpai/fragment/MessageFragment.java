@@ -10,20 +10,27 @@ import com.ketangpai.activity.ChatActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.MessageAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.bean.MessageInfo;
+import com.ketangpai.bean.NewestMessage;
+import com.ketangpai.bean.User;
 import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.presenter.MessagePresenter;
+import com.ketangpai.viewInterface.MessageViewInterface;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by nan on 2016/4/17.
  */
-public class MessageFragment extends BaseFragment implements OnItemClickListener {
+public class MessageFragment extends BasePresenterFragment<MessageViewInterface, MessagePresenter> implements MessageViewInterface, OnItemClickListener {
 
     //view
     RecyclerView list_messages;
@@ -33,7 +40,7 @@ public class MessageFragment extends BaseFragment implements OnItemClickListener
 
     //变量
     private String account;
-    List mMessages;
+    List<NewestMessage> mMessages;
 
     @Override
     protected void initVarious() {
@@ -49,6 +56,11 @@ public class MessageFragment extends BaseFragment implements OnItemClickListener
     }
 
     @Override
+    protected MessagePresenter createPresenter() {
+        return new MessagePresenter();
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_message;
     }
@@ -59,16 +71,15 @@ public class MessageFragment extends BaseFragment implements OnItemClickListener
 
         list_messages.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mMessages = new ArrayList();
-        mMessageAdapter = new MessageAdapter(mContext, mMessages);
+        mMessageAdapter = new MessageAdapter(mContext, mMessages, account);
         list_messages.setAdapter(mMessageAdapter);
     }
 
     @Override
     protected void initData() {
-        for (int i = 0; i < 10; ++i) {
-            mMessageAdapter.addItem(i, "111");
-        }
+
     }
+
 
     @Override
     protected void initListener() {
@@ -77,21 +88,31 @@ public class MessageFragment extends BaseFragment implements OnItemClickListener
 
     @Override
     protected void loadData() {
-
+        mPresenter.getNewestMessageLis(mContext, account);
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(mContext, ChatActivity.class);
-        intent.putExtra("Name", (String) mMessages.get(position));
+        NewestMessage newestMessage = mMessages.get(position);
+        if (newestMessage.getReceive_account().equals(account)) {
+            intent.putExtra("send_user", new User(newestMessage.getSend_account(), newestMessage.getSend_name(), newestMessage.getSend_path()));
+        } else {
+            intent.putExtra("send_user", new User(newestMessage.getReceive_account(), newestMessage.getReceive_name(), newestMessage.getReceive_path()));
+        }
         startActivity(intent);
 
     }
 
     @Subscribe
     public void onNotificationEvent(NotificationEvent event) {
-        Log.i("=====", "1111");
         ((MainActivity) getActivity()).setNotifyOn();
     }
 
+    @Override
+    public void getNewestMessageListOnComplete(List<NewestMessage> newestMessages) {
+        mMessages.addAll(newestMessages);
+        Collections.reverse(mMessages);
+        mMessageAdapter.notifyDataSetChanged();
+    }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +40,7 @@ import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.MainCoursePresenter;
 import com.ketangpai.utils.CodeUtils;
+import com.ketangpai.utils.NetUtils;
 import com.ketangpai.viewInterface.MainCourseViewInterface;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
@@ -139,13 +141,17 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     protected void loadData() {
 
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(true);
-            }
-        });
-        onRefresh();
+        if (NetUtils.hasNetworkConnection()) {
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                }
+            });
+            onRefresh();
+        } else {
+            sendToast("没有网络连接");
+        }
 
     }
 
@@ -224,9 +230,9 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
             teacher_course.setNumbers(0);
             teacher_course.setT_name(mContext.getSharedPreferences("user", 0).getString("name", ""));
             teacher_course.setName(class_name);
-            mPresenter.createCourse(mContext, teacher_course,path);
+            mPresenter.createCourse(mContext, teacher_course, path);
         } else {
-            mPresenter.addCourse(mContext, class_name, account, name, number,path);
+            mPresenter.addCourse(mContext, class_name, account, name, number, path);
         }
     }
 
