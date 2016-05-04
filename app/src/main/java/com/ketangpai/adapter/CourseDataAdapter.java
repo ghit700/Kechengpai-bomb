@@ -35,8 +35,8 @@ public class CourseDataAdapter extends BaseAdapter<Data> {
         mFileNameText.setText(item.getName());
         mFileSize.setText(item.getSize() + "MB");
 
-        ImageLoaderUtils.display(mContext, mFilePicImg, item.getUrl());
-
+//        ImageLoaderUtils.display(mContext, mFilePicImg, item.getUrl());
+        ImageLoaderUtils.displayByFileName(mContext, mFilePicImg, item.getUrl(), item.getName());
 
     }
 
