@@ -3,6 +3,8 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
+import com.ketangpai.bean.MessageInfo;
+import com.ketangpai.bean.NewestMessage;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.User_Group;
 import com.ketangpai.callback.ResultCallback;
@@ -123,6 +125,7 @@ public class UserModelImpl implements UserModel {
             public void onSuccess() {
                 user.setPath(bmobFile.getFileUrl(context));
                 user.update(context, user.getObjectId(), resultCallback);
+
                 BmobQuery<User_Group> query = new BmobQuery<User_Group>();
                 query.addWhereEqualTo("account", user.getAccount());
                 query.findObjects(context, new FindListener<User_Group>() {
@@ -140,6 +143,59 @@ public class UserModelImpl implements UserModel {
 
                     }
                 });
+
+                BmobQuery<MessageInfo> query1 = new BmobQuery<MessageInfo>();
+                query1.addWhereEqualTo("send_account", user.getAccount());
+                query1.findObjects(context, new FindListener<MessageInfo>() {
+                    @Override
+                    public void onSuccess(List<MessageInfo> list) {
+                        for (MessageInfo m : list) {
+                            m.setSend_path(bmobFile.getFileUrl(context));
+                            m.update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+
+                BmobQuery<NewestMessage> query2 = new BmobQuery<NewestMessage>();
+                query2.addWhereEqualTo("send_account", user.getAccount());
+                query2.findObjects(context, new FindListener<NewestMessage>() {
+                    @Override
+                    public void onSuccess(List<NewestMessage> list) {
+                        for (NewestMessage m : list) {
+                            m.setSend_path(bmobFile.getFileUrl(context));
+                            m.update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+
+                BmobQuery<NewestMessage> query3 = new BmobQuery<NewestMessage>();
+                query2.addWhereEqualTo("receive_account", user.getAccount());
+                query2.findObjects(context, new FindListener<NewestMessage>() {
+                    @Override
+                    public void onSuccess(List<NewestMessage> list) {
+                        for (NewestMessage m : list) {
+                            m.setReceive_path(bmobFile.getFileUrl(context));
+                            m.update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+
+
             }
 
             @Override

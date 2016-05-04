@@ -12,7 +12,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:background="@drawable/backgroud_accout_item"
         android:padding="10dp"
         >
@@ -21,6 +20,7 @@
             android:id="@+id/img_share_picImg"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:layout_centerVertical="true"
             android:src="@mipmap/ic_launcher"/>
 
         <TextView

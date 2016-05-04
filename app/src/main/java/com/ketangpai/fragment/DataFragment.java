@@ -2,6 +2,7 @@ package com.ketangpai.fragment;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
@@ -67,6 +68,10 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
     protected void initData() {
         ImageLoaderUtils.display(mContext, img_data_fileImg, mUrl);
         tv_data_name.setText(mName);
+        File file = new File(Constant.ALBUM_PATH + Constant.DATA_FOLDER, mName);
+        if (file.exists()) {
+            btn_data_preview.setText("打开");
+        }
     }
 
     @Override
@@ -107,7 +112,8 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
             mDialog.setIndeterminate(false);
             mDialog.show();
         } else {
-            IntentUtils.openFile(this, Uri.fromFile(file));
+            Intent intent = IntentUtils.openFile(file);
+            startActivity(intent);
         }
     }
 
@@ -123,7 +129,8 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
             mDialog.dismiss();
         }
         sendToast("下载完成");
-        IntentUtils.openFile(this, Uri.fromFile(file));
+        Intent intent = IntentUtils.openFile(file);
+        startActivity(intent);
     }
 
     @Override

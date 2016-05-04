@@ -57,6 +57,8 @@
         <activity android:name="com.ketangpai.activity.AccountUpdateActivity"></activity>
         <activity android:name="com.ketangpai.activity.HomeWorkActivity"></activity>
         <activity android:name="com.ketangpai.activity.THomeworkDetailActivity"></activity>
+        <activity android:name="com.ketangpai.activity.AddExamActivity"></activity>
+        <activity android:name="com.ketangpai.activity.AddExamTitleActivity"></activity>
 
         <service
             android:name="cn.bmob.push.lib.service.PushService"

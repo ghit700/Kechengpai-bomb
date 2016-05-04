@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.ketangpai.activity.AddExamActivity;
+import com.ketangpai.activity.AddExamTitleActivity;
 import com.ketangpai.activity.AddHomeWorkActivity;
 import com.ketangpai.activity.AddNoticekActivity;
 import com.ketangpai.activity.DataActivity;
@@ -259,6 +261,9 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
                     startActivityForResult(intent, REQUEST);
                     break;
                 case 3:
+                    intent = new Intent(mContext, AddExamTitleActivity.class);
+                    intent.putExtra("course", course);
+                    startActivity(intent);
                     break;
 
                 default:

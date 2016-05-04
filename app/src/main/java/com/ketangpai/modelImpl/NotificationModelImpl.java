@@ -81,7 +81,7 @@ public class NotificationModelImpl implements NotificationModel {
     @Override
     public void getNotificationList(Context context, String account, final ResultsCallback resultsCallback) {
         Log.i(NotificationFragment.TAG, "getNotificationList account=" + account);
-        String sql = "select * from Notification where account=?";
+        String sql = "select * from Notification where account=? order by time desc";
         BmobQuery<Notification> query = new BmobQuery<>();
         query.doSQLQuery(context, sql, new SQLQueryListener<Notification>() {
             @Override
