@@ -19,10 +19,10 @@
 
 
         <TextView
-            android:id="@+id/tv_exam_judge"
+            android:id="@+id/tv_exam_short"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1:判断题"
+            android:text="1:简答题"
             android:textSize="14sp"/>
 
 
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="4dp"
-            android:layout_toRightOf="@id/tv_exam_judge"
+            android:layout_toRightOf="@id/tv_exam_short"
             android:text="分值"
             android:textSize="14sp"/>
 
@@ -46,22 +46,23 @@
             android:text="11"
             android:textSize="14sp"/>
 
-        <TextView
-            android:id="@+id/tv_exam_value"
+        <EditText
+            android:inputType="number"
+            android:id="@+id/et_exam_value"
             android:layout_width="28dp"
             android:layout_height="18dp"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
+            android:background="@drawable/bg_item_exam"
             android:gravity="center"
             android:maxLength="2"
-            android:text="11"
             android:textColor="#ff0000"
             android:textSize="14sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/tv_exam_value"
+            android:layout_toLeftOf="@id/et_exam_value"
             android:text="得分:"/>
 
         <TextView
@@ -69,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/tv_exam_judge"
+            android:layout_below="@id/tv_exam_short"
             android:layout_marginTop="8dp"
             android:gravity="top"
             android:hint="题目"
@@ -77,26 +78,33 @@
             android:paddingLeft="5dp"
             android:textSize="14sp"/>
 
-        <RadioGroup
-            android:id="@+id/rg_exam"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_exam_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_exam_title">
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_exam_title"
+            android:layout_marginTop="8dp"
+            android:gravity="top"
+            android:hint="题目"
+            android:padding="5dp"
+            android:paddingLeft="5dp"
+            android:textSize="14sp"/>
 
-            <RadioButton
-                android:id="@+id/rb_exam_true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="对"/>
-
-            <RadioButton
-                android:id="@+id/rb_exam_false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="错"/>
-
-
-        </RadioGroup>
+        <EditText
+            android:id="@+id/et_exam_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_exam_title"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_item_exam"
+            android:gravity="top"
+            android:hint="题目"
+            android:padding="5dp"
+            android:paddingLeft="5dp"
+            android:textSize="14sp"
+            android:visibility="gone"/>
 
 
     </RelativeLayout>

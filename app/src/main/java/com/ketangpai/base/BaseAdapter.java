@@ -89,7 +89,8 @@ public abstract class BaseAdapter<E> extends RecyclerView.Adapter<BaseAdapter.Vi
 
     public void deleteItem(int positon) {
         mDataList.remove(positon);
-        notifyItemRemoved(positon);
+//        notifyItemRemoved(positon);
+        notifyDataSetChanged();
     }
 
     public void updateItem(int position) {

@@ -39,7 +39,9 @@ public class THomeworkAdapter extends BaseAdapter<Student_Homework> {
 
         tv_t_homework_student_name.setText(item.getStudent_name());
         tv_t_homework_student_number.setText(String.valueOf(item.getStudent_number()));
-        if (null == item.getGrade()) {
+        if (item.getT_state().equals("未批改")) {
+            tv_t_homework_student_grade.setText("未批改");
+        } else if (null == item.getGrade()) {
             tv_t_homework_student_grade.setText("");
         } else {
             tv_t_homework_student_grade.setText(String.valueOf(item.getGrade()));

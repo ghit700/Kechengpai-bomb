@@ -1,6 +1,7 @@
 package com.ketangpai.activity;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -42,6 +43,7 @@ public class AddExamActivity extends BaseToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.send) {
+            Log.i("=====","111");
             mFragment.publishExam();
         }
         return super.onOptionsItemSelected(item);

@@ -66,7 +66,7 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
 
     @Override
     protected void initData() {
-        ImageLoaderUtils.display(mContext, img_data_fileImg, mUrl);
+        ImageLoaderUtils.displayByFileName(mContext,img_data_fileImg,mUrl,mName);
         tv_data_name.setText(mName);
         File file = new File(Constant.ALBUM_PATH + Constant.DATA_FOLDER, mName);
         if (file.exists()) {

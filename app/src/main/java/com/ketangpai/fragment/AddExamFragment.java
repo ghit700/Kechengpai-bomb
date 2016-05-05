@@ -2,6 +2,7 @@ package com.ketangpai.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -10,13 +11,18 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.ketangpai.adapter.AddExamAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.bean.Subject;
 import com.ketangpai.bean.Teacher_Course;
+import com.ketangpai.bean.Test;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.view.FullyLinearLayoutManager;
 import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by nan on 2016/5/3.
@@ -35,9 +41,10 @@ public class AddExamFragment extends BaseFragment implements View.OnClickListene
     private AddExamAdapter mAddExamAdapter;
 
     //various
-    private List mExams;
+    private List<Subject> mExams;
     private String mTitle;
     private String mContent;
+    private long mTime;
     private Teacher_Course mCourse;
 
     @Override
@@ -52,6 +59,7 @@ public class AddExamFragment extends BaseFragment implements View.OnClickListene
         mContent = getActivity().getIntent().getStringExtra("content");
         mTitle = getActivity().getIntent().getStringExtra("title");
         mCourse = (Teacher_Course) getActivity().getIntent().getSerializableExtra("course");
+        mTime = getActivity().getIntent().getLongExtra("time", -1);
     }
 
     @Override
@@ -72,9 +80,7 @@ public class AddExamFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     protected void initData() {
-        for (int i = 0; i < 30; ++i) {
-            mAddExamAdapter.addItem(i, "11");
-        }
+
     }
 
     @Override
@@ -115,24 +121,56 @@ public class AddExamFragment extends BaseFragment implements View.OnClickListene
 
     private void addShortAnswerSubject() {
         btnExamAdd.collapse();
+        Subject subject = new Subject();
+        subject.setType(4);
+        mAddExamAdapter.addItem(mExams.size(), subject);
     }
 
     private void addSingleSelectionSubject() {
         btnExamAdd.collapse();
-
+        Subject subject = new Subject();
+        subject.setType(2);
+        mAddExamAdapter.addItem(mExams.size(), subject);
     }
 
     private void addMultipleSelectionSubject() {
         btnExamAdd.collapse();
-
+        Subject subject = new Subject();
+        subject.setType(3);
+        mAddExamAdapter.addItem(mExams.size(), subject);
     }
 
     private void addJudgeSubject() {
         btnExamAdd.collapse();
-
+        Subject subject = new Subject();
+        subject.setType(1);
+        mAddExamAdapter.addItem(mExams.size(), subject);
     }
 
     public void publishExam() {
+        Test test=new Test();
+        test.setTitle(mTitle);
+        test.setContent(mContent);
+        test.setC_id(mCourse.getC_id());
+        test.setCheck_count(0);
+        test.setNo_check_count(0);
+        test.setNo_hander_count(mCourse.getNumbers());
+        test.setE_time(mTime);
+        test.addAllUnique("subjects",mExams);
+        test.setP_time(System.currentTimeMillis());
+        test.save(mContext, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Log.i("======","11111");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.i("======","11111"+s);
+
+            }
+        });
+        Log.i("=====",test.toString());
     }
 
 

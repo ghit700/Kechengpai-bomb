@@ -61,10 +61,10 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
     private int mHour;
     private int mMinute;
 
+    private Calendar mCalendar;
     private Teacher_Course course;
     public static final int RESULT = 13;
     private int mValue = 0;
-    private Calendar mCalendar;
 
     @Override
     protected void initVarious() {

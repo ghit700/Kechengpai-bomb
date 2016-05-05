@@ -73,14 +73,16 @@ public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterf
     @Override
     protected void loadData() {
         super.loadData();
-        mPresenter.getStudentHomeworkList(mContext,homework.getH_id());
+        mPresenter.getStudentHomeworkList(mContext, homework.getH_id());
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(mContext, THomeworkDetailActivity.class);
-        intent.putExtra("homework", mHomeworks.get(position));
-        startActivity(intent);
+        if (mHomeworks.get(position).getS_state().equals("按时交")) {
+            Intent intent = new Intent(mContext, THomeworkDetailActivity.class);
+            intent.putExtra("homework", mHomeworks.get(position));
+            startActivity(intent);
+        }
     }
 
 

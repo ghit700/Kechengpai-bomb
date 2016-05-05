@@ -168,7 +168,18 @@ public class UserModelImpl implements UserModel {
                     public void onSuccess(List<NewestMessage> list) {
                         for (NewestMessage m : list) {
                             m.setSend_path(bmobFile.getFileUrl(context));
-                            m.update(context);
+                            m.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("=====upload","success");
+
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    Log.i("=====upload",s);
+                                }
+                            });
                         }
                     }
 
@@ -179,13 +190,24 @@ public class UserModelImpl implements UserModel {
                 });
 
                 BmobQuery<NewestMessage> query3 = new BmobQuery<NewestMessage>();
-                query2.addWhereEqualTo("receive_account", user.getAccount());
-                query2.findObjects(context, new FindListener<NewestMessage>() {
+                query3.addWhereEqualTo("receive_account", user.getAccount());
+                query3.findObjects(context, new FindListener<NewestMessage>() {
                     @Override
                     public void onSuccess(List<NewestMessage> list) {
                         for (NewestMessage m : list) {
                             m.setReceive_path(bmobFile.getFileUrl(context));
-                            m.update(context);
+                            m.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("receive_account=====upload","success");
+
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                Log.i("receive_account=====upload",s);
+                                }
+                            });
                         }
                     }
 

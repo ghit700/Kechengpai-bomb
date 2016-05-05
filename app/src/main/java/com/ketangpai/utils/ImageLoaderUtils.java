@@ -74,7 +74,7 @@ public class ImageLoaderUtils {
         } else if (end.equals("xls")) {
             imageView.setImageResource(R.drawable.documents_icon_xls);
 
-        } else if (end.equals("doc")) {
+        } else if (end.equals("doc")||end.equals("docx")) {
             imageView.setImageResource(R.drawable.documents_icon_doc);
         } else if (end.equals("pdf")) {
             imageView.setImageResource(R.drawable.documents_icon_pdf);

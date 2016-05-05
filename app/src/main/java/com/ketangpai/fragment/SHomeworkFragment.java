@@ -146,6 +146,7 @@ public class SHomeworkFragment extends BasePresenterFragment<SHomeworkViewInterf
         } else {
             student_homework.setHomeworks(mHomeworks);
             student_homework.setS_state("按时交");
+            student_homework.setT_state("未批改");
             student_homework.setCommit_time(System.currentTimeMillis());
             mPresenter.publishStudentHomework(mContext, student_homework);
             getActivity().finish();
