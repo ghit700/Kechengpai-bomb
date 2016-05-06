@@ -181,7 +181,6 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
         }, mYear, mMonth - 1, mDay).show();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //
@@ -225,18 +224,14 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
         }
     }
 
-
     @Override
     public void addHomeWorkOnComplete(Teacher_Homework homework) {
         Intent intent = new Intent();
         intent.putExtra("homework", homework);
         getActivity().setResult(RESULT, intent);
-        new AlertDialog.Builder(mContext).setTitle("发布作业成功").setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                getActivity().finish();
-            }
-        }).show();
+        sendToast("作业发布成功");
+
+        getActivity().finish();
     }
 
     @Override

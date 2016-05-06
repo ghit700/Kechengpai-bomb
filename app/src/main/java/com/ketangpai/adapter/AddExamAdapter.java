@@ -20,7 +20,6 @@ import java.util.List;
  */
 public class AddExamAdapter extends BaseAdapter<Subject> {
 
-
     public AddExamAdapter(Context mContext, List mDataList) {
         super(mContext, mDataList);
     }
@@ -461,8 +460,6 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             }
         });
 
-
-
     }
 
     private void bindJudgeData(ViewHolder holder, final int position, final Subject item) {
@@ -479,16 +476,14 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
         btnAddExamTrue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnAddExamTrue.setBackgroundResource(R.color.colorPrimary);
-                btnAddExamFalse.setBackgroundResource(R.drawable.bg_item_exam);
                 item.setSolution("true");
             }
         });
+
+
         btnAddExamFalse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnAddExamFalse.setBackgroundResource(R.color.colorPrimary);
-                btnAddExamTrue.setBackgroundResource(R.drawable.bg_item_exam);
                 item.setSolution("false");
             }
         });
@@ -535,6 +530,5 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
         });
 
     }
-
 
 }

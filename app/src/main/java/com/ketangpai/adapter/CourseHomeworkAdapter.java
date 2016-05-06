@@ -37,7 +37,6 @@ public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> impleme
         }
     }
 
-
     @Override
     protected void bindData(ViewHolder holder, int position, Teacher_Homework s) {
         //初始化view
@@ -49,7 +48,6 @@ public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> impleme
         TextView mAccessoryText = (TextView) holder.getViewById(R.id.tv_t_homework_accessory);
 
         ImageView mEditImg = (ImageView) holder.getViewById(R.id.img_t_home_edit);
-
 
         if (type == 0) {
             TextView mCheckCountText = (TextView) holder.getViewById(R.id.tv_t_homework_checkCount);
@@ -75,7 +73,7 @@ public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> impleme
 
         //初始化view的值
         mPublishTimeText.setText(TimeUtils.getNoticeTime(s.getP_time()));
-        mEndTimeText.setText(TimeUtils.getNoticeTime(s.getE_time()));
+        mEndTimeText.setText("截至：" + TimeUtils.getNoticeTime(s.getE_time()));
         mTitleText.setText(s.getTitle());
         mContentText.setText(s.getContent());
 
@@ -86,7 +84,6 @@ public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> impleme
 
         }
     }
-
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -101,6 +98,5 @@ public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> impleme
         }
         return true;
     }
-
 
 }

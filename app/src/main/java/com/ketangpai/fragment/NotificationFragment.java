@@ -109,7 +109,7 @@ public class NotificationFragment extends BasePresenterFragment<NotificationView
         mRefreshLayout.setRefreshing(false);
         mNotificationList.clear();
         mNotificationList.addAll(notifications);
-        Collections.reverse(mNotificationList);
+//        Collections.reverse(mNotificationList);
         mNotificationAdapter.reorderSections();
         mNotificationAdapter.notifyDataSetChanged();
     }

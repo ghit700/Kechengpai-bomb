@@ -136,7 +136,6 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
         }
     }
 
-
     /**
      * 发布公告
      */
@@ -175,12 +174,8 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
         Intent intent = new Intent();
         intent.putExtra("notice", notice);
         ((AddNoticekActivity) mContext).setResult(RESULT, intent);
-        new AlertDialog.Builder(mContext).setTitle("发布公告成功").setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ((AddNoticekActivity) mContext).finish();
-            }
-        }).show();
+        sendToast("公告发布成功");
+        getActivity().finish();
     }
 
     @Override

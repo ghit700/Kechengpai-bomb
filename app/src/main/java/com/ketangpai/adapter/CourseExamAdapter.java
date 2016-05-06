@@ -18,10 +18,10 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/16.
  */
-public class CourseTExamAdapter extends BaseAdapter<Test> {
+public class CourseExamAdapter extends BaseAdapter<Test> {
     int type;
 
-    public CourseTExamAdapter(Context mContext, List<Test> mDataList, int type) {
+    public CourseExamAdapter(Context mContext, List<Test> mDataList, int type) {
         super(mContext, mDataList);
         this.type = type;
     }
@@ -76,7 +76,7 @@ public class CourseTExamAdapter extends BaseAdapter<Test> {
 
         //初始化view的值
         mPublishTimeText.setText(TimeUtils.getNoticeTime(s.getP_time()));
-        mEndTimeText.setText(TimeUtils.getNoticeTime(s.getE_time()));
+        mEndTimeText.setText("截至："+TimeUtils.getNoticeTime(s.getE_time()));
         mTitleText.setText(s.getTitle());
         mContentText.setText(s.getContent());
     }

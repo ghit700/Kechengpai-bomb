@@ -10,10 +10,12 @@ import com.ketangpai.base.BasePresenter;
 import com.ketangpai.bean.Data;
 import com.ketangpai.fragment.CourseTabFragment;
 import com.ketangpai.model.DataModel;
+import com.ketangpai.model.ExamModel;
 import com.ketangpai.model.HomeworkModel;
 import com.ketangpai.model.NoticeModel;
 import com.ketangpai.model.NotificationModel;
 import com.ketangpai.modelImpl.DataModelImpl;
+import com.ketangpai.modelImpl.ExamModelImpl;
 import com.ketangpai.modelImpl.HomeworkModelImpl;
 import com.ketangpai.modelImpl.NoticeModelImpl;
 import com.ketangpai.modelImpl.NotificationModelImpl;
@@ -35,12 +37,14 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
     DataModel dataModel;
     HomeworkModel homeworkModel;
     NotificationModel notificationModel;
+    ExamModel examModel;
 
     public CourseTabPresenter() {
         homeworkModel = new HomeworkModelImpl();
         dataModel = new DataModelImpl();
         noticeModel = new NoticeModelImpl();
         notificationModel = new NotificationModelImpl();
+        examModel = new ExamModelImpl();
     }
 
     public void getNoticeList(Context context, int c_id) {
@@ -111,7 +115,6 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
         }
     }
 
-
     public void getDataList(Context context, int c_id) {
         if (isViewAttached()) {
             courseTabViewInterface = getView();
@@ -163,5 +166,38 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
         }
     }
 
+    public void getExamList(Context context, int c_id) {
+        if (isViewAttached()) {
+            courseTabViewInterface = getView();
+            examModel.getExamList(context, c_id, new ResultsCallback() {
+                @Override
+                public void onSuccess(List list) {
+                    courseTabViewInterface.getExamkListOnComplete(list);
+                }
+
+                @Override
+                public void onFailure(BmobException e) {
+                    Log.i(CourseTabFragment.TAG, "getExamList " + e);
+                }
+            });
+        }
+    }
+
+    public void getExamListToStudent(Context context, int c_id, long add_time) {
+        if (isViewAttached()) {
+            courseTabViewInterface = getView();
+            examModel.getExamListToStudent(context, c_id, add_time, new ResultsCallback() {
+                @Override
+                public void onSuccess(List list) {
+                    courseTabViewInterface.getExamkListOnComplete(list);
+                }
+
+                @Override
+                public void onFailure(BmobException e) {
+//                    Log.i(CourseTabFragment.TAG, "getHomeworkListToStudent " + e.getMessage());
+                }
+            });
+        }
+    }
 
 }

@@ -70,7 +70,7 @@
                 android:layout_height="30dp"
                 android:layout_below="@id/et_add_exam_title"
                 android:layout_marginTop="6dp"
-                android:background="@drawable/bg_item_exam"
+                android:background="@drawable/bg_select_item"
                 android:elevation="0dp"
                 android:text="对"/>
 
@@ -80,7 +80,7 @@
                 android:layout_height="30dp"
                 android:layout_below="@id/btn_add_exam_true"
                 android:layout_marginTop="6dp"
-                android:background="@drawable/bg_item_exam"
+                android:background="@drawable/bg_select_item"
                 android:elevation="0dp"
                 android:text="错"/>
 

@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.ketangpai.activity.AddExamActivity;
 import com.ketangpai.activity.AddExamTitleActivity;
 import com.ketangpai.activity.AddHomeWorkActivity;
 import com.ketangpai.activity.AddNoticekActivity;
@@ -18,7 +17,7 @@ import com.ketangpai.activity.NoticeActivity;
 import com.ketangpai.activity.HomeWorkActivity;
 import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.CourseNoticeAdapter;
-import com.ketangpai.adapter.CourseTExamAdapter;
+import com.ketangpai.adapter.CourseExamAdapter;
 import com.ketangpai.adapter.CourseHomeworkAdapter;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BasePresenterFragment;
@@ -27,6 +26,7 @@ import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Homework;
+import com.ketangpai.bean.Test;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.CourseTabPresenter;
@@ -148,8 +148,9 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             case 0:
                 mTabAdapter = new CourseHomeworkAdapter(context, mTabContents, type);
                 if (type == 0) {
-                    mPublishBtn.setBackgroundResource(R.drawable.category_1004);
+                    mPresenter.getHomeworkList(mContext, c_id);
 
+                    mPublishBtn.setBackgroundResource(R.drawable.category_1004);
                 } else {
                     mPresenter.getHomeworkListToStudent(context, c_id, ((Student_Course) course).getAdd_time());
                 }
@@ -173,9 +174,12 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
                 break;
             case 3:
-                mTabAdapter = new CourseTExamAdapter(context, mTabContents, type);
+                mTabAdapter = new CourseExamAdapter(context, mTabContents, type);
                 if (type == 0) {
+                    mPresenter.getExamList(mContext, c_id);
                     mPublishBtn.setBackgroundResource(R.drawable.category_1001);
+                } else {
+                    mPresenter.getExamListToStudent(context, c_id, ((Student_Course) course).getAdd_time());
                 }
 
                 break;
@@ -187,26 +191,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        switch (mPosition) {
-            case 0:
-                if (type == 0) {
-                    mPresenter.getHomeworkList(mContext, c_id);
-                }
-                break;
 
-            case 3:
-                if (type == 0) {
-                }
-
-                break;
-
-            default:
-                break;
-        }
-    }
 
     @Override
     public void onRefresh() {
@@ -263,7 +248,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
                 case 3:
                     intent = new Intent(mContext, AddExamTitleActivity.class);
                     intent.putExtra("course", course);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST);
                     break;
 
                 default:
@@ -299,7 +284,11 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             mTabAdapter.addItem(0, homework);
             mTabList.smoothScrollToPosition(0);
         }
-
+        if (requestCode == REQUEST && resultCode == AddExamFragment.RESULT) {
+            Test test = (Test) data.getSerializableExtra("test");
+            mTabAdapter.addItem(0, test);
+            mTabList.smoothScrollToPosition(0);
+        }
 
     }
 
@@ -355,7 +344,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     @Override
     public void getExamkListOnComplete(List exams) {
         Collections.reverse(exams);
-
         mTabContents.addAll(exams);
         mTabAdapter.notifyDataSetChanged();
     }

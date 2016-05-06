@@ -3,6 +3,7 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
+import com.ketangpai.bean.Test;
 import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
@@ -43,11 +44,13 @@ public class NotificationModelImpl implements NotificationModel {
             type_id = ((Data) object).getD_id();
             type = 3;
             content = "分享了新资料~ " + ((Data) object).getName();
-
+        } else if (object instanceof Test) {
+            type_id = ((Test) object).getT_id();
+            type = 4;
+            content = "发布了新测试~ " + ((Test) object).getTitle();
         }
         PushManager.publishStudentNotification(context, c_id, type_id, type, content, c_name);
     }
-
 
     public void saveNotificationToTable(final Context context, final String account, final NotificationInfo notificationInfo) {
         final String time = TimeUtils.getNotificationTime(System.currentTimeMillis());

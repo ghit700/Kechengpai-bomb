@@ -1,5 +1,8 @@
 package com.ketangpai.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,11 +14,15 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.ketangpai.adapter.AddExamAdapter;
 import com.ketangpai.base.BaseFragment;
+import com.ketangpai.base.BasePresenter;
+import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Subject;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.Test;
 import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.presenter.AddExamPresenter;
 import com.ketangpai.view.FullyLinearLayoutManager;
+import com.ketangpai.viewInterface.AddExamViewInterface;
 import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.ArrayList;
@@ -27,8 +34,8 @@ import cn.bmob.v3.listener.UpdateListener;
 /**
  * Created by nan on 2016/5/3.
  */
-public class AddExamFragment extends BaseFragment implements View.OnClickListener {
-
+public class AddExamFragment extends BasePresenterFragment<AddExamViewInterface, AddExamPresenter> implements AddExamViewInterface, View.OnClickListener {
+    public static final String TAG = "===AddExamFragment";
     //view
     private FloatingActionButton btnExamJudge;
     private FloatingActionButton btnExamSingleSelection;
@@ -46,6 +53,7 @@ public class AddExamFragment extends BaseFragment implements View.OnClickListene
     private String mContent;
     private long mTime;
     private Teacher_Course mCourse;
+    public static final int RESULT = 15;
 
     @Override
     protected int getLayoutId() {
@@ -148,7 +156,7 @@ public class AddExamFragment extends BaseFragment implements View.OnClickListene
     }
 
     public void publishExam() {
-        Test test=new Test();
+        Test test = new Test();
         test.setTitle(mTitle);
         test.setContent(mContent);
         test.setC_id(mCourse.getC_id());
@@ -156,22 +164,25 @@ public class AddExamFragment extends BaseFragment implements View.OnClickListene
         test.setNo_check_count(0);
         test.setNo_hander_count(mCourse.getNumbers());
         test.setE_time(mTime);
-        test.addAllUnique("subjects",mExams);
+        test.addAllUnique("subjects", mExams);
+        test.setSubjects(mExams);
         test.setP_time(System.currentTimeMillis());
-        test.save(mContext, new SaveListener() {
-            @Override
-            public void onSuccess() {
-                Log.i("======","11111");
-            }
+        mPresenter.publishExam(mContext, test, mCourse.getC_id(), mCourse.getName());
 
-            @Override
-            public void onFailure(int i, String s) {
-                Log.i("======","11111"+s);
-
-            }
-        });
-        Log.i("=====",test.toString());
     }
 
+    @Override
+    public void addExamOnComplete(Test test) {
 
+        Intent intent = new Intent();
+        intent.putExtra("test", test);
+        getActivity().setResult(RESULT, intent);
+        sendToast("测试发布成功");
+        getActivity().finish();
+    }
+
+    @Override
+    protected AddExamPresenter createPresenter() {
+        return new AddExamPresenter();
+    }
 }
