@@ -43,29 +43,7 @@ public class CourseSMainCourseAdapter extends BaseAdapter<Course> {
         TextView CourseName = (TextView) holder.getViewById(R.id.tv_item_courseName);
         TextView CourseCode = (TextView) holder.getViewById(R.id.tv_item_courseCode);
         TextView StudentName = (TextView) holder.getViewById(R.id.tv_item_StudentName);
-        ImageView CourseEdit = (ImageView) holder.getViewById(R.id.img_item_courseMore);
-
-        //设置事件
-        //courseEdit点击事情
-
-        final MyPopupMenu mPopupMenu = new MyPopupMenu(mContext, CourseEdit, R.menu.student_courese_edit_menu);
-        mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Course course = mDataList.get(position);
-                course.delete(mContext);
-                mDataList.remove(position);
-                notifyDataSetChanged();
-                return false;
-            }
-        });
-        CourseEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopupMenu.show();
-
-            }
-        });
+      
 
         //初始化view的值
         StudentName.setText(((Student_Course) s).getTeacher());

@@ -6,10 +6,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.ketangpai.base.BaseActivity;
 import com.ketangpai.base.BaseAdapter;
+import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.bean.Subject;
 import com.ketangpai.nan.ketangpai.R;
 
@@ -86,6 +92,7 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
         final EditText etAddExamGrade = (EditText) holder.getViewById(R.id.et_add_exam_grade);
         final EditText etAddExamTitle = (EditText) holder.getViewById(R.id.et_add_exam_title);
         final Button btnAddExamCancle = (Button) holder.getViewById(R.id.btn_add_exam_cancle);
+        final Button btnAddExamSumit = (Button) holder.getViewById(R.id.btn_add_exam_submit);
         int i = position;
         i++;
         tvAddExamMultiple.setText(i + ": " + "简答题");
@@ -96,40 +103,25 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
                 deleteItem(position);
             }
         });
-        etAddExamGrade.addTextChangedListener(new TextWatcher() {
+
+        btnAddExamSumit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+            public void onClick(View v) {
                 if (!etAddExamGrade.getText().toString().equals("")) {
                     item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
+                } else if (etAddExamGrade.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入分数");
+                    return;
+                }
+                if (!etAddExamTitle.getText().toString().equals("")) {
+                    item.setTitle(etAddExamTitle.getText().toString());
+                    btnAddExamSumit.setVisibility(View.GONE);
+                } else {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入题目");
                 }
             }
         });
-        etAddExamTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.setTitle(etAddExamTitle.getText().toString());
-            }
-        });
 
     }
 
@@ -141,12 +133,15 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
         final EditText etAddExamB = (EditText) holder.getViewById(R.id.et_add_exam_b);
         final EditText etAddExamC = (EditText) holder.getViewById(R.id.et_add_exam_c);
         final EditText etAddExamD = (EditText) holder.getViewById(R.id.et_add_exam_d);
-        final TextView tvAddExamA = (TextView) holder.getViewById(R.id.tv_add_exam_a);
-        final TextView tvAddExamB = (TextView) holder.getViewById(R.id.tv_add_exam_b);
-        final TextView tvAddExamC = (TextView) holder.getViewById(R.id.tv_add_exam_c);
-        final TextView tvAddExamD = (TextView) holder.getViewById(R.id.tv_add_exam_d);
+        final CheckBox cbAddExamA = (CheckBox) holder.getViewById(R.id.cb_add_exam_a);
+        final CheckBox cbAddExamB = (CheckBox) holder.getViewById(R.id.cb_add_exam_b);
+        final CheckBox cbAddExamC = (CheckBox) holder.getViewById(R.id.cb_add_exam_c);
+        final CheckBox cbAddExamD = (CheckBox) holder.getViewById(R.id.cb_add_exam_d);
         final Button btnAddExamCancle = (Button) holder.getViewById(R.id.btn_add_exam_cancle);
+        final Button btnAddExamSumit = (Button) holder.getViewById(R.id.btn_add_exam_submit);
+
         int i = position;
+        final boolean[] answer = new boolean[4];
         i++;
         tvAddExamMultiple.setText(i + ": " + "多选题");
         btnAddExamCancle.setOnClickListener(new View.OnClickListener() {
@@ -155,146 +150,90 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
                 deleteItem(position);
             }
         });
-
-        tvAddExamA.setOnClickListener(new View.OnClickListener() {
+        btnAddExamSumit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvAddExamA.setBackgroundResource(R.color.colorPrimary);
-                tvAddExamB.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamC.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamD.setBackgroundResource(R.drawable.bg_item_exam);
-                item.setSolution("a");
-            }
-        });
-        tvAddExamB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvAddExamB.setBackgroundResource(R.color.colorPrimary);
-                tvAddExamA.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamC.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamD.setBackgroundResource(R.drawable.bg_item_exam);
-                item.setSolution("b");
-            }
-        });
-        tvAddExamC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvAddExamC.setBackgroundResource(R.color.colorPrimary);
-                tvAddExamB.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamA.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamD.setBackgroundResource(R.drawable.bg_item_exam);
-                item.setSolution("c");
-            }
-        });
-        tvAddExamD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvAddExamD.setBackgroundResource(R.color.colorPrimary);
-                tvAddExamB.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamC.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamA.setBackgroundResource(R.drawable.bg_item_exam);
-                item.setSolution("d");
-            }
-        });
 
-        etAddExamA.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                if (etAddExamA.getText().toString().equals("") || etAddExamB.getText().toString().equals("") ||
+                        etAddExamC.getText().toString().equals("") || etAddExamD.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入选项题目");
+                    return;
+                } else if (!etAddExamA.getText().toString().equals("") && !etAddExamB.getText().toString().equals("") &&
+                        !etAddExamC.getText().toString().equals("") && !etAddExamD.getText().toString().equals("")) {
+                    item.getContent().clear();
+                    item.getContent().add(0, etAddExamA.getText().toString());
+                    item.getContent().add(1, etAddExamB.getText().toString());
+                    item.getContent().add(2, etAddExamC.getText().toString());
+                    item.getContent().add(3, etAddExamD.getText().toString());
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.getContent().add(0, etAddExamA.getText().toString());
-            }
-        });
-        etAddExamB.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.getContent().add(1, etAddExamB.getText().toString());
-            }
-        });
-        etAddExamC.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.getContent().add(2, etAddExamC.getText().toString());
-            }
-        });
-        etAddExamD.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.getContent().add(3, etAddExamD.getText().toString());
-            }
-        });
-        etAddExamGrade.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 if (!etAddExamGrade.getText().toString().equals("")) {
                     item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
+                } else if (etAddExamGrade.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入分数");
+                    return;
+                }
+                if (etAddExamTitle.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入题目");
+                    return;
+                } else if (!etAddExamTitle.getText().toString().equals("")) {
+                    item.setTitle(etAddExamTitle.getText().toString());
+                }
+
+
+                if (!answer[0] && !answer[1] && !answer[2] && !answer[3]) {
+                    ((BaseToolbarActivity) mContext).sendToast("请选择正确答案");
+                    return;
+                } else {
+                    item.setSolution(answer[0] + "," + answer[1] + "," + answer[2] + "," + answer[3]);
+                    btnAddExamSumit.setVisibility(View.GONE);
                 }
             }
         });
-        etAddExamTitle.addTextChangedListener(new TextWatcher() {
+
+        cbAddExamA.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.setTitle(etAddExamTitle.getText().toString());
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    answer[0] = true;
+                } else {
+                    answer[0] = false;
+                }
             }
         });
+        cbAddExamB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    answer[1] = true;
+                } else {
+                    answer[1] = false;
+                }
+            }
+        });
+        cbAddExamC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    answer[2] = true;
+                } else {
+                    answer[2] = false;
+                }
+            }
+        });
+        cbAddExamD.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    answer[3] = true;
+                } else {
+                    answer[3] = false;
+                }
+            }
+        });
+
+
     }
 
     private void bindSingleData(ViewHolder holder, final int position, final Subject item) {
@@ -305,11 +244,14 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
         final EditText etAddExamB = (EditText) holder.getViewById(R.id.et_add_exam_b);
         final EditText etAddExamC = (EditText) holder.getViewById(R.id.et_add_exam_c);
         final EditText etAddExamD = (EditText) holder.getViewById(R.id.et_add_exam_d);
-        final TextView tvAddExamA = (TextView) holder.getViewById(R.id.tv_add_exam_a);
-        final TextView tvAddExamB = (TextView) holder.getViewById(R.id.tv_add_exam_b);
-        final TextView tvAddExamC = (TextView) holder.getViewById(R.id.tv_add_exam_c);
-        final TextView tvAddExamD = (TextView) holder.getViewById(R.id.tv_add_exam_d);
+        RadioGroup rgAddExam = (RadioGroup) holder.getViewById(R.id.rg_add_exam);
+//        final RadioButton rbAddExamA = (RadioButton) holder.getViewById(R.id.rb_add_exam_a);
+//        final RadioButton rbAddExamB = (RadioButton) holder.getViewById(R.id.rb_add_exam_b);
+//        final RadioButton rbAddExamC = (RadioButton) holder.getViewById(R.id.rb_add_exam_c);
+//        final RadioButton rbAddExamD = (RadioButton) holder.getViewById(R.id.rb_add_exam_d);
         final Button btnAddExamCancle = (Button) holder.getViewById(R.id.btn_add_exam_cancle);
+        final Button btnAddExamSumit = (Button) holder.getViewById(R.id.btn_add_exam_submit);
+
         int i = position;
         i++;
         tvAddExamSingle.setText(i + ": " + "单选题");
@@ -320,145 +262,62 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             }
         });
 
-        tvAddExamA.setOnClickListener(new View.OnClickListener() {
+
+        rgAddExam.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                tvAddExamA.setBackgroundResource(R.color.colorPrimary);
-                tvAddExamB.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamC.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamD.setBackgroundResource(R.drawable.bg_item_exam);
-                item.setSolution("a");
-            }
-        });
-        tvAddExamB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvAddExamB.setBackgroundResource(R.color.colorPrimary);
-                tvAddExamA.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamC.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamD.setBackgroundResource(R.drawable.bg_item_exam);
-                item.setSolution("b");
-            }
-        });
-        tvAddExamC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvAddExamC.setBackgroundResource(R.color.colorPrimary);
-                tvAddExamB.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamA.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamD.setBackgroundResource(R.drawable.bg_item_exam);
-                item.setSolution("c");
-            }
-        });
-        tvAddExamD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvAddExamD.setBackgroundResource(R.color.colorPrimary);
-                tvAddExamB.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamC.setBackgroundResource(R.drawable.bg_item_exam);
-                tvAddExamA.setBackgroundResource(R.drawable.bg_item_exam);
-                item.setSolution("d");
-            }
-        });
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rb_add_exam_a) {
+                    item.setSolution("a");
+                } else if (checkedId == R.id.rb_add_exam_a) {
+                    item.setSolution("b");
+                } else if (checkedId == R.id.rb_add_exam_a) {
+                    item.setSolution("c");
+                } else {
+                    item.setSolution("d");
 
-        etAddExamA.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.getContent().add(0, etAddExamA.getText().toString());
-            }
-        });
-        etAddExamB.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.getContent().add(1, etAddExamB.getText().toString());
-            }
-        });
-        etAddExamC.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.getContent().add(2, etAddExamC.getText().toString());
-            }
-        });
-        etAddExamD.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.getContent().add(3, etAddExamD.getText().toString());
-            }
-        });
-        etAddExamGrade.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!etAddExamGrade.getText().toString().equals("")) {
-                    item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
                 }
             }
         });
-        etAddExamTitle.addTextChangedListener(new TextWatcher() {
+        btnAddExamSumit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onClick(View v) {
+                if (!etAddExamA.getText().toString().equals("") && !etAddExamB.getText().toString().equals("") &&
+                        !etAddExamC.getText().toString().equals("") && !etAddExamD.getText().toString().equals("")) {
+                    item.getContent().clear();
+                    item.getContent().add(0, etAddExamA.getText().toString());
+                    item.getContent().add(1, etAddExamB.getText().toString());
+                    item.getContent().add(2, etAddExamC.getText().toString());
+                    item.getContent().add(3, etAddExamD.getText().toString());
 
-            }
+                } else if (etAddExamA.getText().toString().equals("") || etAddExamB.getText().toString().equals("") ||
+                        etAddExamC.getText().toString().equals("") || etAddExamD.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入选项题目");
+                    return;
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!etAddExamGrade.getText().toString().equals("")) {
+                    item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
+                } else if (etAddExamGrade.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入分数");
+                    return;
+                }
 
-            }
+                if (!etAddExamTitle.getText().toString().equals("")) {
+                    item.setTitle(etAddExamTitle.getText().toString());
+                } else if (etAddExamTitle.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入题目");
+                    return;
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.setTitle(etAddExamTitle.getText().toString());
+                if (!item.getSolution().equals("")) {
+                    btnAddExamSumit.setVisibility(View.GONE);
+                } else {
+                    ((BaseToolbarActivity) mContext).sendToast("请选择正确答案");
+                }
+
             }
         });
+
 
     }
 
@@ -466,27 +325,25 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
         TextView tvAddExamJudge = (TextView) holder.getViewById(R.id.tv_add_exam_judge);
         final EditText etAddExamGrade = (EditText) holder.getViewById(R.id.et_add_exam_grade);
         final EditText etAddExamTitle = (EditText) holder.getViewById(R.id.et_add_exam_title);
-        final Button btnAddExamTrue = (Button) holder.getViewById(R.id.btn_add_exam_true);
-        final Button btnAddExamFalse = (Button) holder.getViewById(R.id.btn_add_exam_false);
+        RadioGroup rgAddExam = (RadioGroup) holder.getViewById(R.id.rg_add_exam);
         final Button btnAddExamCancle = (Button) holder.getViewById(R.id.btn_add_exam_cancle);
+        final Button btnAddExamSumit = (Button) holder.getViewById(R.id.btn_add_exam_submit);
 
         int i = position;
         i++;
         tvAddExamJudge.setText(i + ": " + "判断题");
-        btnAddExamTrue.setOnClickListener(new View.OnClickListener() {
+
+        rgAddExam.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                item.setSolution("true");
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rb_add_exam_true) {
+                    item.setSolution("true");
+                } else if (checkedId == R.id.rb_add_exam_false) {
+                    item.setSolution("false");
+                }
             }
         });
 
-
-        btnAddExamFalse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                item.setSolution("false");
-            }
-        });
         btnAddExamCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -494,40 +351,30 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             }
         });
 
-        etAddExamGrade.addTextChangedListener(new TextWatcher() {
+        btnAddExamSumit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onClick(View v) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 if (!etAddExamGrade.getText().toString().equals("")) {
                     item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
+                } else if (etAddExamGrade.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入分数");
+                    return;
+                }
+                if (!etAddExamTitle.getText().toString().equals("")) {
+                    item.setTitle(etAddExamTitle.getText().toString());
+                } else if (etAddExamTitle.getText().toString().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请输入题目");
+                    return;
+                }
+                if (item.getSolution().equals("")) {
+                    ((BaseToolbarActivity) mContext).sendToast("请选择答案");
+                } else if (!item.getSolution().equals("")) {
+                    btnAddExamSumit.setVisibility(View.GONE);
                 }
             }
         });
-        etAddExamTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                item.setTitle(etAddExamTitle.getText().toString());
-            }
-        });
 
     }
 

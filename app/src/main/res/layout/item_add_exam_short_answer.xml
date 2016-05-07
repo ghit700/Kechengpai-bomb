@@ -74,10 +74,19 @@
             android:padding="10dp">
 
             <Button
-                android:id="@+id/btn_add_exam_cancle"
+                android:id="@+id/btn_add_exam_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
+                android:background="@color/colorPrimary"
+                android:text="确认"
+                android:textColor="@color/white"/>
+            <Button
+                android:layout_marginRight="5dp"
+                android:id="@+id/btn_add_exam_cancle"
+                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_toLeftOf="@id/btn_add_exam_submit"
                 android:background="@drawable/bg_item_exam"
                 android:text="取消"/>
         </RelativeLayout>
