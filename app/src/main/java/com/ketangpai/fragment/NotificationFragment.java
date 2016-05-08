@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ketangpai.activity.DataActivity;
+import com.ketangpai.activity.ExamActivity;
 import com.ketangpai.activity.HomeWorkActivity;
 import com.ketangpai.activity.NoticeActivity;
 import com.ketangpai.adapter.NotificationAdapter;
@@ -17,6 +18,7 @@ import com.ketangpai.bean.Notice;
 import com.ketangpai.bean.Notification;
 import com.ketangpai.bean.NotificationInfo;
 import com.ketangpai.bean.Teacher_Homework;
+import com.ketangpai.bean.Test;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.NotificationPresenter;
@@ -182,7 +184,24 @@ public class NotificationFragment extends BasePresenterFragment<NotificationView
 
                     }
                 });
+                break;
+            case 4:
+                BmobQuery<Test> query3 = new BmobQuery<>();
+                query3.addWhereEqualTo("t_id", notificationInfo.getType_id());
+                query3.findObjects(mContext, new FindListener<Test>() {
+                    @Override
+                    public void onSuccess(List<Test> list) {
+                        Test test = list.get(0);
+                        Intent intent = new Intent(mContext, ExamActivity.class);
+                        intent.putExtra("test",test);
+                        startActivity(intent);
+                    }
 
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
                 break;
 
             default:
