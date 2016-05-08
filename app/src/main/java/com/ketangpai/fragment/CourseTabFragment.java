@@ -13,12 +13,14 @@ import com.ketangpai.activity.AddExamTitleActivity;
 import com.ketangpai.activity.AddHomeWorkActivity;
 import com.ketangpai.activity.AddNoticekActivity;
 import com.ketangpai.activity.DataActivity;
+import com.ketangpai.activity.ExamActivity;
 import com.ketangpai.activity.NoticeActivity;
 import com.ketangpai.activity.HomeWorkActivity;
 import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.CourseNoticeAdapter;
 import com.ketangpai.adapter.CourseExamAdapter;
 import com.ketangpai.adapter.CourseHomeworkAdapter;
+import com.ketangpai.adapter.ExamAdapter;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Course;
@@ -27,6 +29,7 @@ import com.ketangpai.bean.Notice;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
+import com.ketangpai.event.AddExamEvent;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.CourseTabPresenter;
@@ -35,6 +38,9 @@ import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.viewInterface.CourseTabViewInterface;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,6 +107,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
         return fragment;
     }
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_course_tab;
@@ -123,6 +130,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     protected void initData() {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setRefreshing(true);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -133,6 +141,13 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     protected void loadData() {
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
 
     }
 
@@ -149,7 +164,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
                 mTabAdapter = new CourseHomeworkAdapter(context, mTabContents, type);
                 if (type == 0) {
                     mPresenter.getHomeworkList(mContext, c_id);
-
                     mPublishBtn.setBackgroundResource(R.drawable.category_1004);
                 } else {
                     mPresenter.getHomeworkListToStudent(context, c_id, ((Student_Course) course).getAdd_time());
@@ -192,7 +206,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     }
 
 
-
     @Override
     public void onRefresh() {
 
@@ -220,9 +233,11 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
                 startActivity(intent);
                 break;
             case 3:
+                intent = new Intent(mContext, ExamActivity.class);
+                intent.putExtra("test", (Test) mTabContents.get(position));
+                startActivity(intent);
                 break;
-            case 4:
-                break;
+
         }
     }
 
@@ -284,11 +299,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             mTabAdapter.addItem(0, homework);
             mTabList.smoothScrollToPosition(0);
         }
-        if (requestCode == REQUEST && resultCode == AddExamFragment.RESULT) {
-            Test test = (Test) data.getSerializableExtra("test");
-            mTabAdapter.addItem(0, test);
-            mTabList.smoothScrollToPosition(0);
-        }
+
 
     }
 
@@ -327,6 +338,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getDataListOnComplete(List datas) {
+        mTabContents.clear();
         Collections.reverse(datas);
         mTabContents.addAll(datas);
         mTabAdapter.notifyDataSetChanged();
@@ -335,17 +347,26 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getNoticeListOnComplete(List<Notice> notices) {
+        mTabContents.clear();
         Collections.reverse(notices);
-
         mTabContents.addAll(notices);
         mTabAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void getExamkListOnComplete(List exams) {
+        mTabContents.clear();
         Collections.reverse(exams);
         mTabContents.addAll(exams);
         mTabAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void onAddExamEvent(AddExamEvent event) {
+        if (mTabAdapter instanceof CourseExamAdapter) {
+            mTabAdapter.addItem(0, event.getTest());
+            mTabList.smoothScrollToPosition(0);
+        }
     }
 
     public void setCourse(Course course) {

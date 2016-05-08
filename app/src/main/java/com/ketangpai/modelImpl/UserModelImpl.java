@@ -253,7 +253,7 @@ public class UserModelImpl implements UserModel {
 //
 //        }
 
-        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='" + account + "') and account != '" + account + "'";
+        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='" + account + "') and account != '" + account + "' order by c_name" ;
 
         BmobQuery<User_Group> query = new BmobQuery<>();
         query.doSQLQuery(context, sql, new SQLQueryListener<User_Group>() {

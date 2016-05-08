@@ -30,6 +30,8 @@ import cn.bmob.v3.listener.UpdateListener;
  * Created by nan on 2016/5/5.
  */
 public class ExamModelImpl implements ExamModel {
+    private boolean gradeFlag;
+
     @Override
     public void publishExam(Context context, Test test, SaveListener resultCallback) {
         test.save(context, resultCallback);
@@ -131,12 +133,51 @@ public class ExamModelImpl implements ExamModel {
     }
 
     @Override
-    public void correctExam(Context context, Student_Reply student_reply, UpdateListener resultCallback) {
+    public void correctExam(final Context context, Student_Reply student_reply, UpdateListener resultCallback) {
+
+        List<Subject> subjects = student_reply.getSubjects();
+        for (Subject s : subjects) {
+            int grade;
+            if (null != student_reply.getGrade()) {
+                grade = student_reply.getGrade() + s.getS_value();
+                student_reply.setGrade(grade);
+            } else {
+                student_reply.setGrade(s.getS_value());
+            }
+
+
+        }
+        student_reply.update(context, resultCallback);
+
+        BmobQuery<Test> query1 = new BmobQuery<>();
+        query1.addWhereEqualTo("t_id", student_reply.getT_id());
+        query1.findObjects(context, new FindListener<Test>() {
+            @Override
+            public void onSuccess(List<Test> list) {
+                if (null != list && list.size() > 0) {
+                    Test test = list.get(0);
+                    int check_count = test.getCheck_count();
+                    check_count++;
+                    test.setCheck_count(check_count);
+                    int no_check_count = test.getNo_check_count();
+                    no_check_count--;
+                    test.setNo_check_count(no_check_count);
+                    test.update(context);
+
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+        });
 
     }
 
     @Override
     public void getStudentExam(Context context, Test test, String account, final ResultCallback resultCallback) {
+        Log.i("======getStudentExam", test.getT_id() + "   " + account);
         String sql = "select * from Student_Reply where t_id=? and account=?";
         BmobQuery<Student_Reply> query = new BmobQuery<>();
         query.doSQLQuery(context, sql, new SQLQueryListener<Student_Reply>() {
@@ -147,11 +188,92 @@ public class ExamModelImpl implements ExamModel {
                     resultCallback.onSuccess(student_replies.get(0));
                 }
             }
-        }, test.getC_id(), account);
+        }, test.getT_id(), account);
     }
 
     @Override
-    public void publishStudentExam(Context context, Student_Reply student_reply) {
+    public void publishStudentExam(final Context context, final Student_Reply student_reply) {
+        gradeFlag = true;
+        int grade = 0;
+        List<Subject> subjects = student_reply.getSubjects();
+        for (Subject s : subjects) {
+            switch (s.getType()) {
+                case 1:
+                    if (s.getAnswer().equals(s.getSolution())) {
+                        s.setS_value(s.getScore());
+                        grade += s.getScore();
+                    } else {
+                        s.setS_value(0);
+                    }
+                    break;
+                case 2:
+                    if (s.getAnswer().equals(s.getSolution())) {
+                        s.setS_value(s.getScore());
+                        grade += s.getScore();
+
+                    } else {
+                        s.setS_value(0);
+                    }
+                    break;
+                case 3:
+                    if (s.getAnswer().equals(s.getSolution())) {
+                        s.setS_value(s.getScore());
+                        grade += s.getScore();
+                    } else {
+                        s.setS_value(0);
+                    }
+                    break;
+                case 4:
+                    gradeFlag = false;
+                    break;
+            }
+        }
+        if (gradeFlag) {
+            student_reply.setGrade(grade);
+            student_reply.setT_state("已批改");
+        }
+
+        student_reply.update(context, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                BmobQuery<Test> query = new BmobQuery<Test>();
+                query.addWhereEqualTo("t_id", student_reply.getT_id());
+                query.findObjects(context, new FindListener<Test>() {
+                    @Override
+                    public void onSuccess(List<Test> list) {
+                        if (null != list && list.size() > 0) {
+                            Test test = list.get(0);
+                            int no_hander = test.getNo_hander_count();
+                            no_hander--;
+                            test.setNo_hander_count(no_hander);
+                            if (gradeFlag) {
+                                int check_count = test.getCheck_count();
+                                check_count++;
+                                test.setCheck_count(check_count);
+
+                            } else {
+                                int no_check_count = test.getNo_check_count();
+                                no_check_count++;
+                                test.setNo_check_count(no_check_count);
+
+                            }
+                            test.update(context);
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+            }
+        });
+
 
     }
 }

@@ -120,6 +120,11 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
     }
 
 
+    /**
+     * 通讯录数组处理
+     *
+     * @param users
+     */
     public void getUsersGroupByCourse(List<User_Group> users) {
 
 

@@ -19,11 +19,14 @@ import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Subject;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.Test;
+import com.ketangpai.event.AddExamEvent;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AddExamPresenter;
 import com.ketangpai.view.FullyLinearLayoutManager;
 import com.ketangpai.viewInterface.AddExamViewInterface;
 import com.shamanland.fab.ShowHideOnScroll;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,9 +177,7 @@ public class AddExamFragment extends BasePresenterFragment<AddExamViewInterface,
     @Override
     public void addExamOnComplete(Test test) {
 
-        Intent intent = new Intent();
-        intent.putExtra("test", test);
-        getActivity().setResult(RESULT, intent);
+        EventBus.getDefault().post(new AddExamEvent(test));
         sendToast("测试发布成功");
         getActivity().finish();
     }

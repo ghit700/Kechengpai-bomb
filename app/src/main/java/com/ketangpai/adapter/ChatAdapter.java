@@ -26,6 +26,12 @@ public class ChatAdapter extends BaseAdapter<MessageInfo> {
         mPath = path;
     }
 
+    /**
+     * 判断是属于发送方还是接收方的视图
+     *
+     * @param position
+     * @return
+     */
     @Override
     public int getItemViewType(int position) {
         if (mDataList.get(position).getReceive_account().equals(mAccount)) {
@@ -50,6 +56,11 @@ public class ChatAdapter extends BaseAdapter<MessageInfo> {
         super.deleteItem(positon);
     }
 
+    /**
+     * 根据类型 来选择对应的视图
+     * @param viewType
+     * @return
+     */
     @Override
     protected int getItemLayoutId(int viewType) {
         if (viewType == 0) {

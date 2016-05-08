@@ -37,7 +37,7 @@
             android:textSize="14sp"/>
 
         <TextView
-            android:id="@+id/et_exam_grade"
+            android:id="@+id/tv_exam_grade"
             android:layout_width="28dp"
             android:layout_height="18dp"
             android:layout_toRightOf="@id/tvfenzhi"

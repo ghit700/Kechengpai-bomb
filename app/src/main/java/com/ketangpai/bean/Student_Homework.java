@@ -16,7 +16,7 @@ public class Student_Homework extends BmobObject {
     private String student_name;
     private String account;
     /**
-     * 未交,已交,逾期未交
+     * 未交,按时交,逾期未交
      */
     private String s_state = "未交";
     /**

@@ -108,7 +108,7 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             @Override
             public void onClick(View v) {
                 if (!etAddExamGrade.getText().toString().equals("")) {
-                    item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
+                    item.setScore(Integer.parseInt(etAddExamGrade.getText().toString()));
                 } else if (etAddExamGrade.getText().toString().equals("")) {
                     ((BaseToolbarActivity) mContext).sendToast("请输入分数");
                     return;
@@ -141,7 +141,7 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
         final Button btnAddExamSumit = (Button) holder.getViewById(R.id.btn_add_exam_submit);
 
         int i = position;
-        final boolean[] answer = new boolean[4];
+        final boolean[] solution = new boolean[4];
         i++;
         tvAddExamMultiple.setText(i + ": " + "多选题");
         btnAddExamCancle.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +169,7 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
                 }
 
                 if (!etAddExamGrade.getText().toString().equals("")) {
-                    item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
+                    item.setScore(Integer.parseInt(etAddExamGrade.getText().toString()));
                 } else if (etAddExamGrade.getText().toString().equals("")) {
                     ((BaseToolbarActivity) mContext).sendToast("请输入分数");
                     return;
@@ -182,11 +182,11 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
                 }
 
 
-                if (!answer[0] && !answer[1] && !answer[2] && !answer[3]) {
+                if (!solution[0] && !solution[1] && !solution[2] && !solution[3]) {
                     ((BaseToolbarActivity) mContext).sendToast("请选择正确答案");
                     return;
                 } else {
-                    item.setSolution(answer[0] + "," + answer[1] + "," + answer[2] + "," + answer[3]);
+                    item.setSolution(solution[0] + "," + solution[1] + "," + solution[2] + "," + solution[3]);
                     btnAddExamSumit.setVisibility(View.GONE);
                 }
             }
@@ -196,9 +196,9 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    answer[0] = true;
+                    solution[0] = true;
                 } else {
-                    answer[0] = false;
+                    solution[0] = false;
                 }
             }
         });
@@ -206,9 +206,9 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    answer[1] = true;
+                    solution[1] = true;
                 } else {
-                    answer[1] = false;
+                    solution[1] = false;
                 }
             }
         });
@@ -216,9 +216,9 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    answer[2] = true;
+                    solution[2] = true;
                 } else {
-                    answer[2] = false;
+                    solution[2] = false;
                 }
             }
         });
@@ -226,9 +226,9 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    answer[3] = true;
+                    solution[3] = true;
                 } else {
-                    answer[3] = false;
+                    solution[3] = false;
                 }
             }
         });
@@ -296,7 +296,7 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
                 }
 
                 if (!etAddExamGrade.getText().toString().equals("")) {
-                    item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
+                    item.setScore(Integer.parseInt(etAddExamGrade.getText().toString()));
                 } else if (etAddExamGrade.getText().toString().equals("")) {
                     ((BaseToolbarActivity) mContext).sendToast("请输入分数");
                     return;
@@ -356,7 +356,7 @@ public class AddExamAdapter extends BaseAdapter<Subject> {
             public void onClick(View v) {
 
                 if (!etAddExamGrade.getText().toString().equals("")) {
-                    item.setS_value(Integer.parseInt(etAddExamGrade.getText().toString()));
+                    item.setScore(Integer.parseInt(etAddExamGrade.getText().toString()));
                 } else if (etAddExamGrade.getText().toString().equals("")) {
                     ((BaseToolbarActivity) mContext).sendToast("请输入分数");
                     return;

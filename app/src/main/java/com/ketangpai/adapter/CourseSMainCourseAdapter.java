@@ -43,7 +43,7 @@ public class CourseSMainCourseAdapter extends BaseAdapter<Course> {
         TextView CourseName = (TextView) holder.getViewById(R.id.tv_item_courseName);
         TextView CourseCode = (TextView) holder.getViewById(R.id.tv_item_courseCode);
         TextView StudentName = (TextView) holder.getViewById(R.id.tv_item_StudentName);
-      
+
 
         //初始化view的值
         StudentName.setText(((Student_Course) s).getTeacher());
