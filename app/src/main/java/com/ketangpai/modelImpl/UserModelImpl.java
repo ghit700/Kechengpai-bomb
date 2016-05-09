@@ -171,13 +171,13 @@ public class UserModelImpl implements UserModel {
                             m.update(context, new UpdateListener() {
                                 @Override
                                 public void onSuccess() {
-                                    Log.i("=====upload","success");
+                                    Log.i("=====upload", "success");
 
                                 }
 
                                 @Override
                                 public void onFailure(int i, String s) {
-                                    Log.i("=====upload",s);
+                                    Log.i("=====upload", s);
                                 }
                             });
                         }
@@ -199,13 +199,13 @@ public class UserModelImpl implements UserModel {
                             m.update(context, new UpdateListener() {
                                 @Override
                                 public void onSuccess() {
-                                    Log.i("receive_account=====upload","success");
+                                    Log.i("receive_account=====upload", "success");
 
                                 }
 
                                 @Override
                                 public void onFailure(int i, String s) {
-                                Log.i("receive_account=====upload",s);
+                                    Log.i("receive_account=====upload", s);
                                 }
                             });
                         }
@@ -253,7 +253,11 @@ public class UserModelImpl implements UserModel {
 //
 //        }
 
-        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='" + account + "') and account != '" + account + "' order by c_name" ;
+//        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='"
+//                + account + "') and account != '" + account + "'  order by -c_name ";
+        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='"
+                + account + "')   order by -c_name ";
+
 
         BmobQuery<User_Group> query = new BmobQuery<>();
         query.doSQLQuery(context, sql, new SQLQueryListener<User_Group>() {

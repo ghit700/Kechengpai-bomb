@@ -216,12 +216,12 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
             mPresenter.uploadUserLogo(mContext, file, user);
         }
 
-        if (requsetCode == UPDATE_REQUEST && resultCode == 0) {
+        if (requsetCode == UPDATE_REQUEST && resultCode == 100) {
             if (data != null) {
                 if (null != data.getStringExtra("columnCode") && null != data.getStringExtra("columnValue")) {
                     String columnCode = data.getStringExtra("columnCode");
                     String columnValue = data.getStringExtra("columnValue");
-                    Log.i(AccountUpdateFragment.TAG, "onActivityResult columnCode=" + columnCode + " columnValue=" + columnValue);
+//                    Log.i(AccountUpdateFragment.TAG, "onActivityResult columnCode=" + columnCode + " columnValue=" + columnValue);
                     switch (columnCode) {
                         case "password":
                             break;

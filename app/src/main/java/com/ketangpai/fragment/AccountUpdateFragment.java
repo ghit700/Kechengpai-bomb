@@ -27,11 +27,11 @@ import com.ketangpai.viewInterface.AccountUpdateViewInterface;
 public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateViewInterface, AccountUpdatePresenter> implements AccountUpdateViewInterface {
     public static final String TAG = "===AccountUpdateFragment";
 
-    String mColumnName;
-    String mColumnCode;
-    String mColumnValue;
-    String account;
-    String u_id;
+    private String mColumnName;
+    private String mColumnCode;
+    private String mColumnValue;
+    private String account;
+    private String u_id;
 
     @Override
     protected void initVarious() {
@@ -202,7 +202,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
                             Intent intent = new Intent();
                             intent.putExtra("columnCode", mColumnCode);
                             intent.putExtra("columnValue", mColumnValue);
-                            getActivity().setResult(AccountUpdateActivity.RESULT_OK, intent);
+                            getActivity().setResult(100, intent);
                             getActivity().finish();
                         }
                     }).create();
@@ -223,7 +223,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
 
     @Override
     public void updateUserInfoOnComplete(String columnName) {
-        Log.i(TAG, "result  colunmnName=" + columnName);
+//        Log.i(TAG, "result  colunmnName=" + columnName);
         if (columnName.equals("-1")) {
             new AlertDialog.Builder(mContext).setTitle("修改失败").setPositiveButton("确认", null).create().show();
 
@@ -233,7 +233,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
                     mContext.getSharedPreferences("user", 0).edit().putString("password", mColumnValue).commit();
                     break;
                 case "school":
-                    mContext.getSharedPreferences("user", 0).edit().putString("scholl", mColumnValue).commit();
+                    mContext.getSharedPreferences("user", 0).edit().putString("school", mColumnValue).commit();
                     break;
                 case "number":
                     mContext.getSharedPreferences("user", 0).edit().putInt("number", Integer.parseInt(mColumnValue)).commit();
