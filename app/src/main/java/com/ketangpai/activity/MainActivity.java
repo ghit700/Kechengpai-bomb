@@ -1,35 +1,31 @@
 package com.ketangpai.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
-import com.ketangpai.base.DrawerBaseActivity;
+import com.ketangpai.base.BaseActivity;
+import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.bean.Installation;
-import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.fragment.ContactsFragment;
 import com.ketangpai.fragment.MainCourseFragment;
+import com.ketangpai.fragment.MeFragment;
 import com.ketangpai.fragment.MessageFragment;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.ActivityCollector;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.List;
 
+import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.bmob.push.BmobPush;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobQuery;
@@ -39,7 +35,15 @@ import cn.bmob.v3.listener.FindListener;
 /**
  * Created by nan on 2016/3/9.
  */
-public class MainActivity extends DrawerBaseActivity implements View.OnClickListener, View.OnTouchListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
+    @InjectView(R.id.tv_main_course)
+    TextView tvMainCourse;
+    @InjectView(R.id.tv_main_message)
+    TextView tvMainMessage;
+    @InjectView(R.id.tv_main_contacts)
+    TextView tvMainContacts;
+    @InjectView(R.id.tv_main_account)
+    TextView tvMainAccount;
 
 
     //    view
@@ -51,14 +55,15 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
     //   变量
     //保存点击的时间
     private long exitTime;
-    //actionbar开关对象
-    private ActionBarDrawerToggle mDrawerToggle;
+
     private String account;
     private Menu mMenu;
-    private boolean haveNotify = false;
     private MainCourseFragment mMainCourseFragment;
     private ContactsFragment mContactsFragment;
     private MessageFragment mMessageFragment;
+    private MeFragment mMeFragment;
+    private boolean haveNotify;
+    private Toolbar mToolbar;
 
 
     @Override
@@ -74,16 +79,6 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
 
     ;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (getIntent().getIntExtra("type", -1) != -1) {
-            int type = getIntent().getIntExtra("type", -1);
-            selectNevigationText(type);
-        }
-    }
-
 
     @Override
     protected void initVariables() {
@@ -97,26 +92,26 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         mMainCourseFragment = new MainCourseFragment();
         mContactsFragment = new ContactsFragment();
         mMessageFragment = new MessageFragment();
+        mMeFragment = new MeFragment();
+
     }
 
     @Override
     protected void initView() {
-        super.initView();
+        initToolbar();
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_main_container, mMainCourseFragment).commit();
+
     }
 
     @Override
     protected void initData() {
-        super.initData();
 
-        initDrawerToggle();
-        selectNevigationText(DrawerBaseActivity.COURSE);
+
     }
 
 
     @Override
     protected void initListener() {
-        super.initListener();
-        mDrawerContainer.setDrawerListener(mDrawerToggle);
 
 
     }
@@ -129,43 +124,10 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
 
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_main_drawerCourse:
-                mDrawerContainer.closeDrawer(Gravity.LEFT);
-                selectNevigationText(DrawerBaseActivity.COURSE);
-
-                return;
-
-            case R.id.tv_main_drawerMessage:
-                mDrawerContainer.closeDrawer(Gravity.LEFT);
-                selectNevigationText(DrawerBaseActivity.MESSAGE);
-                return;
-
-            case R.id.tv_main_contacts:
-                mDrawerContainer.closeDrawer(Gravity.LEFT);
-                selectNevigationText(DrawerBaseActivity.CONTACTS);
-            default:
-                break;
-        }
-        super.onClick(v);
-    }
-
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            mDrawerContainer.post(new Runnable() {
-                @Override
-                public void run() {
-                    supportInvalidateOptionsMenu();
-                }
-            });
-            return true;
-        }
+
 
         switch (item.getItemId()) {
-
 
             case R.id.notify:
                 setNotifyOff();
@@ -181,10 +143,7 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //双击退出程序
-        if (keyCode == KeyEvent.KEYCODE_BACK && mDrawerContainer.isDrawerOpen(Gravity.LEFT)) {
-            mDrawerContainer.closeDrawer(Gravity.LEFT);
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (System.currentTimeMillis() - exitTime > 2000) {
                 showToast("再按一次退出", 0);
                 exitTime = System.currentTimeMillis();
@@ -197,87 +156,13 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void initToolBar() {
-        super.initToolBar();
+    protected void initToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("课堂");
-
     }
 
 
-    @Override
-    protected Fragment getLayoutFragment() {
-
-        return new MainCourseFragment();
-    }
-
-    private void selectNevigationText(int type) {
-        if (type == DrawerBaseActivity.COURSE) {
-            mDrawerCourseText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
-            mDrawerMessageText.setBackgroundColor(getResources().getColor(android.R.color.white));
-            mDrawerContactsText.setBackgroundColor(getResources().getColor(android.R.color.white));
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mMainCourseFragment).commit();
-            getSupportActionBar().setTitle("课程");
-        } else if (type == DrawerBaseActivity.CONTACTS) {
-            mDrawerCourseText.setBackgroundColor(getResources().getColor(R.color.white));
-            mDrawerMessageText.setBackgroundColor(getResources().getColor(android.R.color.white));
-            mDrawerContactsText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mContactsFragment).commit();
-            getSupportActionBar().setTitle("通讯录");
-
-        } else {
-            mDrawerMessageText.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
-            mDrawerCourseText.setBackgroundColor(getResources().getColor(android.R.color.white));
-            mDrawerContactsText.setBackgroundColor(getResources().getColor(android.R.color.white));
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mMessageFragment).commit();
-            getSupportActionBar().setTitle("私信");
-
-        }
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        mDrawerToggle.syncState();
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        mDrawerToggle.onConfigurationChanged(newConfig);
-
-    }
-
-    private void initDrawerToggle() {
-        mDrawerToggle = new ActionBarDrawerToggle((Activity) mContext, mDrawerContainer, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-
-            }
-
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                super.onDrawerStateChanged(newState);
-                supportInvalidateOptionsMenu();
-
-            }
-        };
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean isOpen = mDrawerContainer.isDrawerVisible(mfl_main_drawerContent);
-        menu.findItem(R.id.notify).setVisible(!isOpen);
-        if (haveNotify) {
-            menu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications_on);
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -321,4 +206,41 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
     }
 
 
+    @OnClick({R.id.tv_main_course, R.id.tv_main_message, R.id.tv_main_contacts, R.id.tv_main_account})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_main_course:
+                tvMainCourse.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tvMainMessage.setTextColor(getResources().getColor(R.color.black));
+                tvMainContacts.setTextColor(getResources().getColor(R.color.black));
+                tvMainAccount.setTextColor(getResources().getColor(R.color.black));
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mMainCourseFragment).commit();
+                getSupportActionBar().setTitle("课程");
+                break;
+            case R.id.tv_main_message:
+                tvMainMessage.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tvMainCourse.setTextColor(getResources().getColor(R.color.black));
+                tvMainContacts.setTextColor(getResources().getColor(R.color.black));
+                tvMainAccount.setTextColor(getResources().getColor(R.color.black));
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mMessageFragment).commit();
+                getSupportActionBar().setTitle("私信");
+                break;
+            case R.id.tv_main_contacts:
+                tvMainContacts.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tvMainMessage.setTextColor(getResources().getColor(R.color.black));
+                tvMainCourse.setTextColor(getResources().getColor(R.color.black));
+                tvMainAccount.setTextColor(getResources().getColor(R.color.black));
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mContactsFragment).commit();
+                getSupportActionBar().setTitle("通讯录");
+                break;
+            case R.id.tv_main_account:
+                tvMainAccount.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tvMainMessage.setTextColor(getResources().getColor(R.color.black));
+                tvMainContacts.setTextColor(getResources().getColor(R.color.black));
+                tvMainCourse.setTextColor(getResources().getColor(R.color.black));
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_main_container, mMeFragment).commit();
+                getSupportActionBar().setTitle("我");
+                break;
+        }
+    }
 }

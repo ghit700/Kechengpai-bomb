@@ -1,9 +1,7 @@
 package com.ketangpai.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +15,6 @@ import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.CourseNoticeAdapter;
 import com.ketangpai.adapter.CourseExamAdapter;
 import com.ketangpai.adapter.CourseHomeworkAdapter;
-import com.ketangpai.adapter.ExamAdapter;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Course;
@@ -26,21 +23,11 @@ import com.ketangpai.bean.Notice;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
-import com.ketangpai.event.AddExamEvent;
-import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.CourseTabPresenter;
-import com.ketangpai.utils.FileUtils;
-import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.viewInterface.CourseTabViewInterface;
-import com.shamanland.fab.FloatingActionButton;
-import com.shamanland.fab.ShowHideOnScroll;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

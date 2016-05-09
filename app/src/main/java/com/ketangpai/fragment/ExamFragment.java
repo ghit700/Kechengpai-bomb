@@ -1,12 +1,7 @@
 package com.ketangpai.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ketangpai.adapter.ExamAdapter;
@@ -23,7 +18,6 @@ import com.ketangpai.view.FullyLinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
@@ -49,7 +43,7 @@ public class ExamFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_s_exam;
+        return R.layout.fragment_exam;
     }
 
 

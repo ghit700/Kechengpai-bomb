@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.ketangpai.base.BaseToolbarActivity;
-import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.fragment.NotificationFragment;
 import com.ketangpai.nan.ketangpai.R;
 

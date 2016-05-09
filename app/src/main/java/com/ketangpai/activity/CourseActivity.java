@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BaseToolbarActivity;
-import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.CourseFragment;

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/backgroud_accout_item"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/img_account_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/da8e974dc_r"/>
+
+        <TextView
+            android:id="@+id/tv_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/img_account_logo"
+            android:text="111"/>
+
+        <TextView
+            android:id="@+id/tv_account_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_account"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/img_account_logo"
+            android:text="111"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_account_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/backgroud_accout_item"
+        android:paddingBottom="16dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="16dp"
+        android:text="设置"
+        android:textSize="18sp"/>
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:textColor="@color/actionsheet_red"
+        android:text="退出登录"
+        android:background="@drawable/backgroud_accout_item"
+        android:id="@+id/btn_account_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"/>
+</LinearLayout>

@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BaseToolbarActivity;
-import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.User;
 import com.ketangpai.fragment.ChatFragment;
 import com.ketangpai.nan.ketangpai.R;

@@ -275,7 +275,6 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
 
     @Override
     public void register(int type) {
-        Log.i(TAG, "register type=" + type);
 
         if (type == -1) {
             new AlertDialog.Builder(mContext).setTitle("注册失败")

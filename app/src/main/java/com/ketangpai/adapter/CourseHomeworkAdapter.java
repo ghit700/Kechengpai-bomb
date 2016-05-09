@@ -1,17 +1,12 @@
 package com.ketangpai.adapter;
 
 import android.content.Context;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.TimeUtils;
-import com.ketangpai.view.MyPopupMenu;
 
 import java.util.List;
 
@@ -29,7 +24,7 @@ public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> {
     protected int getItemLayoutId(int viewType) {
 
 
-        return R.layout.item_course_s_homework;
+        return R.layout.item_course_homework;
 
     }
 

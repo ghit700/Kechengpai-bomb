@@ -234,8 +234,6 @@ public class UserModelImpl implements UserModel {
     public void getUserGroup(final Context context, String account, final ResultsCallback resultsCallback) {
 
 
-//        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='"
-//                + account + "') and account != '" + account + "'  order by -c_name ";
         String sql = "select * from User_Group where c_id = (select c_id from User_Group where account = '" +
                 account + "') and account !='" + account + "'";
 

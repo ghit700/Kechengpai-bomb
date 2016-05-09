@@ -68,7 +68,7 @@ public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterfac
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_s_homework;
+        return R.layout.fragment_homework;
     }
 
     @Override
