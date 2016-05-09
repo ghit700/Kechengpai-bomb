@@ -35,6 +35,7 @@ public class THomeworkAdapter extends BaseAdapter<Student_Homework> {
         TextView tv_t_homework_student_name = (TextView) holder.getViewById(R.id.tv_t_homework_student_name);
         TextView tv_t_homework_student_grade = (TextView) holder.getViewById(R.id.tv_t_homework_student_grade);
         TextView tv_t_homework_commit_time = (TextView) holder.getViewById(R.id.tv_t_homework_commit_time);
+        TextView tv_t_homework_s_state = (TextView) holder.getViewById(R.id.tv_t_homework_s_state);
 
 
         tv_t_homework_student_name.setText(item.getStudent_name());
@@ -49,6 +50,7 @@ public class THomeworkAdapter extends BaseAdapter<Student_Homework> {
         if (item.getS_state().equals("未交")) {
             tv_t_homework_commit_time.setText("未交");
         } else {
+            tv_t_homework_s_state.setText(item.getS_state());
             tv_t_homework_commit_time.setText("提交时间:" + TimeUtils.getNoticeTime(item.getCommit_time()));
         }
     }

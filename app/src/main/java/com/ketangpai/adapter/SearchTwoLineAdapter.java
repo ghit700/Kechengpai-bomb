@@ -5,6 +5,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
+import com.ketangpai.bean.Search;
 import com.ketangpai.nan.ketangpai.R;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/21.
  */
-public class SearchTwoLineAdapter extends BaseAdapter {
+public class SearchTwoLineAdapter extends BaseAdapter<Search> {
     public SearchTwoLineAdapter(Context mContext, List mDataList) {
         super(mContext, mDataList);
     }
@@ -23,12 +24,14 @@ public class SearchTwoLineAdapter extends BaseAdapter {
     }
 
     @Override
-    protected void bindData(ViewHolder holder, int position, Object item) {
+    protected void bindData(ViewHolder holder, int position, Search item) {
         //view的初始化
         TextView title = (TextView) holder.getViewById(R.id.tv_item_search_title);
         TextView content = (TextView) holder.getViewById(R.id.tv_item_search_content);
 
         //view的赋值
+        title.setText(item.getTitle());
+        content.setText(item.getContent());
     }
 
 

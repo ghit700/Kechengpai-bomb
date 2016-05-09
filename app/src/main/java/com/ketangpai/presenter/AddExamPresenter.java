@@ -51,6 +51,7 @@ public class AddExamPresenter extends BasePresenter<AddExamViewInterface> {
                     query.getObject(context, test.getObjectId(), new GetListener<Test>() {
                         @Override
                         public void onSuccess(Test test1) {
+                            mAddExamViewInterface.addExamOnComplete(test1);
                             examModel.createStudentExamList(context, test1);
                             notificationModel.publishStudentNofication(context, test1, c_id, c_name);
                         }
@@ -60,7 +61,7 @@ public class AddExamPresenter extends BasePresenter<AddExamViewInterface> {
 
                         }
                     });
-                    mAddExamViewInterface.addExamOnComplete(test);
+
                 }
 
                 @Override

@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,6 +34,9 @@ import com.ketangpai.viewInterface.AccountUpdateViewInterface;
 import com.ketangpai.viewInterface.AccountViewInterface;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import cn.bmob.v3.datatype.BmobFile;
 
@@ -197,13 +202,22 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
 
         if (requsetCode == IntentUtils.OPEN_IMGAE && resultCode == getActivity().RESULT_OK) {
             Uri uri = data.getData();
-            File file = FileUtils.getFileByUri(getActivity(), uri);
-            FileUtils.overloadFile(file, new File(Constant.LOGO_FOLDER));
-            ImageLoaderUtils.display(mContext, img_account_user, file.getPath());
+
+            Bitmap bitmap = null;
+            try {
+                FileOutputStream fos = new FileOutputStream(Constant.LOGO_FOLDER, false);
+                InputStream is = mContext.getContentResolver().openInputStream(uri);
+                bitmap = BitmapFactory.decodeStream(is);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ImageLoaderUtils.display(mContext, img_account_user, Constant.LOGO_FOLDER);
             User user = new User();
             user.setObjectId(u_id);
             user.setAccount(account);
-
+            File file = new File(Constant.LOGO_FOLDER);
             mPresenter.uploadUserLogo(mContext, file, user);
         }
 

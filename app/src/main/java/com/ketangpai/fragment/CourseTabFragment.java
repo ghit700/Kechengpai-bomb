@@ -30,6 +30,7 @@ import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
 import com.ketangpai.event.AddExamEvent;
+import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.CourseTabPresenter;
@@ -131,6 +132,13 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setRefreshing(true);
         EventBus.getDefault().register(this);
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
+        onRefresh();
     }
 
     @Override
@@ -163,15 +171,11 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             case 0:
                 mTabAdapter = new CourseHomeworkAdapter(context, mTabContents, type);
                 if (type == 0) {
-                    mPresenter.getHomeworkList(mContext, c_id);
                     mPublishBtn.setBackgroundResource(R.drawable.category_1004);
-                } else {
-                    mPresenter.getHomeworkListToStudent(context, c_id, ((Student_Course) course).getAdd_time());
                 }
                 break;
             case 1:
                 mTabAdapter = new CourseDataAdapter(context, mTabContents);
-                mPresenter.getDataList(context, c_id);
                 if (type == 0) {
                     mPublishBtn.setBackgroundResource(R.drawable.category_1002);
                 }
@@ -180,20 +184,15 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             case 2:
                 mTabAdapter = new CourseNoticeAdapter(context, mTabContents, type);
                 if (type == 0) {
-                    mPresenter.getNoticeList(context, c_id);
                     mPublishBtn.setBackgroundResource(R.drawable.category_1003);
-                } else {
-                    mPresenter.getNoticeListToStudent(mContext, (Student_Course) course);
                 }
 
                 break;
             case 3:
                 mTabAdapter = new CourseExamAdapter(context, mTabContents, type);
                 if (type == 0) {
-                    mPresenter.getExamList(mContext, c_id);
+
                     mPublishBtn.setBackgroundResource(R.drawable.category_1001);
-                } else {
-                    mPresenter.getExamListToStudent(context, c_id, ((Student_Course) course).getAdd_time());
                 }
 
                 break;
@@ -208,7 +207,38 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void onRefresh() {
+        switch (mPosition) {
+            case 0:
+                if (type == 0) {
+                    mPresenter.getHomeworkList(mContext, c_id);
+                } else {
+                    mPresenter.getHomeworkListToStudent(mContext, c_id, ((Student_Course) course).getAdd_time());
+                }
+                break;
+            case 1:
+                mPresenter.getDataList(mContext, c_id);
 
+                break;
+            case 2:
+                if (type == 0) {
+                    mPresenter.getNoticeList(mContext, c_id);
+                } else {
+                    mPresenter.getNoticeListToStudent(mContext, (Student_Course) course);
+                }
+
+                break;
+            case 3:
+                if (type == 0) {
+                    mPresenter.getExamList(mContext, c_id);
+                } else {
+                    mPresenter.getExamListToStudent(mContext, c_id, ((Student_Course) course).getAdd_time());
+                }
+
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override
@@ -317,6 +347,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getHomeworkListOnComplete(List<Teacher_Homework> homeworks) {
+        mSwipeRefreshLayout.setRefreshing(false);
         mTabContents.clear();
         Collections.reverse(homeworks);
         mTabContents.addAll(homeworks);
@@ -338,6 +369,7 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getDataListOnComplete(List datas) {
+        mSwipeRefreshLayout.setRefreshing(false);
         mTabContents.clear();
         Collections.reverse(datas);
         mTabContents.addAll(datas);
@@ -347,6 +379,8 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getNoticeListOnComplete(List<Notice> notices) {
+        mSwipeRefreshLayout.setRefreshing(false);
+
         mTabContents.clear();
         Collections.reverse(notices);
         mTabContents.addAll(notices);
@@ -355,6 +389,8 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
 
     @Override
     public void getExamkListOnComplete(List exams) {
+        mSwipeRefreshLayout.setRefreshing(false);
+
         mTabContents.clear();
         Collections.reverse(exams);
         mTabContents.addAll(exams);
@@ -368,6 +404,8 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             mTabList.smoothScrollToPosition(0);
         }
     }
+
+
 
     public void setCourse(Course course) {
         this.course = course;

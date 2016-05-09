@@ -34,6 +34,7 @@ public class TExamkAdapter extends BaseAdapter<Student_Reply> {
         TextView tvExamStudentName = (TextView) holder.getViewById(R.id.tv_t_exam_student_name);
         TextView tvExamStudentGrade = (TextView) holder.getViewById(R.id.tv_t_exam_student_grade);
         TextView tvExamCommitTime = (TextView) holder.getViewById(R.id.tv_t_exam_commit_time);
+        TextView tvExamSState = (TextView) holder.getViewById(R.id.tv_t_exam_s_state);
 
 
         tvExamStudentName.setText(item.getStudent_name());
@@ -48,6 +49,7 @@ public class TExamkAdapter extends BaseAdapter<Student_Reply> {
         if (item.getS_state().equals("未交")) {
             tvExamCommitTime.setText("未交");
         } else {
+            tvExamSState.setText(item.getS_state());
             tvExamCommitTime.setText("提交时间:" + TimeUtils.getNoticeTime(item.getCommit_time()));
         }
     }

@@ -76,6 +76,7 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkViewInterface
                     query.getObject(context, homework.getObjectId(), new GetListener<Teacher_Homework>() {
                         @Override
                         public void onSuccess(Teacher_Homework teacher_homework) {
+                            mAddHomeworkViewInterface.addHomeWorkOnComplete(teacher_homework);
                             homeworkModel.createStudentHomeworkList(context, teacher_homework);
                             notificationModel.publishStudentNofication(context, teacher_homework, c_id, c_name);
                         }
@@ -85,7 +86,7 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkViewInterface
 
                         }
                     });
-                    mAddHomeworkViewInterface.addHomeWorkOnComplete(homework);
+
                 }
 
                 @Override

@@ -120,6 +120,7 @@ public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterf
 
     @Override
     public void onRefresh() {
+        mHomeworks.clear();
         mPresenter.getStudentHomeworkList(mContext, homework.getH_id());
     }
 }

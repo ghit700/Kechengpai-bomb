@@ -37,6 +37,8 @@ public class ImageLoaderUtils {
                 .error(R.drawable.da8e974dc_r).crossFade().into(imageView);
     }
 
+
+
     public static void displayNoDisk(Context context, ImageView imageView, String url) {
         if (imageView == null) {
             throw new IllegalArgumentException("argument error");

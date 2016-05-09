@@ -3,6 +3,7 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
+import com.ketangpai.bean.Search;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Student_Reply;
@@ -16,6 +17,7 @@ import com.ketangpai.fragment.AddHomeworkFragment;
 import com.ketangpai.fragment.THomeworkFragment;
 import com.ketangpai.model.ExamModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -275,5 +277,35 @@ public class ExamModelImpl implements ExamModel {
         });
 
 
+    }
+
+    @Override
+    public void getSearchExamList(Context context, String content, final ResultsCallback resultsCallback) {
+        String sql = "select * from Test where title like '%" + content + "%' or content like '%" + content + "%'";
+        BmobQuery<Test> query = new BmobQuery<>();
+        query.doSQLQuery(context, sql, new SQLQueryListener<Test>() {
+            @Override
+            public void done(BmobQueryResult<Test> bmobQueryResult, BmobException e) {
+                if (null != bmobQueryResult) {
+                    List<Test> tests = bmobQueryResult.getResults();
+                    List<Search> searches = new ArrayList<Search>();
+                    if (null != tests && tests.size() > 0) {
+                        for (Test test : tests) {
+                            Search search = new Search();
+                            search.setType(3);
+                            search.setType_id(test.getT_id());
+                            search.setTitle(test.getTitle());
+                            search.setContent(test.getContent());
+                            searches.add(search);
+                        }
+                        resultsCallback.onSuccess(searches);
+                    } else {
+                        resultsCallback.onSuccess(searches);
+                    }
+                } else {
+                    resultsCallback.onFailure(e);
+                }
+            }
+        });
     }
 }

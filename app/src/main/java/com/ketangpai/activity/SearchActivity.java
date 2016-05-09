@@ -3,6 +3,8 @@ package com.ketangpai.activity;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -13,10 +15,11 @@ import com.ketangpai.base.BaseActivity;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.view.SlidingTabLayout;
 
+
 /**
  * Created by nan on 2016/3/12.
  */
-public class SearchActivity extends BaseActivity implements View.OnClickListener {
+public class SearchActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
 
     //view
     private SlidingTabLayout mTabs;
@@ -45,6 +48,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initTabsLayout();
         mBackBtn = (ImageView) findViewById(R.id.img_search_back);
         mSearchText = (EditText) findViewById(R.id.et_search_text);
+
     }
 
     @Override
@@ -56,6 +60,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initListener() {
         mBackBtn.setOnClickListener(this);
+        mSearchText.addTextChangedListener(this);
     }
 
 
@@ -95,5 +100,20 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 return 0;
             }
         });
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        mSearchTabsPagerAdapter.search(mSearchText.getText().toString());
     }
 }

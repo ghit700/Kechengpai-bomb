@@ -22,7 +22,7 @@ public class NotificationInfo {
     }
 
     /**
-     * 1 公告 2 作业 3 资料
+     * 1 公告 2 作业 3 资料 4测试
      *
      * @return
      */

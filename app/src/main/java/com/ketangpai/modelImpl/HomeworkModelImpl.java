@@ -3,6 +3,7 @@ package com.ketangpai.modelImpl;
 import android.content.Context;
 import android.util.Log;
 
+import com.ketangpai.bean.Search;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Teacher_Course;
@@ -13,6 +14,7 @@ import com.ketangpai.fragment.AddHomeworkFragment;
 import com.ketangpai.fragment.THomeworkFragment;
 import com.ketangpai.model.HomeworkModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -239,6 +241,36 @@ public class HomeworkModelImpl implements HomeworkModel {
             @Override
             public void onFailure(int i, String s) {
 
+            }
+        });
+    }
+
+    @Override
+    public void getSearchHomeworkList(Context context, String content, final ResultsCallback resultsCallback) {
+        String sql = "select * from Teacher_Homework where title like '%" + content + "%' or content like '%" + content + "%'";
+        BmobQuery<Teacher_Homework> query = new BmobQuery<>();
+        query.doSQLQuery(context, sql, new SQLQueryListener<Teacher_Homework>() {
+            @Override
+            public void done(BmobQueryResult<Teacher_Homework> bmobQueryResult, BmobException e) {
+                if (null != bmobQueryResult) {
+                    List<Teacher_Homework> homeworks = bmobQueryResult.getResults();
+                    List<Search> searches = new ArrayList<Search>();
+                    if (null != homeworks && homeworks.size() > 0) {
+                        for (Teacher_Homework homewokr : homeworks) {
+                            Search search = new Search();
+                            search.setType(1);
+                            search.setType_id(homewokr.getH_id());
+                            search.setTitle(homewokr.getTitle());
+                            search.setContent(homewokr.getContent());
+                            searches.add(search);
+                        }
+                        resultsCallback.onSuccess(searches);
+                    } else {
+                        resultsCallback.onSuccess(searches);
+                    }
+                } else {
+                    resultsCallback.onFailure(e);
+                }
             }
         });
     }

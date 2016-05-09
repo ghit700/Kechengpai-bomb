@@ -32,4 +32,6 @@ public interface HomeworkModel {
     void getStudentHomewokr(Context context, Teacher_Homework homework,String account ,ResultCallback resultCallback);
 
     void publishStudentHomework(Context context,Student_Homework student_homework);
+
+    void getSearchHomeworkList(Context context,String content,ResultsCallback resultsCallback);
 }

@@ -32,4 +32,7 @@ public interface ExamModel {
 
     void publishStudentExam(Context context, Student_Reply student_reply);
 
+    void getSearchExamList(Context context,String content,ResultsCallback resultsCallback);
+
+
 }

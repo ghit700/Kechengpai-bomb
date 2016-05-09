@@ -16,4 +16,7 @@ public interface NoticeModel {
     void getNoticeList(Context context, int c_id, ResultsCallback resultsCallback);
 
     void getNoticeListToStudent(Context context, int c_id, long add_time, ResultsCallback resultsCallback);
+
+    void getSearchNoticeList(Context context, String content, ResultsCallback resultsCallback);
+
 }
