@@ -19,7 +19,6 @@ import cn.bmob.v3.listener.UploadFileListener;
 public interface HomeworkModel {
 
 
-    void getHomeworkList(Context context, int c_id, ResultsCallback resultsCallback);
 
 
     void getHomeworkListToStudent(Context context,int c_id,long add_time,ResultsCallback resultsCallback);

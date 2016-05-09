@@ -55,7 +55,6 @@ public class CourseModelImpl implements CourseModel {
 
     @Override
     public void addCourse(final Context context, final String code, final String account, final String name, final int number, final String path, final ResultCallback resultCallback) {
-        Log.i(MainCourseFragment.TAG, "addCourse code=" + code);
         String sql = "select * from Teacher_Course where code=?";
         BmobQuery<Teacher_Course> query = new BmobQuery<Teacher_Course>();
         query.doSQLQuery(context, sql, new SQLQueryListener<Teacher_Course>() {

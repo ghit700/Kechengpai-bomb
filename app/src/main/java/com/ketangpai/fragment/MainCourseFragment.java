@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,17 +18,17 @@ import com.ketangpai.activity.CourseActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.CourseSMainCourseAdapter;
 import com.ketangpai.base.BaseAdapter;
-import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Student_Course;
-import com.ketangpai.bean.Teacher_Course;
+import com.ketangpai.callback.ResultCallback;
+import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.listener.OnItemClickListener;
+import com.ketangpai.model.CourseModel;
+import com.ketangpai.modelImpl.CourseModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.MainCoursePresenter;
-import com.ketangpai.utils.CodeUtils;
 import com.ketangpai.utils.NetUtils;
-import com.ketangpai.viewInterface.MainCourseViewInterface;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
 
@@ -40,12 +39,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import cn.bmob.v3.exception.BmobException;
+
 /**
  * Created by nan on 2016/3/15.
  */
-public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInterface, MainCoursePresenter> implements MainCourseViewInterface, View.OnClickListener, OnItemClickListener, DialogInterface.OnDismissListener, SwipeRefreshLayout.OnRefreshListener {
+public class MainCourseFragment extends BaseFragment implements View.OnClickListener, OnItemClickListener, DialogInterface.OnDismissListener, SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String TAG = "===MainCourseFragment";
     //view
     private FloatingActionButton mAddBtn;
     private RecyclerView mMainCourseList;
@@ -69,6 +69,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     private String name;
     private int number;
     private String path;
+    private CourseModel courseModel;
 
 
     @Override
@@ -88,7 +89,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
 
         mCourses = new ArrayList<Student_Course>();
         mMainCourseAdapter = new CourseSMainCourseAdapter(mContext, mCourses);
-
+        courseModel = new CourseModelImpl();
         EventBus.getDefault().register(this);
     }
 
@@ -187,7 +188,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.addCourse(mContext, dialogCourse.getText().toString(), account, name, number, path);
+                addCourse(dialogCourse.getText().toString(), account, name, number, path);
             }
         });
 
@@ -235,58 +236,71 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     public void onRefresh() {
         mMainCourseAdapter.clearData();
-        mPresenter.getCourseList(mContext, account);
+        getCourseList(account);
     }
 
-    @Override
-    public void getCourseListOnComplete(List<Course> courses) {
-        if (null != courses) {
-            Collections.reverse(courses);
-            int start = 0;
-            start = mCourses.size();
-            mCourses.addAll(courses);
-            Log.i(TAG, "getCourseListOnComplete===start=" + start + "  end=" + mCourses.size());
-            if (start == 0) {
-                mMainCourseAdapter.notifyDataSetChanged();
-            } else {
-                mMainCourseAdapter.notifyItemRangeInserted(start, mCourses.size());
+    public void getCourseList(String account) {
+
+        courseModel.queryCourseList(mContext, account, new ResultsCallback() {
+            @Override
+            public void onSuccess(List list) {
+                if (list.size() > 0) {
+                    Collections.reverse(list);
+                    int start = 0;
+                    start = mCourses.size();
+                    mCourses.addAll(list);
+                    if (start == 0) {
+                        mMainCourseAdapter.notifyDataSetChanged();
+                    } else {
+                        mMainCourseAdapter.notifyItemRangeInserted(start, mCourses.size());
+                    }
+
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+                } else {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
 
-            mSwipeRefreshLayout.setRefreshing(false);
-        } else {
-            mSwipeRefreshLayout.setRefreshing(false);
+            @Override
+            public void onFailure(BmobException e) {
+            }
+        });
 
-        }
+
     }
 
 
-    @Override
-    public void addCourseOnComplete(Student_Course course) {
-        if (null != course) {
-            Log.i(TAG, "addCourseOnComplete");
-            mMainCourseAdapter.addItem(0, course);
-            mMainCourseList.smoothScrollToPosition(0);
-            sendToast("加入班级成功");
-        } else {
-            new AlertDialog.Builder(mContext).setTitle("加入班级失败")
-                    .setPositiveButton("确认", null)
-                    .create().show();
-        }
-        mAddDialog.dismiss();
-    }
+    public void addCourse(String code, String acccount, String name, int number, String path) {
 
-    @Override
-    public void showLoading() {
         showLoadingDialog();
-
         setLoadingText("加入班级中...");
+        courseModel.addCourse(mContext, code, acccount, name, number, path, new ResultCallback() {
+            @Override
+            public void onSuccess(Object object) {
+
+                mMainCourseAdapter.addItem(0, object);
+                mMainCourseList.smoothScrollToPosition(0);
+                sendToast("加入班级成功");
+
+                mAddDialog.dismiss();
+                dismissLoadingDialog();
+
+            }
+
+            @Override
+            public void onFailure(String e) {
+                new AlertDialog.Builder(mContext).setTitle("加入班级失败")
+                        .setPositiveButton("确认", null)
+                        .create().show();
+                dismissLoadingDialog();
+
+            }
+        });
+
 
     }
 
-    @Override
-    public void hideLoading() {
-        dismissLoadingDialog();
-    }
 
     @Subscribe
     public void onNotificationEvent(NotificationEvent event) {
@@ -294,8 +308,4 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     }
 
 
-    @Override
-    protected MainCoursePresenter createPresenter() {
-        return new MainCoursePresenter();
-    }
 }

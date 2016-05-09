@@ -44,7 +44,6 @@ public class FileModelImpl implements FileModel {
 
     @Override
     public void downloadData(Context context, String url, String fileName, DownloadFileListener resultCallback) {
-        Log.i(DataFragment.TAG, "downloadData url=" + url + " filename=" + fileName + " save=" + Constant.ALBUM_PATH + Constant.DATA_FOLDER);
         File file = new File(Constant.ALBUM_PATH + Constant.DATA_FOLDER, fileName);
         if (!file.exists()) {
             BmobFile bmobFile = new BmobFile(fileName, "", url);

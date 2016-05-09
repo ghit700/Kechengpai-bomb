@@ -28,7 +28,6 @@ public class DataModelImpl implements DataModel {
 
     @Override
     public void getDataList(Context context, int c_id, final ResultsCallback resultsCallback) {
-        Log.i(CourseTabFragment.TAG, "getDataList c_id=" + c_id);
         String sql = "select * from Data where c_id=?";
         BmobQuery<Data> query = new BmobQuery<Data>();
         query.doSQLQuery(context, sql, new SQLQueryListener<Data>() {
@@ -36,7 +35,6 @@ public class DataModelImpl implements DataModel {
             public void done(BmobQueryResult<Data> bmobQueryResult, BmobException e) {
                 List list = bmobQueryResult.getResults();
                 if (null != list) {
-                    Log.i(CourseTabFragment.TAG, list.size() + "  ");
                     resultsCallback.onSuccess(list);
                 } else {
                     resultsCallback.onFailure(e);

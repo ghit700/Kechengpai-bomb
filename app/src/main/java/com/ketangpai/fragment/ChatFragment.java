@@ -12,20 +12,20 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.ketangpai.adapter.ChatAdapter;
 import com.ketangpai.base.BaseFragment;
-import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.User;
+import com.ketangpai.callback.ResultCallback;
+import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.event.ReceiveMessageEvent;
 import com.ketangpai.listener.OnItemClickListener;
+import com.ketangpai.model.MessageModel;
+import com.ketangpai.modelImpl.MessageModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.ChatPresenter;
-import com.ketangpai.viewInterface.ChatViewInterface;
+import com.ketangpai.utils.PushManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,12 +33,13 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.exception.BmobException;
+
 /**
  * Created by nan on 2016/3/19.
  */
-public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatPresenter> implements ChatViewInterface, View.OnClickListener, TextWatcher, OnItemClickListener {
+public class ChatFragment extends BaseFragment implements View.OnClickListener, TextWatcher, OnItemClickListener {
 
-    public final static String TAG = "====ChatFragment";
     //view
     EditText mSendTextEt;
     ImageView mSendtBtn;
@@ -56,6 +57,7 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
     private String account;
     private User mSend_User;
     private InputMethodManager mImm;
+    private MessageModel mMessageModel;
 
     @Override
     protected int getLayoutId() {
@@ -74,7 +76,7 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
         if (null != getActivity().getIntent().getSerializableExtra("send_user")) {
             mSend_User = (User) getActivity().getIntent().getSerializableExtra("send_user");
         }
-
+        mMessageModel = new MessageModelImpl();
 
     }
 
@@ -120,7 +122,7 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
 
     @Override
     protected void loadData() {
-        mPresenter.getChatRecondList(mContext, account, mSend_User.getAccount());
+        getChatRecondList(account, mSend_User.getAccount());
     }
 
     private void initChatList() {
@@ -161,7 +163,7 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
             messageInfo.setSend_name(name);
             messageInfo.setSend_path(path);
             mChatAdapter.addItem(mChatRecondList.size(), messageInfo);
-            mPresenter.sendMessage(mContext, messageInfo, mSend_User.getPath());
+            sendMessage(messageInfo, mSend_User.getPath());
             mChatList.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -190,22 +192,50 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
         }
     }
 
-    @Override
-    protected ChatPresenter createPresenter() {
-        return new ChatPresenter();
+
+    public void getChatRecondList(String account, String send_account) {
+
+        mMessageModel.getChatRecondList(mContext, account, send_account, new ResultsCallback() {
+            @Override
+            public void onSuccess(List list) {
+                mChatRecondList.addAll(list);
+                mChatAdapter.notifyDataSetChanged();
+                mChatList.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mChatList.smoothScrollToPosition(mChatRecondList.size());
+                    }
+                }, 200);
+            }
+
+            @Override
+            public void onFailure(BmobException e) {
+
+            }
+        });
+
     }
 
-    @Override
-    public void getChatRecondListOnComplete(List<MessageInfo> messageInfos) {
-        mChatRecondList.addAll(messageInfos);
-        mChatAdapter.notifyDataSetChanged();
-        mChatList.postDelayed(new Runnable() {
+    ;
+
+    public void sendMessage(MessageInfo messageInfo, String path) {
+
+        mMessageModel.sendMessage(mContext, messageInfo, path, new ResultCallback() {
             @Override
-            public void run() {
-                mChatList.smoothScrollToPosition(mChatRecondList.size());
+            public void onSuccess(Object object) {
+
+                PushManager.sendMessage(mContext, (MessageInfo) object);
             }
-        }, 200);
+
+            @Override
+            public void onFailure(String e) {
+
+            }
+        });
+
+
     }
+
 
     @Subscribe
     public void onReceiveMessageEvent(ReceiveMessageEvent event) {
@@ -216,8 +246,6 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
                 mChatList.smoothScrollToPosition(mChatRecondList.size());
             }
         }, 200);
-
-
     }
 
     @Override

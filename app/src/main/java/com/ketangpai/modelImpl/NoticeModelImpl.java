@@ -22,28 +22,6 @@ import cn.bmob.v3.listener.SaveListener;
 public class NoticeModelImpl implements NoticeModel {
 
 
-
-
-    @Override
-    public void getNoticeList(Context context, int c_id, final ResultsCallback resultsCallback) {
-        Log.i(CourseTabFragment.TAG, "getNoticeList c_id=" + c_id);
-        String sql = "select * from Notice where c_id=?";
-        BmobQuery<Notice> bmobQuery = new BmobQuery<Notice>();
-        bmobQuery.doSQLQuery(context, sql, new SQLQueryListener<Notice>() {
-            @Override
-            public void done(BmobQueryResult<Notice> bmobQueryResult, BmobException e) {
-                List list = bmobQueryResult.getResults();
-                if (null != list) {
-                    resultsCallback.onSuccess(list);
-                } else {
-                    Log.i(CourseTabFragment.TAG, "getNoticeList null");
-
-                }
-            }
-        }, c_id);
-
-    }
-
     @Override
     public void getNoticeListToStudent(Context context, int c_id, long add_time, final ResultsCallback resultsCallback) {
         String sql = "select * from Notice where c_id=? and time>?";
@@ -54,9 +32,6 @@ public class NoticeModelImpl implements NoticeModel {
                 List list = bmobQueryResult.getResults();
                 if (null != list) {
                     resultsCallback.onSuccess(list);
-                } else {
-                    Log.i(CourseTabFragment.TAG, "getNoticeList null");
-
                 }
             }
         }, c_id, add_time);

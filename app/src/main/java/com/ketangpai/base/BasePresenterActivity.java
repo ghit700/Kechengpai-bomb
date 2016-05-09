@@ -13,8 +13,8 @@ import com.ketangpai.nan.ketangpai.R;
  */
 public abstract class BasePresenterActivity<V, T extends BasePresenter<V>> extends BaseActivity {
     protected T mPresenter;
-    private Dialog mLoadingDialog;
-    private TextView tv_loading;
+
+
 
     @Override
     protected int getContentViewId() {
@@ -60,25 +60,5 @@ public abstract class BasePresenterActivity<V, T extends BasePresenter<V>> exten
 
     protected abstract T createPresenter();
 
-    public void showLoadingDialog() {
-        mLoadingDialog = new AlertDialog.Builder(mContext).show();
-        View view = getLayoutInflater().inflate(R.layout.dialog_loading, null);
-        tv_loading = (TextView) view.findViewById(R.id.tv_loading);
-        mLoadingDialog.setContentView(view);
-        mLoadingDialog.setCanceledOnTouchOutside(false);
-    }
 
-    /**
-     * 修改载入过程的文字
-     *
-     * @param text
-     */
-    public void setLoadingText(String text) {
-        tv_loading.setText(text);
-    }
-
-
-    public void dismissLoadingDialog() {
-        mLoadingDialog.dismiss();
-    }
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.ketangpai.activity.DataActivity;
 import com.ketangpai.activity.ExamActivity;
@@ -12,31 +11,28 @@ import com.ketangpai.activity.HomeWorkActivity;
 import com.ketangpai.activity.NoticeActivity;
 import com.ketangpai.adapter.NotificationAdapter;
 import com.ketangpai.base.BaseFragment;
-import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.bean.Notification;
 import com.ketangpai.bean.NotificationInfo;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
-import com.ketangpai.listener.OnItemClickListener;
+import com.ketangpai.callback.ResultsCallback;
+import com.ketangpai.modelImpl.NotificationModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.NotificationPresenter;
 import com.ketangpai.utils.NetUtils;
-import com.ketangpai.viewInterface.NotificationViewInterface;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 /**
  * Created by nan on 2016/4/9.
  */
-public class NotificationFragment extends BasePresenterFragment<NotificationViewInterface, NotificationPresenter> implements NotificationViewInterface, SwipeRefreshLayout.OnRefreshListener, NotificationAdapter.OnItemClickListener {
-    public static final String TAG = "===NotificationFragment";
+public class NotificationFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, NotificationAdapter.OnItemClickListener {
     //view
     private RecyclerView mList_notification;
     private SwipeRefreshLayout mRefreshLayout;
@@ -46,13 +42,14 @@ public class NotificationFragment extends BasePresenterFragment<NotificationView
 
     //variables
     private List<Notification> mNotificationList;
-
+    private NotificationModelImpl mNotificationModel;
     private String account;
 
     @Override
     protected void initVarious() {
         super.initVarious();
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
+        mNotificationModel = new NotificationModelImpl();
     }
 
     @Override
@@ -105,25 +102,32 @@ public class NotificationFragment extends BasePresenterFragment<NotificationView
 
     }
 
+    public void getNotificationList(String account) {
 
-    @Override
-    public void getNotificationListOnComplete(List<Notification> notifications) {
-        mRefreshLayout.setRefreshing(false);
-        mNotificationList.clear();
-        mNotificationList.addAll(notifications);
-//        Collections.reverse(mNotificationList);
-        mNotificationAdapter.reorderSections();
-        mNotificationAdapter.notifyDataSetChanged();
+
+        mNotificationModel.getNotificationList(mContext, account, new ResultsCallback() {
+            @Override
+            public void onSuccess(List list) {
+
+                mRefreshLayout.setRefreshing(false);
+                mNotificationList.clear();
+                mNotificationList.addAll(list);
+                mNotificationAdapter.reorderSections();
+                mNotificationAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(BmobException e) {
+
+            }
+        });
+
     }
 
-    @Override
-    protected NotificationPresenter createPresenter() {
-        return new NotificationPresenter();
-    }
 
     @Override
     public void onRefresh() {
-        mPresenter.getNotificationList(mContext, account);
+        getNotificationList(account);
     }
 
     @Override
@@ -193,7 +197,7 @@ public class NotificationFragment extends BasePresenterFragment<NotificationView
                     public void onSuccess(List<Test> list) {
                         Test test = list.get(0);
                         Intent intent = new Intent(mContext, ExamActivity.class);
-                        intent.putExtra("test",test);
+                        intent.putExtra("test", test);
                         startActivity(intent);
                     }
 

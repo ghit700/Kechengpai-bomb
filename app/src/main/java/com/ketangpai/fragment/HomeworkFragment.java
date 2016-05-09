@@ -11,18 +11,22 @@ import android.widget.TextView;
 
 import com.ketangpai.activity.DataActivity;
 import com.ketangpai.adapter.DataAdapter;
-import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Teacher_Homework;
+import com.ketangpai.callback.AttachmentResultCallback;
+import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.listener.OnItemClickListener;
+import com.ketangpai.model.FileModel;
+import com.ketangpai.model.HomeworkModel;
+import com.ketangpai.modelImpl.FileModelImpl;
+import com.ketangpai.modelImpl.HomeworkModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.HomeworkPresenter;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.FullyLinearLayoutManager;
-import com.ketangpai.viewInterface.HomeworkViewInterface;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,7 +40,7 @@ import cn.bmob.v3.datatype.BmobFile;
 /**
  * Created by nan on 2016/5/1.
  */
-public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterface, HomeworkPresenter> implements HomeworkViewInterface {
+public class HomeworkFragment extends BaseFragment {
     @InjectView(R.id.tv_s_homework_publishTime)
     TextView tvSHomeworkPublishTime;
     @InjectView(R.id.tv_s_homework_content)
@@ -65,6 +69,8 @@ public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterfac
     private int mValue;
     private String account;
     private Student_Homework student_homework;
+    private FileModel fileModel;
+    private HomeworkModel homeworkModel;
 
     @Override
     protected int getLayoutId() {
@@ -76,11 +82,13 @@ public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterfac
         super.initVarious();
         teacher_homework = (Teacher_Homework) getActivity().getIntent().getSerializableExtra("homework");
         account = getActivity().getSharedPreferences("user", 0).getString("account", "");
+        fileModel = new FileModelImpl();
+        homeworkModel = new HomeworkModelImpl();
+
     }
 
     @Override
     protected void initView() {
-        super.initView();
         listAttachData.setLayoutManager(new FullyLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mAttachs = teacher_homework.getFiles();
         mAttachAdapter = new DataAdapter(mContext, mAttachs);
@@ -100,8 +108,12 @@ public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterfac
     }
 
     @Override
+    protected void initData() {
+
+    }
+
+    @Override
     protected void initListener() {
-        super.initListener();
         mHomeworkAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -124,13 +136,7 @@ public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterfac
 
     @Override
     protected void loadData() {
-        super.loadData();
-        mPresenter.getStudentHomework(mContext, teacher_homework, account);
-    }
-
-    @Override
-    protected HomeworkPresenter createPresenter() {
-        return new HomeworkPresenter();
+        getStudentHomework(teacher_homework, account);
     }
 
 
@@ -147,7 +153,7 @@ public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterfac
             }
             student_homework.setT_state("未批改");
             student_homework.setCommit_time(System.currentTimeMillis());
-            mPresenter.publishStudentHomework(mContext, student_homework);
+            homeworkModel.publishStudentHomework(mContext, student_homework);
             getActivity().finish();
         }
     }
@@ -163,42 +169,73 @@ public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterfac
             data1.setName(file.getName());
             data1.setSize(FileUtils.getFileSize(file.length()));
             data1.setUrl(file.getAbsolutePath());
-            mPresenter.uploadHomework(mContext, bmobFile);
+            uploadHomework(bmobFile);
             mHomeworkAdapter.addItem(mHomeworks.size(), data1);
             mHomeworkAdapter.notifyDataSetChanged();
             btnUploadHomework.setText("确认上传");
         }
     }
 
-    @Override
-    public void uploadAttachOnComplete(Data data) {
-        mHomeworks.set(mHomeworks.size(), data);
-    }
 
-    @Override
-    public void onProgress(int value) {
-        this.mValue = value;
-    }
+    public void uploadHomework(final BmobFile file) {
 
-    @Override
-    public void getStudentHomeworkOnComplete(Student_Homework student_homework) {
-        this.student_homework = student_homework;
-        if (!student_homework.getS_state().equals("未交")) {
-            btnUploadHomework.setVisibility(View.GONE);
-        }
-        if (null != student_homework.getHomeworks()) {
-            mHomeworks.addAll(student_homework.getHomeworks());
-            Collections.reverse(mHomeworks);
-            mHomeworkAdapter.notifyDataSetChanged();
-        }
-        if (null == student_homework.getGrade()) {
-            tvSHomeworkGrade.setText("");
-        } else {
-            tvSHomeworkGrade.setText(String.valueOf(student_homework.getGrade()));
+        fileModel.uploadAttachment(mContext, file, new AttachmentResultCallback() {
 
-        }
-        tvSHomeworkComment.setText(student_homework.getComment());
 
+            @Override
+            public void onSuccess(BmobFile bmobFile) {
+                Data data = new Data();
+                data.setUrl(bmobFile.getFileUrl(mContext));
+                data.setSize(FileUtils.getFileSize(file.getLocalFile().length()));
+                data.setName(file.getFilename());
+                mHomeworks.set(mHomeworks.size(), data);
+            }
+
+            @Override
+            public void onProgress(Integer value) {
+
+                mValue = value;
+            }
+
+            @Override
+            public void onFailure(String e) {
+
+            }
+        });
 
     }
+
+
+    public void getStudentHomework(Teacher_Homework homework, String account) {
+
+        homeworkModel.getStudentHomewokr(mContext, homework, account, new ResultCallback() {
+            @Override
+            public void onSuccess(Object object) {
+                student_homework = (Student_Homework) object;
+                if (!student_homework.getS_state().equals("未交")) {
+                    btnUploadHomework.setVisibility(View.GONE);
+                }
+                if (null != student_homework.getHomeworks()) {
+                    mHomeworks.addAll(student_homework.getHomeworks());
+                    Collections.reverse(mHomeworks);
+                    mHomeworkAdapter.notifyDataSetChanged();
+                }
+                if (null == student_homework.getGrade()) {
+                    tvSHomeworkGrade.setText("");
+                } else {
+                    tvSHomeworkGrade.setText(String.valueOf(student_homework.getGrade()));
+
+                }
+                tvSHomeworkComment.setText(student_homework.getComment());
+            }
+
+            @Override
+            public void onFailure(String e) {
+
+            }
+        });
+
+    }
+
+
 }

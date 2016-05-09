@@ -44,7 +44,6 @@ public class UserModelImpl implements UserModel {
     public void login(final Context context, String account, String password, final ResultCallback resultCallback) {
 
 
-        Log.i(AccountUpdateFragment.TAG, "login account=" + account + " password=" + password);
         String sql = "select * from User where password=? and account=? and type=1";
         BmobQuery<User> query = new BmobQuery<User>("User");
         query.doSQLQuery(context, sql, new SQLQueryListener<User>() {
@@ -86,8 +85,6 @@ public class UserModelImpl implements UserModel {
     @Override
     public void register(Context context, User user, SaveListener resultCallBack) {
 
-        Log.i(AccountUpdateFragment.TAG, "register _id" + user.getObjectId() + " name=" + user.getName() + " account=" + user.getAccount() + "  type=" + user.getType()
-                + " password=" + user.getPassword() + " school=" + user.getSchool() + " number=" + user.getNumber());
 
         user.save(context, resultCallBack);
 
@@ -97,7 +94,6 @@ public class UserModelImpl implements UserModel {
     @Override
     public void updateUserInfo(Context context, String u_id, String columnName, String columnValue, UpdateListener resultCallback) {
         User user = new User();
-        Log.i(AccountUpdateFragment.TAG, "updateUserInfo colunmnName=" + columnName + "  value=" + columnValue);
         switch (columnName) {
             case "password":
                 user.setPassword(columnValue);
@@ -121,7 +117,6 @@ public class UserModelImpl implements UserModel {
 
     @Override
     public void uploadUserLogo(final Context context, File file, final User user, final UpdateListener resultCallback) {
-        Log.i(AccountFragment.TAG, "uploadUserLogo filepath=" + file.getAbsolutePath() + " name=" + file.getName());
         final BmobFile bmobFile = new BmobFile(file);
         bmobFile.upload(context, new UploadFileListener() {
             @Override
@@ -225,7 +220,6 @@ public class UserModelImpl implements UserModel {
 
             @Override
             public void onFailure(int i, String s) {
-                Log.i(AccountFragment.TAG, s);
             }
         });
     }

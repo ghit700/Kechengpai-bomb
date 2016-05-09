@@ -26,22 +26,7 @@ import cn.bmob.v3.listener.UpdateListener;
 public class HomeworkModelImpl implements HomeworkModel {
 
 
-    @Override
-    public void getHomeworkList(Context context, int c_id, final ResultsCallback resultsCallback) {
-        String sql = "select * from Teacher_Homework where c_id=?";
-        BmobQuery<Teacher_Homework> bmobQuery = new BmobQuery<Teacher_Homework>();
-        bmobQuery.doSQLQuery(context, sql, new SQLQueryListener<Teacher_Homework>() {
-            @Override
-            public void done(BmobQueryResult<Teacher_Homework> bmobQueryResult, BmobException e) {
-                List list = bmobQueryResult.getResults();
-                if (null != list) {
-                    resultsCallback.onSuccess(list);
-                } else {
 
-                }
-            }
-        }, c_id);
-    }
 
 
     @Override

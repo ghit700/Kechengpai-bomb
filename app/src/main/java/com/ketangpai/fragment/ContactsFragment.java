@@ -1,7 +1,6 @@
 package com.ketangpai.fragment;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -9,14 +8,14 @@ import com.ketangpai.activity.ChatActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.ContactsExAdapter;
 import com.ketangpai.base.BaseFragment;
-import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.User;
 import com.ketangpai.bean.User_Group;
+import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.event.NotificationEvent;
+import com.ketangpai.model.UserModel;
+import com.ketangpai.modelImpl.UserModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.ContactsPresenter;
 import com.ketangpai.utils.NetUtils;
-import com.ketangpai.viewInterface.ContactsViewInterface;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -24,10 +23,12 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.exception.BmobException;
+
 /**
  * Created by nan on 2016/3/15.
  */
-public class ContactsFragment extends BasePresenterFragment<ContactsViewInterface, ContactsPresenter> implements ContactsViewInterface, ExpandableListView.OnChildClickListener {
+public class ContactsFragment extends BaseFragment implements ExpandableListView.OnChildClickListener {
 
     //view
     ExpandableListView mMessageExList;
@@ -40,6 +41,7 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
     ArrayList<String> mGroupUsers;
     ArrayList<ArrayList<User>> mGroupItemUsers;
     private String account;
+    private UserModel userModel;
 
 
     @Override
@@ -52,6 +54,7 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
         super.initVarious();
         EventBus.getDefault().register(this);
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
+        userModel = new UserModelImpl();
     }
 
     @Override
@@ -60,10 +63,6 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    protected ContactsPresenter createPresenter() {
-        return new ContactsPresenter();
-    }
 
     @Override
     protected void initView() {
@@ -85,7 +84,7 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
     @Override
     protected void loadData() {
         if (NetUtils.hasNetworkConnection()) {
-            mPresenter.getConstactList(mContext, account);
+            getConstactList(account);
         } else {
             sendToast("没有网络连接");
         }
@@ -112,11 +111,22 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
         ((MainActivity) getActivity()).setNotifyOn();
     }
 
-    @Override
-    public void getContactListOnComplete(List<User_Group> user_groups) {
-        mConstacts = user_groups;
-        getUsersGroupByCourse(mConstacts);
-        mContactsExAdapter.notifyDataSetChanged();
+    public void getConstactList(String account) {
+
+        userModel.getUserGroup(mContext, account, new ResultsCallback() {
+            @Override
+            public void onSuccess(List list) {
+                mConstacts = list;
+                getUsersGroupByCourse(mConstacts);
+                mContactsExAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(BmobException e) {
+
+            }
+        });
+
     }
 
 

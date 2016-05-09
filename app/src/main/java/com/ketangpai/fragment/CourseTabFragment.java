@@ -16,27 +16,31 @@ import com.ketangpai.adapter.CourseNoticeAdapter;
 import com.ketangpai.adapter.CourseExamAdapter;
 import com.ketangpai.adapter.CourseHomeworkAdapter;
 import com.ketangpai.base.BaseAdapter;
-import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
+import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.listener.OnItemClickListener;
+import com.ketangpai.modelImpl.DataModelImpl;
+import com.ketangpai.modelImpl.ExamModelImpl;
+import com.ketangpai.modelImpl.HomeworkModelImpl;
+import com.ketangpai.modelImpl.NoticeModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.CourseTabPresenter;
-import com.ketangpai.viewInterface.CourseTabViewInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import cn.bmob.v3.exception.BmobException;
+
 /**
  * Created by nan on 2016/3/20.
  */
-public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterface, CourseTabPresenter> implements SwipeRefreshLayout.OnRefreshListener, CourseTabViewInterface, OnItemClickListener {
-    public static final String TAG = "===CourseTabFragment";
+public class CourseTabFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, OnItemClickListener {
 
     RecyclerView mTabList;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -50,6 +54,10 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     private int c_id;
     private String c_name;
     private Course course;
+    private HomeworkModelImpl homeworkModel;
+    private DataModelImpl dataModel;
+    private NoticeModelImpl noticeModel;
+    private ExamModelImpl examModel;
 
     public void setC_id(int c_id) {
         this.c_id = c_id;
@@ -68,13 +76,12 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
         super.initVarious();
         c_id = course.getC_id();
         c_name = course.getName();
+        homeworkModel = new HomeworkModelImpl();
+        dataModel = new DataModelImpl();
+        noticeModel = new NoticeModelImpl();
+        examModel = new ExamModelImpl();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-    }
 
     public void setPosition(int position) {
         this.mPosition = position;
@@ -93,10 +100,10 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
         return R.layout.fragment_course_tab;
     }
 
+
     @Override
     protected void initView() {
         mTabList = (RecyclerView) view.findViewById(R.id.list_course_tab);
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fresh_course_tab);
         initTabList();
     }
@@ -124,7 +131,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     protected void loadData() {
 
     }
-
 
 
     private void initTabList() {
@@ -167,25 +173,16 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     public void onRefresh() {
         switch (mPosition) {
             case 0:
-
-                mPresenter.getHomeworkListToStudent(mContext, c_id, ((Student_Course) course).getAdd_time());
-
+                getHomeworkListToStudent(c_id, ((Student_Course) course).getAdd_time());
                 break;
             case 1:
-                mPresenter.getDataList(mContext, c_id);
-
+                getDataList(c_id);
                 break;
             case 2:
-
-                mPresenter.getNoticeListToStudent(mContext, (Student_Course) course);
-
-
+                getNoticeListToStudent((Student_Course) course);
                 break;
             case 3:
-
-                mPresenter.getExamListToStudent(mContext, c_id, ((Student_Course) course).getAdd_time());
-
-
+                getExamListToStudent(c_id, ((Student_Course) course).getAdd_time());
                 break;
 
             default:
@@ -224,43 +221,84 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     }
 
 
-    @Override
-    public void getHomeworkListOnComplete(List<Teacher_Homework> homeworks) {
-        mSwipeRefreshLayout.setRefreshing(false);
-        mTabContents.clear();
-        Collections.reverse(homeworks);
-        mTabContents.addAll(homeworks);
-        mTabAdapter.notifyDataSetChanged();
+    public void getNoticeListToStudent(Student_Course course) {
+
+        noticeModel.getNoticeListToStudent(mContext, course.getC_id(), course.getAdd_time(), new ResultsCallback() {
+            @Override
+            public void onSuccess(List list) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mTabContents.clear();
+                Collections.reverse(list);
+                mTabContents.addAll(list);
+                mTabAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(BmobException e) {
+
+            }
+        });
+
     }
 
 
-    @Override
-    public void getDataListOnComplete(List datas) {
-        mSwipeRefreshLayout.setRefreshing(false);
-        mTabContents.clear();
-        Collections.reverse(datas);
-        mTabContents.addAll(datas);
-        mTabAdapter.notifyDataSetChanged();
+    public void getDataList(int c_id) {
+
+        dataModel.getDataList(mContext, c_id, new ResultsCallback() {
+            @Override
+            public void onSuccess(List list) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mTabContents.clear();
+                Collections.reverse(list);
+                mTabContents.addAll(list);
+                mTabAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(BmobException e) {
+            }
+        });
 
     }
 
-    @Override
-    public void getNoticeListOnComplete(List<Notice> notices) {
-        mSwipeRefreshLayout.setRefreshing(false);
-        mTabContents.clear();
-        Collections.reverse(notices);
-        mTabContents.addAll(notices);
-        mTabAdapter.notifyDataSetChanged();
+
+    public void getHomeworkListToStudent(int c_id, long add_time) {
+
+        homeworkModel.getHomeworkListToStudent(mContext, c_id, add_time, new ResultsCallback() {
+            @Override
+            public void onSuccess(List list) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mTabContents.clear();
+                Collections.reverse(list);
+                mTabContents.addAll(list);
+                mTabAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(BmobException e) {
+            }
+        });
+
     }
 
-    @Override
-    public void getExamkListOnComplete(List exams) {
-        mSwipeRefreshLayout.setRefreshing(false);
 
-        mTabContents.clear();
-        Collections.reverse(exams);
-        mTabContents.addAll(exams);
-        mTabAdapter.notifyDataSetChanged();
+    public void getExamListToStudent(int c_id, long add_time) {
+
+        examModel.getExamListToStudent(mContext, c_id, add_time, new ResultsCallback() {
+            @Override
+            public void onSuccess(List list) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mTabContents.clear();
+                Collections.reverse(list);
+                mTabContents.addAll(list);
+                mTabAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(BmobException e) {
+            }
+        });
+
     }
 
 
@@ -268,8 +306,4 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
         this.course = course;
     }
 
-    @Override
-    protected CourseTabPresenter createPresenter() {
-        return new CourseTabPresenter();
-    }
 }

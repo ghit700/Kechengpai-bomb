@@ -13,6 +13,7 @@ import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.listener.OnItemClickListener;
+import com.ketangpai.modelImpl.NotificationModelImpl;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.FullyLinearLayoutManager;
@@ -37,6 +38,7 @@ public class NoticeFragment extends BaseFragment implements OnItemClickListener 
     //变量
     private List<Data> mDataList;
     private Notice mNotice;
+
 
     @Override
     protected void initVarious() {

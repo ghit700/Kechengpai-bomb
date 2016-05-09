@@ -1,30 +1,28 @@
 package com.ketangpai.fragment;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseFragment;
-import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.constant.Constant;
+import com.ketangpai.model.FileModel;
+import com.ketangpai.modelImpl.FileModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.DataPresenter;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.utils.IntentUtils;
-import com.ketangpai.viewInterface.DataViewInterface;
 
 import java.io.File;
+
+import cn.bmob.v3.listener.DownloadFileListener;
 
 /**
  * Created by Administrator on 2016/4/15.
  */
-public class DataFragment extends BasePresenterFragment<DataViewInterface, DataPresenter> implements DataViewInterface, View.OnClickListener {
-    public static final String TAG = "===DataFragment";
+public class DataFragment extends BaseFragment implements View.OnClickListener {
     //view
     private ImageView img_data_fileImg;
     private TextView tv_data_name;
@@ -34,6 +32,7 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
     private String mName;
     private String mUrl;
     private ProgressDialog mDialog;
+    private FileModel fileModel;
 
     @Override
     protected void initVarious() {
@@ -42,6 +41,7 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
             mName = getActivity().getIntent().getStringExtra("name");
             mUrl = getActivity().getIntent().getStringExtra("url");
         }
+        fileModel = new FileModelImpl();
     }
 
     @Override
@@ -92,10 +92,40 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
         }
     }
 
+    public void downloadData(String url, String fileName) {
+
+        fileModel.downloadData(mContext, url, fileName, new DownloadFileListener() {
+            @Override
+            public void onSuccess(String s) {
+
+                File file = new File(s);
+                if (null != mDialog && mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                sendToast("下载完成");
+                Intent intent = IntentUtils.openFile(file);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onProgress(Integer progress, long total) {
+                super.onProgress(progress, total);
+                mDialog.setMax((int) total);
+                mDialog.setProgress(progress);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+            }
+        });
+
+    }
+
+
     private void showDownloadProgress() {
         File file = new File(Constant.ALBUM_PATH + Constant.DATA_FOLDER, mName);
         if (!file.exists()) {
-            mPresenter.downloadData(mContext, mUrl, mName);
+            downloadData(mUrl, mName);
             mDialog = new ProgressDialog(mContext);
             mDialog.setTitle("文件下载");
             mDialog.setMessage("文件下载完成百分比");
@@ -109,24 +139,5 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
         }
     }
 
-    @Override
-    public void onProgress(int value, long total) {
-        mDialog.setMax((int) total);
-        mDialog.setProgress(value);
-    }
 
-    @Override
-    public void downloadOnComplete(File file) {
-        if (null != mDialog && mDialog.isShowing()) {
-            mDialog.dismiss();
-        }
-        sendToast("下载完成");
-        Intent intent = IntentUtils.openFile(file);
-        startActivity(intent);
-    }
-
-    @Override
-    protected DataPresenter createPresenter() {
-        return new DataPresenter();
-    }
 }

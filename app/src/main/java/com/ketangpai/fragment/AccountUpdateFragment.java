@@ -1,41 +1,38 @@
 package com.ketangpai.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ketangpai.activity.AccountActivity;
 import com.ketangpai.activity.AccountUpdateActivity;
-import com.ketangpai.base.BasePresenter;
-import com.ketangpai.base.BasePresenterFragment;
-import com.ketangpai.bean.User;
+import com.ketangpai.base.BaseFragment;
+import com.ketangpai.model.UserModel;
+import com.ketangpai.modelImpl.UserModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.AccountUpdatePresenter;
-import com.ketangpai.viewInterface.AccountUpdateViewInterface;
+
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by Administrator on 2016/4/19.
  */
-public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateViewInterface, AccountUpdatePresenter> implements AccountUpdateViewInterface {
-    public static final String TAG = "===AccountUpdateFragment";
+public class AccountUpdateFragment extends BaseFragment {
 
     private String mColumnName;
     private String mColumnCode;
     private String mColumnValue;
     private String account;
     private String u_id;
+    private UserModel userModel;
 
     @Override
     protected void initVarious() {
-        super.initVarious();
         u_id = mContext.getSharedPreferences("user", 0).getString("u_id", "");
         mColumnName = ((AccountUpdateActivity) getActivity()).getColunmnName();
         switch (mColumnName) {
@@ -59,7 +56,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
             default:
                 break;
         }
-
+        userModel = new UserModelImpl();
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
     }
 
@@ -74,7 +71,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
 
     @Override
     protected void initView() {
-        super.initView();
+
         if (mColumnCode.equals("password")) {
             //修改密码界面
             final EditText et_dialog_password_confirm = (EditText) view.findViewById(R.id.et_dialog_password_confirm);
@@ -128,7 +125,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
                 public void onClick(View v) {
                     if (!et_dialog_content_new.equals("")) {
                         mColumnValue = et_dialog_content_new.getText().toString();
-                        mPresenter.updateUserInfo(mContext, u_id, mColumnCode, mColumnValue);
+                        updateUserInfo(u_id, mColumnCode, mColumnValue);
                         showUpdateOnCompleteDialog(mColumnName, 3);
                     } else {
                         showUpdateOnCompleteDialog(mColumnName, 0);
@@ -136,6 +133,21 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
                 }
             });
         }
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initListener() {
+
+    }
+
+    @Override
+    protected void loadData() {
 
     }
 
@@ -152,7 +164,7 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
                 if (!newPwd.equals(confirmPwd)) {
                     showUpdateOnCompleteDialog("密码", 2);
                 } else {
-                    mPresenter.updateUserInfo(mContext, u_id, "password", newPwd);
+                    updateUserInfo(u_id, "password", newPwd);
                     showUpdateOnCompleteDialog("密码", 3);
                 }
             } else {
@@ -216,34 +228,41 @@ public class AccountUpdateFragment extends BasePresenterFragment<AccountUpdateVi
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    @Override
-    protected AccountUpdatePresenter createPresenter() {
-        return new AccountUpdatePresenter();
-    }
 
-    @Override
-    public void updateUserInfoOnComplete(String columnName) {
-//        Log.i(TAG, "result  colunmnName=" + columnName);
-        if (columnName.equals("-1")) {
-            new AlertDialog.Builder(mContext).setTitle("修改失败").setPositiveButton("确认", null).create().show();
+    public void updateUserInfo(String u_id, final String columnName, String columnValue) {
 
-        } else {
-            switch (columnName) {
-                case "password":
-                    mContext.getSharedPreferences("user", 0).edit().putString("password", mColumnValue).commit();
-                    break;
-                case "school":
-                    mContext.getSharedPreferences("user", 0).edit().putString("school", mColumnValue).commit();
-                    break;
-                case "number":
-                    mContext.getSharedPreferences("user", 0).edit().putInt("number", Integer.parseInt(mColumnValue)).commit();
-                    break;
-                case "name":
-                    mContext.getSharedPreferences("user", 0).edit().putString("name", mColumnValue).commit();
-                    break;
-                default:
-                    break;
+        userModel.updateUserInfo(mContext, u_id, columnName, columnValue, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                switch (columnName) {
+                    case "password":
+                        mContext.getSharedPreferences("user", 0).edit().putString("password", mColumnValue).commit();
+                        break;
+                    case "school":
+                        mContext.getSharedPreferences("user", 0).edit().putString("school", mColumnValue).commit();
+                        break;
+                    case "number":
+                        mContext.getSharedPreferences("user", 0).edit().putInt("number", Integer.parseInt(mColumnValue)).commit();
+                        break;
+                    case "name":
+                        mContext.getSharedPreferences("user", 0).edit().putString("name", mColumnValue).commit();
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
+
+            @Override
+            public void onFailure(int i, String s) {
+                if (columnName.equals("-1")) {
+                    new AlertDialog.Builder(mContext).setTitle("修改失败").setPositiveButton("确认", null).create().show();
+
+                }
+            }
+        });
+
+
     }
+
+
 }

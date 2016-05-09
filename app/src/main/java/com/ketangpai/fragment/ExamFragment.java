@@ -60,6 +60,7 @@ public class ExamFragment extends BaseFragment {
         mSubjects = new ArrayList<>();
         mExamAdapter = new ExamAdapter(mContext, mSubjects);
         listExam.setAdapter(mExamAdapter);
+        btnExamSubmit.setEnabled(false);
     }
 
     @Override
@@ -91,6 +92,7 @@ public class ExamFragment extends BaseFragment {
                     btnExamSubmit.setBackgroundResource(R.color.white);
                     btnExamSubmit.setText("还未批改");
                 }
+                btnExamSubmit.setEnabled(true);
             }
 
             @Override

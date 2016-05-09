@@ -1,51 +1,38 @@
 package com.ketangpai.fragment;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ketangpai.activity.AccountUpdateActivity;
-import com.ketangpai.base.BasePresenterFragment;
+import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.User;
 import com.ketangpai.constant.Constant;
+import com.ketangpai.model.UserModel;
+import com.ketangpai.modelImpl.UserModelImpl;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.AccountPresenter;
-import com.ketangpai.presenter.AccountUpdatePresenter;
-import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.view.ActionSheetDialog;
-import com.ketangpai.viewInterface.AccountUpdateViewInterface;
-import com.ketangpai.viewInterface.AccountViewInterface;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by nan on 2016/3/21.
  */
-public class AccountFragment extends BasePresenterFragment<AccountViewInterface, AccountPresenter> implements View.OnClickListener, AccountViewInterface {
+public class AccountFragment extends BaseFragment implements View.OnClickListener {
 
-    public static final String TAG = "===AccountFragment";
     RelativeLayout mUserIcon, mName, mShool, mNumber, mPassword;
     TextView tv_account, tv_school, tv_name, tv_number;
     ImageView img_account_user;
@@ -60,6 +47,7 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
     private AccountFragment mFragment;
     private String File_Path;
     public static final int ACCOUNT_RESULT = 12;
+    private UserModel userModel;
 
     @Override
     protected void initVarious() {
@@ -72,6 +60,7 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
         u_id = mContext.getSharedPreferences("user", 0).getString("u_id", "");
         path = mContext.getSharedPreferences("user", 0).getString("path", "");
         mFragment = this;
+        userModel = new UserModelImpl();
     }
 
     @Override
@@ -91,9 +80,6 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
         tv_name = (TextView) view.findViewById(R.id.tv_name);
         tv_number = (TextView) view.findViewById(R.id.tv_number);
         img_account_user = (ImageView) view.findViewById(R.id.img_account_user);
-
-
-
 
     }
 
@@ -216,7 +202,7 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
             user.setObjectId(u_id);
             user.setAccount(account);
             File file = new File(Constant.LOGO_FOLDER);
-            mPresenter.uploadUserLogo(mContext, file, user);
+            uploadUserLogo(mContext, file, user);
         }
 
         if (requsetCode == IntentUtils.CAMERA_REQUEST && resultCode == getActivity().RESULT_OK) {
@@ -225,7 +211,7 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
             User user = new User();
             user.setObjectId(u_id);
             user.setAccount(account);
-            mPresenter.uploadUserLogo(mContext, file, user);
+            uploadUserLogo(mContext, file, user);
         }
 
         if (requsetCode == UPDATE_REQUEST && resultCode == 100) {
@@ -233,7 +219,6 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
                 if (null != data.getStringExtra("columnCode") && null != data.getStringExtra("columnValue")) {
                     String columnCode = data.getStringExtra("columnCode");
                     String columnValue = data.getStringExtra("columnValue");
-//                    Log.i(AccountUpdateFragment.TAG, "onActivityResult columnCode=" + columnCode + " columnValue=" + columnValue);
                     switch (columnCode) {
                         case "password":
                             break;
@@ -257,32 +242,29 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
         super.onActivityResult(requsetCode, resultCode, data);
     }
 
-    @Override
-    public void showUploadLogoDialong() {
+
+    public void uploadUserLogo(Context context, File file, User user) {
         showLoadingDialog();
         setLoadingText("上传头像中...");
+
+        userModel.uploadUserLogo(context, file, user, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                dismissLoadingDialog();
+                new AlertDialog.Builder(mContext).setTitle("上传头像失败").
+                        setPositiveButton("确认", null).show();
+
+            }
+        });
+
     }
 
-    @Override
-    public void hideUploadLogoDialong() {
-        dismissLoadingDialog();
-    }
 
-    @Override
-    public void uploadLogoOnComplete(int ret) {
-        Log.i(TAG, "uploadLogoOnComplete ret=" + ret);
-        if (ret > 0) {
-
-        } else {
-            new AlertDialog.Builder(mContext).setTitle("上传头像失败").
-                    setPositiveButton("确认", null).show();
-        }
-    }
-
-    @Override
-    protected AccountPresenter createPresenter() {
-        return new AccountPresenter();
-    }
 }
 
 
