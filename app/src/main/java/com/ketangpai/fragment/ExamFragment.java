@@ -30,7 +30,7 @@ import butterknife.OnClick;
 /**
  * Created by nan on 2016/5/8.
  */
-public class SExamFragment extends BaseFragment {
+public class ExamFragment extends BaseFragment {
     @InjectView(R.id.list_exam)
     RecyclerView listExam;
     @InjectView(R.id.btn_exam_submit)
@@ -64,7 +64,7 @@ public class SExamFragment extends BaseFragment {
     protected void initView() {
         listExam.setLayoutManager(new FullyLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mSubjects = new ArrayList<>();
-        mExamAdapter = new ExamAdapter(mContext, mSubjects, 1);
+        mExamAdapter = new ExamAdapter(mContext, mSubjects);
         listExam.setAdapter(mExamAdapter);
     }
 
@@ -95,7 +95,7 @@ public class SExamFragment extends BaseFragment {
                     btnExamSubmit.setText(String.valueOf(mStudent_reply.getGrade()));
                     btnExamSubmit.setTextColor(mContext.getResources().getColor(R.color.actionsheet_red));
                     btnExamSubmit.setBackgroundResource(R.color.white);
-                    btnExamSubmit.setText("还未批改" );
+                    btnExamSubmit.setText("还未批改");
                 }
             }
 
@@ -124,10 +124,10 @@ public class SExamFragment extends BaseFragment {
             btnExamSubmit.setText(String.valueOf(mStudent_reply.getGrade()));
             btnExamSubmit.setTextColor(mContext.getResources().getColor(R.color.actionsheet_red));
             btnExamSubmit.setBackgroundResource(R.color.white);
-            if(null!=mStudent_reply.getGrade()){
+            if (null != mStudent_reply.getGrade()) {
                 btnExamSubmit.setText("分数:" + String.valueOf(mStudent_reply.getGrade()));
-            }else{
-                btnExamSubmit.setText("还未批改" );
+            } else {
+                btnExamSubmit.setText("还未批改");
 
             }
 

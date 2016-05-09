@@ -18,12 +18,4 @@
             ></android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <com.shamanland.fab.FloatingActionButton
-        android:id="@+id/btn_course_tab_publish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
-        android:visibility="gone"></com.shamanland.fab.FloatingActionButton>
 </RelativeLayout>

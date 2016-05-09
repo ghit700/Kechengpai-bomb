@@ -1,17 +1,11 @@
 package com.ketangpai.utils;
 
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.constant.Constant;
-import com.ketangpai.fragment.AddNoticeFragment;
-import com.ketangpai.fragment.CourseTabFragment;
 
 import java.io.File;
 

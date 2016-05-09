@@ -36,13 +36,5 @@
         android:textColor="#ffffff"
         android:textSize="20sp"/>
 
-    <Button
-        android:id="@+id/btn_data_delete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/backgroud_accout_item"
-        android:text="删除"
-        android:textColor="#ff0000"
-        android:textSize="20sp"/>
 
 </LinearLayout>

@@ -53,18 +53,6 @@
             android:layout_marginRight="40dp"
             android:text="得分:"/>
 
-        <EditText
-            android:id="@+id/et_exam_value"
-            android:layout_width="28dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/bg_item_exam"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"
-            android:textColor="#ff0000"
-            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tv_exam_value"

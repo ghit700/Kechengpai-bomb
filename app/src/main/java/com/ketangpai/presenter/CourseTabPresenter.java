@@ -81,39 +81,7 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
         }
     }
 
-    public void uploadData(final Context context, final Data data, final int c_id, final String c_name) {
-        if (isViewAttached()) {
-            courseTabViewInterface = getView();
-            dataModel.uploadData(context, data, new UploadFileResultCallback() {
-                @Override
-                public void onSuccess(String url) {
-                    BmobQuery<Data> query = new BmobQuery<Data>();
-                    query.getObject(context, data.getObjectId(), new GetListener<Data>() {
-                        @Override
-                        public void onSuccess(Data data1) {
-                            notificationModel.publishStudentNofication(context, data1, c_id, c_name);
-                        }
 
-                        @Override
-                        public void onFailure(int i, String s) {
-
-                        }
-                    });
-                    courseTabViewInterface.uploadDataOnComplete(url);
-                }
-
-                @Override
-                public void onProgress(int value) {
-                    courseTabViewInterface.uploadOnProgress(value);
-                }
-
-                @Override
-                public void onFailure(String e) {
-                    Log.i(CourseTabFragment.TAG, "uploadData " + e);
-                }
-            });
-        }
-    }
 
     public void getDataList(Context context, int c_id) {
         if (isViewAttached()) {

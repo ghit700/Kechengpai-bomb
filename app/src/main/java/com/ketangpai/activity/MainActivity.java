@@ -165,10 +165,7 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         }
 
         switch (item.getItemId()) {
-            case R.id.search:
-                startActivity(new Intent(mContext, SearchActivity.class));
 
-                break;
 
             case R.id.notify:
                 setNotifyOff();
@@ -275,7 +272,6 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean isOpen = mDrawerContainer.isDrawerVisible(mfl_main_drawerContent);
-        menu.findItem(R.id.search).setVisible(!isOpen);
         menu.findItem(R.id.notify).setVisible(!isOpen);
         if (haveNotify) {
             menu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications_on);
@@ -323,8 +319,6 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
         mMenu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications);
 
     }
-
-
 
 
 }

@@ -17,17 +17,13 @@ import cn.bmob.v3.listener.UploadFileListener;
  * Created by nan on 2016/4/24.
  */
 public interface HomeworkModel {
-    void publishHomework(Context context, Teacher_Homework homework, SaveListener resultCallback);
 
-    void createStudentHomeworkList(Context context, Teacher_Homework homework);
 
     void getHomeworkList(Context context, int c_id, ResultsCallback resultsCallback);
 
-    void getStudentHomeworkList(Context context, int h_id, ResultsCallback resultsCallback);
 
     void getHomeworkListToStudent(Context context,int c_id,long add_time,ResultsCallback resultsCallback);
 
-    void correctHomework(Context context, Student_Homework homework,UpdateListener resultCallback);
 
     void getStudentHomewokr(Context context, Teacher_Homework homework,String account ,ResultCallback resultCallback);
 

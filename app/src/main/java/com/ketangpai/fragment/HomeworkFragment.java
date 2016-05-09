@@ -3,12 +3,9 @@ package com.ketangpai.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,20 +17,18 @@ import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.SHomeworkPresenter;
+import com.ketangpai.presenter.HomeworkPresenter;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.FullyLinearLayoutManager;
-import com.ketangpai.viewInterface.SHomeworkViewInterface;
+import com.ketangpai.viewInterface.HomeworkViewInterface;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.bmob.v3.datatype.BmobFile;
@@ -41,7 +36,7 @@ import cn.bmob.v3.datatype.BmobFile;
 /**
  * Created by nan on 2016/5/1.
  */
-public class SHomeworkFragment extends BasePresenterFragment<SHomeworkViewInterface, SHomeworkPresenter> implements SHomeworkViewInterface {
+public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterface, HomeworkPresenter> implements HomeworkViewInterface {
     @InjectView(R.id.tv_s_homework_publishTime)
     TextView tvSHomeworkPublishTime;
     @InjectView(R.id.tv_s_homework_content)
@@ -134,8 +129,8 @@ public class SHomeworkFragment extends BasePresenterFragment<SHomeworkViewInterf
     }
 
     @Override
-    protected SHomeworkPresenter createPresenter() {
-        return new SHomeworkPresenter();
+    protected HomeworkPresenter createPresenter() {
+        return new HomeworkPresenter();
     }
 
 

@@ -6,7 +6,7 @@ import com.ketangpai.bean.Student_Homework;
 /**
  * Created by nan on 2016/5/1.
  */
-public interface SHomeworkViewInterface {
+public interface HomeworkViewInterface {
     void uploadAttachOnComplete(Data data);
 
     void onProgress(int value);

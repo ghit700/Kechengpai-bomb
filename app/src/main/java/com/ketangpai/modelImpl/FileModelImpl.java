@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.ketangpai.callback.AttachmentResultCallback;
 import com.ketangpai.constant.Constant;
-import com.ketangpai.fragment.AddNoticeFragment;
 import com.ketangpai.fragment.DataFragment;
 import com.ketangpai.model.FileModel;
 
@@ -21,7 +20,6 @@ import cn.bmob.v3.listener.UploadFileListener;
 public class FileModelImpl implements FileModel {
     @Override
     public void uploadAttachment(final Context context, final BmobFile bmobFile, final AttachmentResultCallback resultCallback) {
-        Log.i(AddNoticeFragment.TAG, "uploadAttachment fileName=" + bmobFile.getFilename());
 
         bmobFile.upload(context, new UploadFileListener() {
             @Override

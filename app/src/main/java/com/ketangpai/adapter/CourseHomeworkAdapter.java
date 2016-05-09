@@ -18,23 +18,19 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/16.
  */
-public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> implements PopupMenu.OnMenuItemClickListener {
+public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> {
 
-    private int type;
 
-    public CourseHomeworkAdapter(Context mContext, List<Teacher_Homework> mDataList, int type) {
+    public CourseHomeworkAdapter(Context mContext, List<Teacher_Homework> mDataList) {
         super(mContext, mDataList);
-        this.type = type;
     }
 
     @Override
     protected int getItemLayoutId(int viewType) {
 
-        if (type == 0) {
-            return R.layout.item_course_t_homework;
-        } else {
-            return R.layout.item_course_s_homework;
-        }
+
+        return R.layout.item_course_s_homework;
+
     }
 
     @Override
@@ -47,29 +43,7 @@ public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> impleme
         TextView mContentText = (TextView) holder.getViewById(R.id.tv_t_homework_content);
         TextView mAccessoryText = (TextView) holder.getViewById(R.id.tv_t_homework_accessory);
 
-        ImageView mEditImg = (ImageView) holder.getViewById(R.id.img_t_home_edit);
 
-        if (type == 0) {
-            TextView mCheckCountText = (TextView) holder.getViewById(R.id.tv_t_homework_checkCount);
-            TextView mNoCheckCountText = (TextView) holder.getViewById(R.id.tv_t_homework_noCheckCount);
-            TextView mNoPostCountText = (TextView) holder.getViewById(R.id.tv_t_homework_noPostCount);
-            //设置事件
-            //mEditImg点击事件
-            final MyPopupMenu mEditPopupMenu;
-            mEditPopupMenu = new MyPopupMenu(mContext, mEditImg, R.menu.t_homework_edit_menu);
-            mEditPopupMenu.setOnMenuItemClickListener(this);
-            mEditImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mEditPopupMenu.show();
-                }
-            });
-
-            mCheckCountText.setText(String.valueOf(s.getCheck_count()));
-            mNoCheckCountText.setText(String.valueOf(s.getNo_check_count()));
-            mNoPostCountText.setText(String.valueOf(s.getNo_hander_count()));
-
-        }
 
         //初始化view的值
         mPublishTimeText.setText(TimeUtils.getNoticeTime(s.getP_time()));
@@ -85,18 +59,5 @@ public class CourseHomeworkAdapter extends BaseAdapter<Teacher_Homework> impleme
         }
     }
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.t_homework_edit_menu:
-                break;
-            case R.id.t_homework_delete_menu:
-                break;
-
-            default:
-                break;
-        }
-        return true;
-    }
 
 }

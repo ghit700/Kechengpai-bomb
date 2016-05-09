@@ -9,7 +9,6 @@ import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.callback.AttachmentResultCallback;
 import com.ketangpai.callback.ResultCallback;
-import com.ketangpai.fragment.AddNoticeFragment;
 import com.ketangpai.model.FileModel;
 import com.ketangpai.model.HomeworkModel;
 import com.ketangpai.model.NotificationModel;
@@ -17,20 +16,20 @@ import com.ketangpai.modelImpl.FileModelImpl;
 import com.ketangpai.modelImpl.HomeworkModelImpl;
 import com.ketangpai.modelImpl.NotificationModelImpl;
 import com.ketangpai.utils.FileUtils;
-import com.ketangpai.viewInterface.SHomeworkViewInterface;
+import com.ketangpai.viewInterface.HomeworkViewInterface;
 
 import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by nan on 2016/5/1.
  */
-public class SHomeworkPresenter extends BasePresenter<SHomeworkViewInterface> {
-    SHomeworkViewInterface mSHomeworkViewInterface;
+public class HomeworkPresenter extends BasePresenter<HomeworkViewInterface> {
+    HomeworkViewInterface mSHomeworkViewInterface;
     FileModel fileModel;
     HomeworkModel homeworkModel;
     NotificationModel notificationModel;
 
-    public SHomeworkPresenter() {
+    public HomeworkPresenter() {
         fileModel = new FileModelImpl();
         homeworkModel = new HomeworkModelImpl();
         notificationModel = new NotificationModelImpl();

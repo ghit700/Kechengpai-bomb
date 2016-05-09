@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,6 +34,9 @@ import com.ketangpai.viewInterface.AccountUpdateViewInterface;
 import com.ketangpai.viewInterface.AccountViewInterface;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import cn.bmob.v3.datatype.BmobFile;
 
@@ -45,7 +50,6 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
     TextView tv_account, tv_school, tv_name, tv_number;
     ImageView img_account_user;
     //变量
-    private int type;
     private String school;
     private int number;
     private String name;
@@ -64,7 +68,6 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
         school = mContext.getSharedPreferences("user", 0).getString("school", "");
         name = mContext.getSharedPreferences("user", 0).getString("name", "");
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
-        type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
         number = mContext.getSharedPreferences("user", 0).getInt("number", -1);
         u_id = mContext.getSharedPreferences("user", 0).getString("u_id", "");
         path = mContext.getSharedPreferences("user", 0).getString("path", "");
@@ -89,9 +92,9 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
         tv_number = (TextView) view.findViewById(R.id.tv_number);
         img_account_user = (ImageView) view.findViewById(R.id.img_account_user);
 
-        if (type == 0) {
-            mNumber.setVisibility(view.GONE);
-        }
+
+
+
     }
 
     @Override
@@ -107,9 +110,9 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
             ImageLoaderUtils.displayNoDisk(mContext, img_account_user, Constant.LOGO_FOLDER);
         }
 
-        if (type == 1) {
-            tv_number.setText(String.valueOf(number));
-        }
+
+        tv_number.setText(String.valueOf(number));
+
     }
 
     @Override
@@ -197,13 +200,22 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
 
         if (requsetCode == IntentUtils.OPEN_IMGAE && resultCode == getActivity().RESULT_OK) {
             Uri uri = data.getData();
-            File file = FileUtils.getFileByUri(getActivity(), uri);
-            FileUtils.overloadFile(file, new File(Constant.LOGO_FOLDER));
-            ImageLoaderUtils.display(mContext, img_account_user, file.getPath());
+
+            Bitmap bitmap = null;
+            try {
+                FileOutputStream fos = new FileOutputStream(Constant.LOGO_FOLDER, false);
+                InputStream is = mContext.getContentResolver().openInputStream(uri);
+                bitmap = BitmapFactory.decodeStream(is);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ImageLoaderUtils.display(mContext, img_account_user, Constant.LOGO_FOLDER);
             User user = new User();
             user.setObjectId(u_id);
             user.setAccount(account);
-
+            File file = new File(Constant.LOGO_FOLDER);
             mPresenter.uploadUserLogo(mContext, file, user);
         }
 
@@ -216,12 +228,12 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
             mPresenter.uploadUserLogo(mContext, file, user);
         }
 
-        if (requsetCode == UPDATE_REQUEST && resultCode == 0) {
+        if (requsetCode == UPDATE_REQUEST && resultCode == 100) {
             if (data != null) {
                 if (null != data.getStringExtra("columnCode") && null != data.getStringExtra("columnValue")) {
                     String columnCode = data.getStringExtra("columnCode");
                     String columnValue = data.getStringExtra("columnValue");
-                    Log.i(AccountUpdateFragment.TAG, "onActivityResult columnCode=" + columnCode + " columnValue=" + columnValue);
+//                    Log.i(AccountUpdateFragment.TAG, "onActivityResult columnCode=" + columnCode + " columnValue=" + columnValue);
                     switch (columnCode) {
                         case "password":
                             break;

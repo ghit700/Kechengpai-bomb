@@ -24,40 +24,7 @@ import cn.bmob.v3.listener.UploadFileListener;
  * Created by nan on 2016/4/24.
  */
 public class DataModelImpl implements DataModel {
-    @Override
-    public void uploadData(final Context context, final Data data, final UploadFileResultCallback resultCallBack) {
-        Log.i(CourseTabFragment.TAG, "uploadData filename=" + data.getName() + " fileurl=" + data.getUrl());
-        data.save(context, new SaveListener() {
-            @Override
-            public void onSuccess() {
-                File file = new File(data.getUrl());
-                final BmobFile bmobFile = new BmobFile(file);
-                bmobFile.upload(context, new UploadFileListener() {
-                    @Override
-                    public void onSuccess() {
-                        resultCallBack.onSuccess(bmobFile.getFileUrl(context));
-                    }
 
-                    @Override
-                    public void onProgress(Integer value) {
-                        super.onProgress(value);
-                        resultCallBack.onProgress(value);
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        resultCallBack.onFailure(s);
-                    }
-                });
-
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                resultCallBack.onFailure(s);
-            }
-        });
-    }
 
     @Override
     public void getDataList(Context context, int c_id, final ResultsCallback resultsCallback) {

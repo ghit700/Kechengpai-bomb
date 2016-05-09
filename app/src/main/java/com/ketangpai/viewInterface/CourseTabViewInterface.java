@@ -11,9 +11,6 @@ import java.util.List;
 public interface CourseTabViewInterface {
     void getHomeworkListOnComplete(List<Teacher_Homework> homeworks);
 
-    void uploadOnProgress(int value);
-
-    void uploadDataOnComplete(String url);
 
     void getDataListOnComplete(List datas);
 

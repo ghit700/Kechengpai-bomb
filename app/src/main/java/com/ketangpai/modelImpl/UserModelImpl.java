@@ -16,7 +16,11 @@ import com.ketangpai.fragment.AccountUpdateFragment;
 import com.ketangpai.model.UserModel;
 import com.ketangpai.utils.FileUtils;
 
+import org.w3c.dom.ls.LSException;
+
 import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -41,7 +45,7 @@ public class UserModelImpl implements UserModel {
 
 
         Log.i(AccountUpdateFragment.TAG, "login account=" + account + " password=" + password);
-        String sql = "select * from User where password=? and account=?";
+        String sql = "select * from User where password=? and account=? and type=1";
         BmobQuery<User> query = new BmobQuery<User>("User");
         query.doSQLQuery(context, sql, new SQLQueryListener<User>() {
             @Override
@@ -49,7 +53,6 @@ public class UserModelImpl implements UserModel {
                 List list = bmobQueryResult.getResults();
                 if (null != list) {
                     if (list.size() > 0) {
-
                         final User user = (User) list.get(0);
                         if (!"".equals(user.getPath())) {
                             FileUtils.createNewFile(Constant.PHOTO_FOLDER);
@@ -171,13 +174,13 @@ public class UserModelImpl implements UserModel {
                             m.update(context, new UpdateListener() {
                                 @Override
                                 public void onSuccess() {
-                                    Log.i("=====upload","success");
+                                    Log.i("=====upload", "success");
 
                                 }
 
                                 @Override
                                 public void onFailure(int i, String s) {
-                                    Log.i("=====upload",s);
+                                    Log.i("=====upload", s);
                                 }
                             });
                         }
@@ -199,13 +202,13 @@ public class UserModelImpl implements UserModel {
                             m.update(context, new UpdateListener() {
                                 @Override
                                 public void onSuccess() {
-                                    Log.i("receive_account=====upload","success");
+                                    Log.i("receive_account=====upload", "success");
 
                                 }
 
                                 @Override
                                 public void onFailure(int i, String s) {
-                                Log.i("receive_account=====upload",s);
+                                    Log.i("receive_account=====upload", s);
                                 }
                             });
                         }
@@ -229,31 +232,13 @@ public class UserModelImpl implements UserModel {
 
     @Override
     public void getUserGroup(final Context context, String account, final ResultsCallback resultsCallback) {
-//        if (type == 0) {
-//            BmobQuery<Teacher_Course> query = new BmobQuery<>();
-//            query.addWhereEqualTo("account", account);
-//            query.findObjects(context, new FindListener<Teacher_Course>() {
-//                @Override
-//                public void onSuccess(List<Teacher_Course> list) {
-//                    if (null != list && list.size() > 0) {
-//                        for (Teacher_Course course : list) {
-//                            String sql = "select * from User_Group where account!=? and c_id=?";
-//                            BmobQuery<User_Group> query=new BmobQuery<User_Group>();
-//                            query.doSQLQuery(context,);
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onError(int i, String s) {
-//                    Log.i("===getUserGroup", s);
-//                }
-//            });
-//        } else {
-//
-//        }
 
-        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='" + account + "') and account != '" + account + "' order by c_name" ;
+
+//        String sql = "select * from User_Group where c_id=(select c_id from User_Group where account='"
+//                + account + "') and account != '" + account + "'  order by -c_name ";
+        String sql = "select * from User_Group where c_id = (select c_id from User_Group where account = '" +
+                account + "') and account !='" + account + "'";
+
 
         BmobQuery<User_Group> query = new BmobQuery<>();
         query.doSQLQuery(context, sql, new SQLQueryListener<User_Group>() {
@@ -262,6 +247,12 @@ public class UserModelImpl implements UserModel {
                 if (null != bmobQueryResult) {
                     List<User_Group> user_groups = bmobQueryResult.getResults();
                     if (null != user_groups && user_groups.size() > 0) {
+                        Collections.sort(user_groups, new Comparator<User_Group>() {
+                            @Override
+                            public int compare(User_Group lhs, User_Group rhs) {
+                                return lhs.getC_name().compareTo(rhs.getC_name());
+                            }
+                        });
                         resultsCallback.onSuccess(user_groups);
                     }
 

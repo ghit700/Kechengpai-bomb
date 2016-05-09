@@ -17,12 +17,6 @@ public interface MainCourseViewInterface {
      */
     void getCourseListOnComplete(List<Course> courses);
 
-    /**
-     * 创建课程
-     *
-     * @param course
-     */
-    void createCourseOnComplete(Teacher_Course course);
 
     /**
      * 加入课程
@@ -31,7 +25,7 @@ public interface MainCourseViewInterface {
      */
     void addCourseOnComplete(Student_Course course);
 
-    void showLoading(int type);
+    void showLoading();
 
     void hideLoading();
 }

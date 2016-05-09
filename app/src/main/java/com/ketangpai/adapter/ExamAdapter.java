@@ -23,11 +23,9 @@ import java.util.List;
  * Created by nan on 2016/5/8.
  */
 public class ExamAdapter extends BaseAdapter<Subject> {
-    private int type;
 
-    public ExamAdapter(Context mContext, List<Subject> mDataList, int type) {
+    public ExamAdapter(Context mContext, List<Subject> mDataList) {
         super(mContext, mDataList);
-        this.type = type;
     }
 
     @Override
@@ -91,7 +89,6 @@ public class ExamAdapter extends BaseAdapter<Subject> {
         TextView tvExamShort = (TextView) holder.getViewById(R.id.tv_exam_short);
         TextView tvExamGrade = (TextView) holder.getViewById(R.id.tv_exam_grade);
         TextView tvExamValue = (TextView) holder.getViewById(R.id.tv_exam_value);
-        final TextView etExamValue = (TextView) holder.getViewById(R.id.et_exam_value);
         TextView tvExamTitle = (TextView) holder.getViewById(R.id.tv_exam_title);
         TextView tvExamContent = (TextView) holder.getViewById(R.id.tv_exam_content);
         final TextView etExamContent = (TextView) holder.getViewById(R.id.et_exam_content);
@@ -104,45 +101,14 @@ public class ExamAdapter extends BaseAdapter<Subject> {
         tvExamGrade.setText(String.valueOf(item.getScore()));
 
 
-        if (type == 0 && item.getS_value() == null) {
-            tvExamValue.setVisibility(View.GONE);
-            etExamValue.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if(!etExamValue.getText().toString().equals("")){
-                        int value = Integer.parseInt(etExamValue.getText().toString());
-                        if (value > item.getScore()) {
-                            ((BaseActivity) mContext).sendToast("不能输入比分值大的数字");
-                        } else {
-                            item.setS_value(value);
-                        }
-
-                    }
-
-
-                }
-            });
+        if (null != item.getS_value()) {
+            tvExamValue.setText(String.valueOf(item.getS_value()));
         } else {
-            etExamValue.setVisibility(View.GONE);
-            if (null != item.getS_value()) {
-                tvExamValue.setText(String.valueOf(item.getS_value()));
-            } else {
-                tvExamValue.setText("");
-            }
+            tvExamValue.setText("");
         }
 
 
-        if (type == 1 && null == item.getAnswer()) {
+        if (null == item.getAnswer()) {
             tvExamContent.setVisibility(View.GONE);
             etExamContent.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -163,7 +129,6 @@ public class ExamAdapter extends BaseAdapter<Subject> {
         } else {
             etExamContent.setVisibility(View.GONE);
             tvExamContent.setText(item.getAnswer());
-
         }
 
 

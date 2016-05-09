@@ -1,12 +1,7 @@
 package com.ketangpai.fragment;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,15 +18,9 @@ import android.widget.TextView;
 import com.ketangpai.activity.CourseActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.CourseSMainCourseAdapter;
-import com.ketangpai.adapter.CourseTMainCourseAdapter;
-import com.ketangpai.adapter.NevigationCourseAdapter;
 import com.ketangpai.base.BaseAdapter;
-import com.ketangpai.base.BaseFragment;
-import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BasePresenterFragment;
-import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.Course;
-import com.ketangpai.bean.Notification;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.event.NotificationEvent;
@@ -49,7 +37,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,8 +64,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     private List mCourses;
     //判断addBtn是否open
     private boolean isBtnOpen = true;
-    //判断是老师还是学生
-    private int type;
+
     private String account;
     private String name;
     private int number;
@@ -94,19 +80,15 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     protected void initVarious() {
         super.initVarious();
-        type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
         name = mContext.getSharedPreferences("user", 0).getString("name", "");
         number = mContext.getSharedPreferences("user", 0).getInt("number", -1);
         path = mContext.getSharedPreferences("user", 0).getString("path", "");
         initAddBtnAnim();
-        if (type == 0) {
-            mCourses = new ArrayList<Teacher_Course>();
-            mMainCourseAdapter = new CourseTMainCourseAdapter(mContext, mCourses);
-        } else {
-            mCourses = new ArrayList<Student_Course>();
-            mMainCourseAdapter = new CourseSMainCourseAdapter(mContext, mCourses);
-        }
+
+        mCourses = new ArrayList<Student_Course>();
+        mMainCourseAdapter = new CourseSMainCourseAdapter(mContext, mCourses);
+
         EventBus.getDefault().register(this);
     }
 
@@ -159,7 +141,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_add:
-                EventBus.getDefault().post(new NotificationEvent());
                 changeAddBtnAnim();
                 showAddDialog();
                 break;
@@ -189,19 +170,13 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         Button btnCreate = (Button) view.findViewById(R.id.btn_addDialog_create);
 
         //设置事件监听
-        btnCancel.setOnClickListener(this);
-        btnCreate.setOnClickListener(this);
+
         mAddDialog.setOnDismissListener(this);
 
-        if (type == 0) {
-            dialogTitle.setText("新建班级");
-            dialogCourse.setHint("请输入新建班级名称");
-            btnCreate.setText("创建");
-        } else {
-            dialogTitle.setText("加入班级");
-            dialogCourse.setHint("请输入班级邀请码");
-            btnCreate.setText("加入");
-        }
+        dialogTitle.setText("加入班级");
+        dialogCourse.setHint("请输入班级邀请码");
+        btnCreate.setText("加入");
+
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +187,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createCourse(dialogCourse.getText().toString());
+                mPresenter.addCourse(mContext, dialogCourse.getText().toString(), account, name, number, path);
             }
         });
 
@@ -222,17 +197,8 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     }
 
     private void createCourse(String class_name) {
-        if (type == 0) {
-            Teacher_Course teacher_course = new Teacher_Course();
-            teacher_course.setCode(CodeUtils.createCode());
-            teacher_course.setAccount(account);
-            teacher_course.setNumbers(0);
-            teacher_course.setT_name(mContext.getSharedPreferences("user", 0).getString("name", ""));
-            teacher_course.setName(class_name);
-            mPresenter.createCourse(mContext, teacher_course, path);
-        } else {
-            mPresenter.addCourse(mContext, class_name, account, name, number, path);
-        }
+
+
     }
 
 
@@ -269,7 +235,7 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     @Override
     public void onRefresh() {
         mMainCourseAdapter.clearData();
-        mPresenter.getCourseList(mContext, account, type);
+        mPresenter.getCourseList(mContext, account);
     }
 
     @Override
@@ -293,21 +259,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
         }
     }
 
-    @Override
-    public void createCourseOnComplete(Teacher_Course course) {
-        if (null != course) {
-            mMainCourseAdapter.addItem(0, course);
-            mMainCourseList.smoothScrollToPosition(0);
-            sendToast("创建班级成功");
-
-        } else {
-            new AlertDialog.Builder(mContext).setTitle("创建班级失败")
-                    .setPositiveButton("确认", null)
-                    .create().show();
-        }
-        mAddDialog.dismiss();
-
-    }
 
     @Override
     public void addCourseOnComplete(Student_Course course) {
@@ -325,13 +276,11 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
     }
 
     @Override
-    public void showLoading(int typte) {
+    public void showLoading() {
         showLoadingDialog();
-        if (typte == 0) {
-            setLoadingText("创建班级中...");
-        } else {
-            setLoadingText("加入班级中...");
-        }
+
+        setLoadingText("加入班级中...");
+
     }
 
     @Override
@@ -341,7 +290,6 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
 
     @Subscribe
     public void onNotificationEvent(NotificationEvent event) {
-        Log.i("=====", "1111");
         ((MainActivity) getActivity()).setNotifyOn();
     }
 

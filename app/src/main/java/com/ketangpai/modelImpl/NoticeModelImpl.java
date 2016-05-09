@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.bean.Notice;
-import com.ketangpai.fragment.AddNoticeFragment;
 import com.ketangpai.fragment.CourseTabFragment;
 import com.ketangpai.model.NoticeModel;
 
@@ -23,12 +22,7 @@ import cn.bmob.v3.listener.SaveListener;
 public class NoticeModelImpl implements NoticeModel {
 
 
-    @Override
-    public void publishNotice(Context context, Notice notice, SaveListener resultCallback) {
-        Log.i(AddNoticeFragment.TAG, "publishNotice c_id=" + notice.getC_id() + " title=" + notice.getTitle() +
-                " content=" + notice.getContent());
-        notice.save(context, resultCallback);
-    }
+
 
     @Override
     public void getNoticeList(Context context, int c_id, final ResultsCallback resultsCallback) {

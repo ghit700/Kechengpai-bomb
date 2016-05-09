@@ -41,7 +41,6 @@
         <activity
             android:name="com.ketangpai.activity.MainActivity"
             android:windowSoftInputMode="adjustNothing"></activity>
-        <activity android:name="com.ketangpai.activity.SearchActivity"></activity>
         <activity android:name="com.ketangpai.activity.CourseActivity"></activity>
         <activity
             android:name="com.ketangpai.activity.ChatActivity"
@@ -49,18 +48,11 @@
             ></activity>
         <activity android:name="com.ketangpai.activity.NotificationActivity"></activity>
         <activity android:name="com.ketangpai.activity.AccountActivity"></activity>
-        <activity android:name="com.ketangpai.activity.AddHomeWorkActivity"></activity>
-        <activity android:name="com.ketangpai.activity.AddDataActivity"></activity>
-        <activity android:name="com.ketangpai.activity.AddNoticekActivity"></activity>
         <activity android:name="com.ketangpai.activity.NoticeActivity"></activity>
         <activity android:name="com.ketangpai.activity.DataActivity"></activity>
         <activity android:name="com.ketangpai.activity.AccountUpdateActivity"></activity>
         <activity android:name="com.ketangpai.activity.HomeWorkActivity"></activity>
-        <activity android:name="com.ketangpai.activity.THomeworkDetailActivity"></activity>
-        <activity android:name="com.ketangpai.activity.AddExamActivity"></activity>
-        <activity android:name="com.ketangpai.activity.AddExamTitleActivity"></activity>
         <activity android:name="com.ketangpai.activity.ExamActivity"></activity>
-        <activity android:name="com.ketangpai.activity.TExamDetailActivity"></activity>
 
         <service
             android:name="cn.bmob.push.lib.service.PushService"

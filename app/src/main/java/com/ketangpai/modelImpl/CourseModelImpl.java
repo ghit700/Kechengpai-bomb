@@ -29,78 +29,29 @@ public class CourseModelImpl implements CourseModel {
 
 
     @Override
-    public void queryCourseList(Context context, String account, int type, final ResultsCallback resultsCallback) {
+    public void queryCourseList(Context context, String account, final ResultsCallback resultsCallback) {
         String sql = null;
-        if (type == 0) {
-            sql = "select * from Teacher_Course where account=?";
-            Log.i(MainCourseFragment.TAG, "queryCourseList account=" + account + " type=" + type + " sql=" + sql);
-            BmobQuery<Teacher_Course> query = new BmobQuery<Teacher_Course>();
-            query.doSQLQuery(context, sql, new SQLQueryListener<Teacher_Course>() {
-                @Override
-                public void done(BmobQueryResult<Teacher_Course> bmobQueryResult, BmobException e) {
-                    List<Teacher_Course> list = bmobQueryResult.getResults();
+
+        sql = "select * from Student_Course where account=?";
+        BmobQuery<Student_Course> query = new BmobQuery<Student_Course>();
+        query.doSQLQuery(context, sql, new SQLQueryListener<Student_Course>() {
+            @Override
+            public void done(BmobQueryResult<Student_Course> bmobQueryResult, BmobException e) {
+                if (null != bmobQueryResult) {
+                    List<Student_Course> list = bmobQueryResult.getResults();
                     if (null != list) {
                         resultsCallback.onSuccess(list);
                     } else {
                         resultsCallback.onFailure(e);
                     }
+                } else {
+                    resultsCallback.onFailure(e);
                 }
-            }, account);
-        } else {
-            sql = "select * from Student_Course where account=?";
-            Log.i(MainCourseFragment.TAG, "queryCourseList account=" + account + " type=" + type + " sql=" + sql);
-            BmobQuery<Student_Course> query = new BmobQuery<Student_Course>();
-            query.doSQLQuery(context, sql, new SQLQueryListener<Student_Course>() {
-                @Override
-                public void done(BmobQueryResult<Student_Course> bmobQueryResult, BmobException e) {
-                    if(null!=bmobQueryResult){
-                        List<Student_Course> list = bmobQueryResult.getResults();
-                        if (null != list) {
-                            resultsCallback.onSuccess(list);
-                        } else {
-                            resultsCallback.onFailure(e);
-                        }
-                    }else{
-                        resultsCallback.onFailure(e);
-                    }
-                }
-            }, account);
-        }
+            }
+        }, account);
+
     }
 
-    @Override
-    public void createCourse(final Context context, final Teacher_Course course, final String path, final ResultCallback resultCallback) {
-        Log.i(MainCourseFragment.TAG, "createCourse account=" + course.getAccount() + " id=" + course.getObjectId());
-        course.save(context, new SaveListener() {
-            @Override
-            public void onSuccess() {
-                BmobQuery<Teacher_Course> query = new BmobQuery<Teacher_Course>();
-                query.getObject(context, course.getObjectId(), new GetListener<Teacher_Course>() {
-                    @Override
-                    public void onSuccess(Teacher_Course o) {
-                        User_Group user_group = new User_Group();
-                        user_group.setC_id(o.getC_id());
-                        user_group.setC_name(o.getName());
-                        user_group.setAccount(o.getAccount());
-                        user_group.setName(o.getT_name());
-                        user_group.setPath(path);
-                        user_group.save(context);
-                        resultCallback.onSuccess(o);
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        resultCallback.onFailure(s);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                resultCallback.onFailure(s);
-            }
-        });
-    }
 
     @Override
     public void addCourse(final Context context, final String code, final String account, final String name, final int number, final String path, final ResultCallback resultCallback) {
