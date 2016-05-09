@@ -19,7 +19,7 @@ public interface UserModel {
 
     public void register(Context context, User user, SaveListener resultCallback);
 
-    public void updateUserInfo(Context context, String u_id, String columnName, String columnValue, UpdateListener resultCallback);
+    public void updateUserInfo(Context context, String u_id,String account, String columnName, String columnValue, UpdateListener resultCallback);
 
     public void uploadUserLogo(Context context, File file, User user, UpdateListener resultCallback);
 

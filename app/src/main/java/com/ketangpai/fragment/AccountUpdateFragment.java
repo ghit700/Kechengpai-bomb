@@ -231,7 +231,7 @@ public class AccountUpdateFragment extends BaseFragment {
 
     public void updateUserInfo(String u_id, final String columnName, String columnValue) {
 
-        userModel.updateUserInfo(mContext, u_id, columnName, columnValue, new UpdateListener() {
+        userModel.updateUserInfo(mContext, u_id, account, columnName, columnValue, new UpdateListener() {
             @Override
             public void onSuccess() {
                 switch (columnName) {

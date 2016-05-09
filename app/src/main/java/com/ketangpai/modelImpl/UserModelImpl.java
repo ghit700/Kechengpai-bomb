@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.NewestMessage;
+import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.User_Group;
 import com.ketangpai.callback.ResultCallback;
@@ -92,8 +93,9 @@ public class UserModelImpl implements UserModel {
 
 
     @Override
-    public void updateUserInfo(Context context, String u_id, String columnName, String columnValue, UpdateListener resultCallback) {
-        User user = new User();
+    public void updateUserInfo(final Context context, String u_id, String account, String columnName, String columnValue, UpdateListener resultCallback) {
+        final User user = new User();
+        user.setAccount(account);
         switch (columnName) {
             case "password":
                 user.setPassword(columnValue);
@@ -103,6 +105,56 @@ public class UserModelImpl implements UserModel {
                 break;
             case "name":
                 user.setName(columnValue);
+                BmobQuery<Student_Homework> query = new BmobQuery<>();
+                query.addWhereEqualTo("account", user.getAccount());
+                query.findObjects(context, new FindListener<Student_Homework>() {
+                    @Override
+                    public void onSuccess(List<Student_Homework> list) {
+                        for (Student_Homework homework : list) {
+                            homework.setStudent_name(user.getName());
+                            homework.update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+                BmobQuery<User_Group> query1 = new BmobQuery<>();
+                query1.addWhereEqualTo("account", user.getAccount());
+                query1.findObjects(context, new FindListener<User_Group>() {
+                    @Override
+                    public void onSuccess(List<User_Group> list) {
+                        for (User_Group user : list) {
+                            user.setName(user.getName());
+                            user.update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+                String sql = "select * from NewestMessage where send_account=? or receive_account=?";
+                BmobQuery<NewestMessage> query2 = new BmobQuery<>();
+                query2.doSQLQuery(context, sql, new SQLQueryListener<NewestMessage>() {
+                    @Override
+                    public void done(BmobQueryResult<NewestMessage> bmobQueryResult, BmobException e) {
+                        if (null != bmobQueryResult) {
+                            List<NewestMessage> newestMessages = bmobQueryResult.getResults();
+                            for (NewestMessage newestMessage : newestMessages) {
+                                if (newestMessage.getReceive_account().equals(user.getAccount())) {
+                                    newestMessage.setReceive_name(user.getName());
+                                } else {
+                                    newestMessage.setSend_name(user.getName());
+                                }
+                            }
+                        }
+
+                    }
+                }, user.getAccount(), user.getAccount());
                 break;
             case "number":
                 user.setNumber(Integer.parseInt(columnValue));
