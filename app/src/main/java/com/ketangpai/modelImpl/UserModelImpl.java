@@ -6,6 +6,7 @@ import android.util.Log;
 import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.NewestMessage;
 import com.ketangpai.bean.Student_Homework;
+import com.ketangpai.bean.Student_Reply;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.User_Group;
 import com.ketangpai.callback.ResultCallback;
@@ -121,6 +122,22 @@ public class UserModelImpl implements UserModel {
 
                     }
                 });
+                BmobQuery<Student_Reply> query3 = new BmobQuery<>();
+                query3.addWhereEqualTo("account", user.getAccount());
+                query3.findObjects(context, new FindListener<Student_Reply>() {
+                    @Override
+                    public void onSuccess(List<Student_Reply> list) {
+                        for (Student_Reply student_reply : list) {
+                            student_reply.setStudent_name(user.getName());
+                            student_reply.update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
                 BmobQuery<User_Group> query1 = new BmobQuery<>();
                 query1.addWhereEqualTo("account", user.getAccount());
                 query1.findObjects(context, new FindListener<User_Group>() {
@@ -155,9 +172,61 @@ public class UserModelImpl implements UserModel {
 
                     }
                 }, user.getAccount(), user.getAccount());
+                sql = "select * from MessageInfo where send_account=? or receive_account=?";
+                BmobQuery<NewestMessage> query4 = new BmobQuery<>();
+                query4.doSQLQuery(context, sql, new SQLQueryListener<NewestMessage>() {
+                    @Override
+                    public void done(BmobQueryResult<NewestMessage> bmobQueryResult, BmobException e) {
+                        if (null != bmobQueryResult) {
+                            List<NewestMessage> newestMessages = bmobQueryResult.getResults();
+                            for (NewestMessage newestMessage : newestMessages) {
+                                if (newestMessage.getReceive_account().equals(user.getAccount())) {
+                                    newestMessage.setReceive_name(user.getName());
+                                } else {
+                                    newestMessage.setSend_name(user.getName());
+                                }
+                            }
+                        }
+
+                    }
+                }, user.getAccount(), user.getAccount());
                 break;
             case "number":
                 user.setNumber(Integer.parseInt(columnValue));
+                BmobQuery<Student_Homework> query5 = new BmobQuery<>();
+                query5.addWhereEqualTo("account", user.getAccount());
+                query5.findObjects(context, new FindListener<Student_Homework>() {
+                    @Override
+                    public void onSuccess(List<Student_Homework> list) {
+                        for (Student_Homework homework : list) {
+                            homework.setStudent_number(user.getNumber());
+                            homework.update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+                BmobQuery<Student_Reply> query6 = new BmobQuery<>();
+                query6.addWhereEqualTo("account", user.getAccount());
+                query6.findObjects(context, new FindListener<Student_Reply>() {
+                    @Override
+                    public void onSuccess(List<Student_Reply> list) {
+                        for (Student_Reply student_reply : list) {
+                            student_reply.setStudent_number(user.getNumber());
+                            student_reply.update(context);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+
+
                 break;
 
             default:
