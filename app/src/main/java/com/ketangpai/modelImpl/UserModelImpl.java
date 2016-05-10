@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.NewestMessage;
+import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Student_Reply;
 import com.ketangpai.bean.Teacher_Course;
@@ -113,9 +114,47 @@ public class UserModelImpl implements UserModel {
                     public void onSuccess(List<Student_Homework> list) {
                         for (Student_Homework homework : list) {
                             homework.setStudent_name(user.getName());
-                            homework.update(context);
+                            homework.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("=====", "success");
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    Log.i("=====", "s");
+                                }
+                            });
                         }
                     }
+
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+                BmobQuery<Student_Course> query8 = new BmobQuery<>();
+                query8.addWhereEqualTo("account", user.getAccount());
+                query8.findObjects(context, new FindListener<Student_Course>() {
+                    @Override
+                    public void onSuccess(List<Student_Course> list) {
+                        for (Student_Course course : list) {
+                            course.setStudent_name(user.getName());
+                            course.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("=====", "success");
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    Log.i("=====", "s");
+                                }
+                            });
+                        }
+                    }
+
 
                     @Override
                     public void onError(int i, String s) {
@@ -129,7 +168,19 @@ public class UserModelImpl implements UserModel {
                     public void onSuccess(List<Student_Reply> list) {
                         for (Student_Reply student_reply : list) {
                             student_reply.setStudent_name(user.getName());
-                            student_reply.update(context);
+                            student_reply.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("=====", "success");
+
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    Log.i("=====", "s");
+
+                                }
+                            });
                         }
                     }
 
@@ -145,7 +196,19 @@ public class UserModelImpl implements UserModel {
                     public void onSuccess(List<User_Group> list) {
                         for (User_Group user : list) {
                             user.setName(user.getName());
-                            user.update(context);
+                            user.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("=====", "success");
+
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    Log.i("=====", "s");
+
+                                }
+                            });
                         }
                     }
 
@@ -164,8 +227,34 @@ public class UserModelImpl implements UserModel {
                             for (NewestMessage newestMessage : newestMessages) {
                                 if (newestMessage.getReceive_account().equals(user.getAccount())) {
                                     newestMessage.setReceive_name(user.getName());
+                                    newestMessage.update(context, new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.i("=====", "success");
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(int i, String s) {
+                                            Log.i("=====", "s");
+
+                                        }
+                                    });
                                 } else {
                                     newestMessage.setSend_name(user.getName());
+                                    newestMessage.update(context, new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.i("=====", "success");
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(int i, String s) {
+                                            Log.i("=====", "s");
+
+                                        }
+                                    });
                                 }
                             }
                         }
@@ -173,17 +262,43 @@ public class UserModelImpl implements UserModel {
                     }
                 }, user.getAccount(), user.getAccount());
                 sql = "select * from MessageInfo where send_account=? or receive_account=?";
-                BmobQuery<NewestMessage> query4 = new BmobQuery<>();
-                query4.doSQLQuery(context, sql, new SQLQueryListener<NewestMessage>() {
+                BmobQuery<MessageInfo> query4 = new BmobQuery<>();
+                query4.doSQLQuery(context, sql, new SQLQueryListener<MessageInfo>() {
                     @Override
-                    public void done(BmobQueryResult<NewestMessage> bmobQueryResult, BmobException e) {
+                    public void done(BmobQueryResult<MessageInfo> bmobQueryResult, BmobException e) {
                         if (null != bmobQueryResult) {
-                            List<NewestMessage> newestMessages = bmobQueryResult.getResults();
-                            for (NewestMessage newestMessage : newestMessages) {
-                                if (newestMessage.getReceive_account().equals(user.getAccount())) {
-                                    newestMessage.setReceive_name(user.getName());
+                            List<MessageInfo> newestMessages = bmobQueryResult.getResults();
+                            for (MessageInfo messageInfo : newestMessages) {
+                                if (messageInfo.getReceive_account().equals(user.getAccount())) {
+                                    messageInfo.setReceive_name(user.getName());
+                                    messageInfo.update(context, new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.i("=====", "success");
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(int i, String s) {
+                                            Log.i("=====", "s");
+
+                                        }
+                                    });
+
                                 } else {
-                                    newestMessage.setSend_name(user.getName());
+                                    messageInfo.setSend_name(user.getName());
+                                    messageInfo.update(context, new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.i("=====", "success");
+                                        }
+
+                                        @Override
+                                        public void onFailure(int i, String s) {
+                                            Log.i("=====", "s");
+
+                                        }
+                                    });
                                 }
                             }
                         }
@@ -200,7 +315,47 @@ public class UserModelImpl implements UserModel {
                     public void onSuccess(List<Student_Homework> list) {
                         for (Student_Homework homework : list) {
                             homework.setStudent_number(user.getNumber());
-                            homework.update(context);
+                            homework.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("=====", "success");
+
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    Log.i("=====", "s");
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+                BmobQuery<Student_Course> query9 = new BmobQuery<>();
+                query9.addWhereEqualTo("account", user.getAccount());
+                query9.findObjects(context, new FindListener<Student_Course>() {
+                    @Override
+                    public void onSuccess(List<Student_Course> list) {
+                        for (Student_Course course : list) {
+                            course.setStudent_number(user.getNumber());
+                            course.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("=====", "success");
+
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    Log.i("=====", "s");
+
+                                }
+                            });
                         }
                     }
 
@@ -216,7 +371,19 @@ public class UserModelImpl implements UserModel {
                     public void onSuccess(List<Student_Reply> list) {
                         for (Student_Reply student_reply : list) {
                             student_reply.setStudent_number(user.getNumber());
-                            student_reply.update(context);
+                            student_reply.update(context, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.i("=====", "success");
+
+                                }
+
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    Log.i("=====", "s");
+
+                                }
+                            });
                         }
                     }
 
