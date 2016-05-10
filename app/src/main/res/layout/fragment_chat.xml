@@ -31,19 +31,13 @@
             android:src="@drawable/ic_send_default"/>
     </LinearLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refesh_chat"
+
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/list_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/ll_chat_sendContainer">
-
-        <android.support.v7.widget.RecyclerView
-
-            android:id="@+id/list_chat"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar_container"
-            android:padding="10dp"></android.support.v7.widget.RecyclerView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_below="@id/toolbar_container"
+        android:padding="10dp"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

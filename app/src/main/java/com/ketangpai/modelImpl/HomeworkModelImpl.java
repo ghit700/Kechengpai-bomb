@@ -91,6 +91,7 @@ public class HomeworkModelImpl implements HomeworkModel {
                 if (null != list) {
                     resultsCallback.onSuccess(list);
                 } else {
+                    resultsCallback.onSuccess(new ArrayList());
                     Log.i(AddHomeworkFragment.TAG, "getHomeworkList null");
 
                 }
@@ -107,6 +108,8 @@ public class HomeworkModelImpl implements HomeworkModel {
             public void onSuccess(List<Student_Homework> list) {
                 if (null != list && list.size() > 0) {
                     resultsCallback.onSuccess(list);
+                } else {
+                    resultsCallback.onSuccess(new ArrayList());
                 }
             }
 
@@ -130,6 +133,7 @@ public class HomeworkModelImpl implements HomeworkModel {
                 if (null != homeworks && homeworks.size() > 0) {
                     resultsCallback.onSuccess(homeworks);
                 } else {
+                    resultsCallback.onSuccess(new ArrayList());
                     resultsCallback.onFailure(e);
                 }
 
@@ -177,71 +181,6 @@ public class HomeworkModelImpl implements HomeworkModel {
 
     }
 
-    /**
-     * 获取学生作业信息
-     *
-     * @param context
-     * @param homework
-     * @param resultCallback
-     */
-    @Override
-    public void getStudentHomewokr(Context context, Teacher_Homework homework, String account, final ResultCallback resultCallback) {
-        String sql = "select * from Student_Homework where h_id=? and account=?";
-        BmobQuery<Student_Homework> query = new BmobQuery<>();
-        query.doSQLQuery(context, sql, new SQLQueryListener<Student_Homework>() {
-            @Override
-            public void done(BmobQueryResult<Student_Homework> bmobQueryResult, BmobException e) {
-                List<Student_Homework> student_homeworks = bmobQueryResult.getResults();
-                if (null != student_homeworks && student_homeworks.size() > 0) {
-                    resultCallback.onSuccess(student_homeworks.get(0));
-                }
-            }
-        }, homework.getH_id(), account);
-    }
-
-    /**
-     * 学生上传作业
-     *
-     * @param context
-     * @param student_homework
-     */
-    @Override
-    public void publishStudentHomework(final Context context, final Student_Homework student_homework) {
-        student_homework.update(context, new UpdateListener() {
-            @Override
-            public void onSuccess() {
-                BmobQuery<Teacher_Homework> query = new BmobQuery<Teacher_Homework>();
-                query.addWhereEqualTo("h_id", student_homework.getH_id());
-                query.findObjects(context, new FindListener<Teacher_Homework>() {
-                    @Override
-                    public void onSuccess(List<Teacher_Homework> list) {
-                        if (null != list && list.size() > 0) {
-                            Teacher_Homework teacher_homework = list.get(0);
-                            int no_hander = teacher_homework.getNo_hander_count();
-                            no_hander--;
-                            teacher_homework.setNo_hander_count(no_hander);
-                            int no_check_count = teacher_homework.getNo_check_count();
-                            no_check_count++;
-                            teacher_homework.setNo_check_count(no_check_count);
-                            teacher_homework.update(context);
-
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(int i, String s) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-
-            }
-        });
-    }
 
     @Override
     public void getSearchHomeworkList(Context context, String content, final ResultsCallback resultsCallback) {

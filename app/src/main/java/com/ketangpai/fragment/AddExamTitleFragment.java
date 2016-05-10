@@ -89,7 +89,7 @@ public class AddExamTitleFragment extends BaseFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_exam_submit:
-                if (!etExamTitle.getText().toString().equals("")) {
+                if (!etExamTitle.getText().toString().equals("") && !etExamContent.getText().toString().equals("")) {
                     Intent intent = new Intent(mContext, AddExamActivity.class);
                     intent.putExtra("course", course);
                     intent.putExtra("title", etExamTitle.getText().toString());
@@ -98,7 +98,7 @@ public class AddExamTitleFragment extends BaseFragment implements View.OnClickLi
                     startActivity(intent);
                     getActivity().finish();
                 } else {
-                    sendToast("请输入测试名称");
+                    sendToast("请输入测试名称和内容");
                 }
                 break;
             case R.id.tv_add_exam_endDate:

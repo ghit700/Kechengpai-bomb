@@ -80,6 +80,8 @@ public class ExamModelImpl implements ExamModel {
             public void onSuccess(List<Test> list) {
                 if (null != list && list.size() > 0) {
                     resultsCallback.onSuccess(list);
+                }else{
+                    resultsCallback.onSuccess(new ArrayList());
                 }
             }
 
@@ -100,6 +102,8 @@ public class ExamModelImpl implements ExamModel {
             public void onSuccess(List<Student_Reply> list) {
                 if (null != list && list.size() > 0) {
                     resultsCallback.onSuccess(list);
+                }else{
+                    resultsCallback.onSuccess(new ArrayList());
                 }
             }
 
@@ -123,6 +127,7 @@ public class ExamModelImpl implements ExamModel {
                 if (null != tests && tests.size() > 0) {
                     resultsCallback.onSuccess(tests);
                 } else {
+                    resultsCallback.onSuccess(new ArrayList());
                     resultsCallback.onFailure(e);
                 }
 
@@ -184,6 +189,8 @@ public class ExamModelImpl implements ExamModel {
                 List<Student_Reply> student_replies = bmobQueryResult.getResults();
                 if (null != student_replies && student_replies.size() > 0) {
                     resultCallback.onSuccess(student_replies.get(0));
+                }else{
+                    resultCallback.onSuccess(new Student_Reply());
                 }
             }
         }, test.getT_id(), account);

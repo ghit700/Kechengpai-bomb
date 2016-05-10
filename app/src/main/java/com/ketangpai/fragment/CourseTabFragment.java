@@ -124,7 +124,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     @Override
     protected void initData() {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setRefreshing(true);
         EventBus.getDefault().register(this);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override

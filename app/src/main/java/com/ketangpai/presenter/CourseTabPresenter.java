@@ -64,22 +64,6 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
         }
     }
 
-    public void getNoticeListToStudent(Context context, Student_Course course) {
-        if (isViewAttached()) {
-            courseTabViewInterface = getView();
-            noticeModel.getNoticeListToStudent(context, course.getC_id(), course.getAdd_time(), new ResultsCallback() {
-                @Override
-                public void onSuccess(List list) {
-                    courseTabViewInterface.getNoticeListOnComplete(list);
-                }
-
-                @Override
-                public void onFailure(BmobException e) {
-
-                }
-            });
-        }
-    }
 
     public void uploadData(final Context context, final Data data, final int c_id, final String c_name) {
         if (isViewAttached()) {
@@ -149,22 +133,6 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
         }
     }
 
-    public void getHomeworkListToStudent(Context context, int c_id, long add_time) {
-        if (isViewAttached()) {
-            courseTabViewInterface = getView();
-            homeworkModel.getHomeworkListToStudent(context, c_id, add_time, new ResultsCallback() {
-                @Override
-                public void onSuccess(List list) {
-                    courseTabViewInterface.getHomeworkListOnComplete(list);
-                }
-
-                @Override
-                public void onFailure(BmobException e) {
-//                    Log.i(CourseTabFragment.TAG, "getHomeworkListToStudent " + e.getMessage());
-                }
-            });
-        }
-    }
 
     public void getExamList(Context context, int c_id) {
         if (isViewAttached()) {
@@ -183,21 +151,6 @@ public class CourseTabPresenter extends BasePresenter<CourseTabViewInterface> {
         }
     }
 
-    public void getExamListToStudent(Context context, int c_id, long add_time) {
-        if (isViewAttached()) {
-            courseTabViewInterface = getView();
-            examModel.getExamListToStudent(context, c_id, add_time, new ResultsCallback() {
-                @Override
-                public void onSuccess(List list) {
-                    courseTabViewInterface.getExamkListOnComplete(list);
-                }
 
-                @Override
-                public void onFailure(BmobException e) {
-//                    Log.i(CourseTabFragment.TAG, "getHomeworkListToStudent " + e.getMessage());
-                }
-            });
-        }
-    }
 
 }

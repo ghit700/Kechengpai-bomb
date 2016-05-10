@@ -10,6 +10,7 @@ import com.ketangpai.fragment.CourseTabFragment;
 import com.ketangpai.model.DataModel;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -72,6 +73,7 @@ public class DataModelImpl implements DataModel {
                     Log.i(CourseTabFragment.TAG, list.size() + "  ");
                     resultsCallback.onSuccess(list);
                 } else {
+                    resultsCallback.onSuccess(new ArrayList());
                     resultsCallback.onFailure(e);
                 }
             }

@@ -142,7 +142,7 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
     public void publishNotice() {
         if (0 != mValue && 100 != mValue) {
             new AlertDialog.Builder(mContext).setTitle("文件还没上传完毕,请稍等...").setPositiveButton("确认", null).show();
-        } else if (!etNoticeTitle.getText().toString().equals("")) {
+        } else if (!etNoticeTitle.getText().toString().equals("") && !etAddNoticeContent.getText().toString().equals("")) {
             Notice notice = new Notice();
             notice.setC_id(c_id);
             notice.setContent(etAddNoticeContent.getText().toString());
@@ -151,7 +151,7 @@ public class AddNoticeFragment extends BasePresenterFragment<AddNoticeViewInterf
             notice.addAllUnique("files", mFiles);
             mPresenter.publishNotice(mContext, notice, c_id, c_name);
         } else {
-            new AlertDialog.Builder(mContext).setTitle("发布公告失败").setMessage("公告标题不能为空")
+            new AlertDialog.Builder(mContext).setTitle("发布公告失败").setMessage("公告标题和内容不能为空")
                     .setPositiveButton("确认", null).create().show();
         }
     }

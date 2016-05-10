@@ -43,7 +43,6 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
     EditText mSendTextEt;
     ImageView mSendtBtn;
     RecyclerView mChatList;
-    SwipeRefreshLayout mSwipeRefreshLayout;
     RelativeLayout mRl;
 
     //adapter
@@ -89,11 +88,9 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
     protected void initView() {
         mSendtBtn = (ImageView) view.findViewById(R.id.img_chat_send);
         mSendTextEt = (EditText) view.findViewById(R.id.et_chat_sendText);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refesh_chat);
         mRl = (RelativeLayout) view.findViewById(R.id.rl_chat);
         initChatList();
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
 
 //        mSwipeRefreshLayout.post(new Runnable() {
 //            @Override

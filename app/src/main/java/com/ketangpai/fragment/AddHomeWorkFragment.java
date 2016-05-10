@@ -124,12 +124,7 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
             case R.id.tv_add_homework_endTime:
                 showTimeDialog();
                 break;
-            case R.id.et_homework_title:
 
-                break;
-            case R.id.et_add_homework_content:
-
-                break;
 
             default:
                 break;
@@ -205,7 +200,7 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
     public void sendHomeWork() {
         if (0 != mValue && 100 != mValue) {
             new AlertDialog.Builder(mContext).setTitle("文件还没上传完毕,请稍等...").setPositiveButton("确认", null).show();
-        } else if (!etHomeworkTitle.getText().toString().equals("")) {
+        } else if (!etHomeworkTitle.getText().toString().equals("") && !etAddHomeworkContent.getText().toString().equals("")) {
             Teacher_Homework homework = new Teacher_Homework();
             homework.setC_id(course.getC_id());
             homework.setContent(etAddHomeworkContent.getText().toString());
@@ -219,7 +214,7 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
             homework.addAllUnique("files", mFiles);
             mPresenter.publishHomework(mContext, homework, course.getC_id(), course.getName());
         } else {
-            new AlertDialog.Builder(mContext).setTitle("发布公告失败").setMessage("公告标题不能为空")
+            new AlertDialog.Builder(mContext).setTitle("发布公告失败").setMessage("公告标题和内容不能为空")
                     .setPositiveButton("确认", null).create().show();
         }
     }
@@ -230,7 +225,6 @@ public class AddHomeworkFragment extends BasePresenterFragment<AddHomeworkViewIn
         intent.putExtra("homework", homework);
         getActivity().setResult(RESULT, intent);
         sendToast("作业发布成功");
-
         getActivity().finish();
     }
 
