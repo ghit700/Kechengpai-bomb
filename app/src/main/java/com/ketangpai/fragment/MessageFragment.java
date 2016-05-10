@@ -9,7 +9,6 @@ import com.ketangpai.activity.ChatActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.MessageAdapter;
 import com.ketangpai.base.BaseFragment;
-import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.NewestMessage;
 import com.ketangpai.bean.User;
 import com.ketangpai.callback.ResultsCallback;

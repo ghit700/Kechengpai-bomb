@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseActivity;
-import com.ketangpai.base.BasePresenterActivity;
 import com.ketangpai.bean.User;
 import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.constant.Constant;

@@ -2,7 +2,6 @@ package com.ketangpai.activity;
 
 import android.support.v4.app.Fragment;
 
-import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.fragment.DataFragment;
 import com.ketangpai.nan.ketangpai.R;
