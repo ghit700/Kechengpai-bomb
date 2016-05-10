@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">课程派</string>
+    <string name="app_name">课程派-教师</string>
 
     <!--loginActivity!-->
     <string name="loginName">账号</string>
