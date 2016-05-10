@@ -209,13 +209,15 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
 
     @Subscribe
     public void onReceiveMessageEvent(ReceiveMessageEvent event) {
-        mChatAdapter.addItem(mChatRecondList.size(), event.getMessageInfo());
-        mChatList.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mChatList.smoothScrollToPosition(mChatRecondList.size());
-            }
-        }, 200);
+        if(event.getMessageInfo().getSend_account().equals(mSend_User.getAccount())){
+            mChatAdapter.addItem(mChatRecondList.size(), event.getMessageInfo());
+            mChatList.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mChatList.smoothScrollToPosition(mChatRecondList.size());
+                }
+            }, 200);
+        }
 
 
     }
