@@ -1,12 +1,11 @@
 package com.ketangpai.adapter;
 
 import android.content.Context;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Search;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 
 import java.util.List;
 

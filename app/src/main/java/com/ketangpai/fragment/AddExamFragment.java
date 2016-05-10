@@ -1,28 +1,20 @@
 package com.ketangpai.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.ketangpai.adapter.AddExamAdapter;
-import com.ketangpai.base.BaseFragment;
-import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Subject;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.Test;
 import com.ketangpai.event.AddExamEvent;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AddExamPresenter;
-import com.ketangpai.view.FullyLinearLayoutManager;
 import com.ketangpai.viewInterface.AddExamViewInterface;
 import com.shamanland.fab.ShowHideOnScroll;
 
@@ -30,9 +22,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by nan on 2016/5/3.

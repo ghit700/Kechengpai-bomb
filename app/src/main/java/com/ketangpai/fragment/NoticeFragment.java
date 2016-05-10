@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ketangpai.activity.DataActivity;
-import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.DataAdapter;
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.FullyLinearLayoutManager;
 

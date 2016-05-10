@@ -1,18 +1,15 @@
 package com.ketangpai.fragment;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.constant.Constant;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.DataPresenter;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.utils.IntentUtils;

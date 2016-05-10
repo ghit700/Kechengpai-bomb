@@ -4,15 +4,12 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
-import android.view.ViewGroup;
 
 import com.ketangpai.fragment.SearchTabFragment;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.InflaterInputStream;
 
 /**
  * Created by nan on 2016/3/21.

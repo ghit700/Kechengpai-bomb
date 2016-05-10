@@ -1,11 +1,8 @@
 package com.ketangpai.adapter;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -13,8 +10,7 @@ import android.widget.TextView;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Teacher_Course;
-import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.CodeUtils;
 import com.ketangpai.view.MyPopupMenu;
 

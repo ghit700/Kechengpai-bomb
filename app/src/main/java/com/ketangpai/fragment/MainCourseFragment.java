@@ -16,24 +16,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ketangpai.activity.CourseActivity;
-import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.CourseMainCourseAdapter;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Course;
-import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.MainCoursePresenter;
 import com.ketangpai.utils.CodeUtils;
 import com.ketangpai.utils.NetUtils;
 import com.ketangpai.viewInterface.MainCourseViewInterface;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -12,9 +12,9 @@ import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.HomeworkPresenter;
 import com.ketangpai.viewInterface.HomeworkViewInterface;
+import com.ketangpai.nan.ketangpai.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -2,7 +2,6 @@ package com.ketangpai.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,12 +11,11 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.ketangpai.activity.AddNoticekActivity;
-import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.DataAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Notice;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AddNoticePresenter;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.IntentUtils;

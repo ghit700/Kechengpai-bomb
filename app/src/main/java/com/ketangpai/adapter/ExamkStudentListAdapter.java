@@ -4,9 +4,8 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
-import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Student_Reply;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.TimeUtils;
 
 import java.util.List;

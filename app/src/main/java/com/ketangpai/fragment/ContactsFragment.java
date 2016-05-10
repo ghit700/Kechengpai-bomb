@@ -5,18 +5,14 @@ import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.ketangpai.activity.ChatActivity;
-import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.ContactsExAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.User;
 import com.ketangpai.bean.User_Group;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.ContactsPresenter;
 import com.ketangpai.utils.NetUtils;
 import com.ketangpai.viewInterface.ContactsViewInterface;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;

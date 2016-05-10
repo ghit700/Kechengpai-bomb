@@ -1,23 +1,18 @@
 package com.ketangpai.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ketangpai.activity.AccountActivity;
 import com.ketangpai.activity.AccountUpdateActivity;
-import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BasePresenterFragment;
-import com.ketangpai.bean.User;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AccountUpdatePresenter;
 import com.ketangpai.viewInterface.AccountUpdateViewInterface;
 

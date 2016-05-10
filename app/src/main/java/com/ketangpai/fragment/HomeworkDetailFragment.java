@@ -14,10 +14,10 @@ import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.HomeworkDetailPresenter;
 import com.ketangpai.view.FullyLinearLayoutManager;
 import com.ketangpai.viewInterface.HomeworkDetailViewInterface;
+import com.ketangpai.nan.ketangpai.R;
 
 import java.util.ArrayList;
 import java.util.List;

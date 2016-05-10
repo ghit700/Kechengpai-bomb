@@ -12,7 +12,7 @@ import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Student_Reply;
 import com.ketangpai.bean.Test;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.ExamPresenter;
 import com.ketangpai.viewInterface.ExamViewInterface;
 
@@ -42,6 +42,7 @@ public class ExamFragment extends BasePresenterFragment<ExamViewInterface, ExamP
 
     @Override
     protected int getLayoutId() {
+
         return R.layout.fragment_t_exam;
     }
 

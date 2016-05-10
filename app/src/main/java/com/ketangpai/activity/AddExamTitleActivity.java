@@ -1,10 +1,10 @@
 package com.ketangpai.activity;
 
 import android.support.v4.app.Fragment;
+import com.ketangpai.nan.ketangpai.R;
 
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.fragment.AddExamTitleFragment;
-import com.ketangpai.nan.ketangpai.teacher.R;
 
 /**
  * Created by nan on 2016/5/4.

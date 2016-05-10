@@ -4,17 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-import com.ketangpai.nan.ketangpai.teacher.R;
-
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
+import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by Administrator on 2016/4/18.

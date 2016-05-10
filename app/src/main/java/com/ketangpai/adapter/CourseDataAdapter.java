@@ -1,13 +1,12 @@
 package com.ketangpai.adapter;
 
 import android.content.Context;
-import android.support.v4.provider.DocumentFile;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Data;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.ImageLoaderUtils;
 
 import java.util.List;

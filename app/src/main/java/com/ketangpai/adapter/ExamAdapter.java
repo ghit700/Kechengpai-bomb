@@ -5,8 +5,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -14,9 +12,8 @@ import android.widget.TextView;
 import com.ketangpai.base.BaseActivity;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Subject;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 /**

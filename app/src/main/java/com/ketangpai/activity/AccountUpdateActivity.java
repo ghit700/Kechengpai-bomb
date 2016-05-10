@@ -1,10 +1,10 @@
 package com.ketangpai.activity;
 
 import android.support.v4.app.Fragment;
+import com.ketangpai.nan.ketangpai.R;
 
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.fragment.AccountUpdateFragment;
-import com.ketangpai.nan.ketangpai.teacher.R;
 
 /**
  * Created by Administrator on 2016/4/19.

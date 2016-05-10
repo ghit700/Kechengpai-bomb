@@ -4,16 +4,10 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.ViewGroup;
 
-import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Course;
-import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.CourseTabFragment;
-import com.ketangpai.nan.ketangpai.teacher.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by nan on 2016/3/16.

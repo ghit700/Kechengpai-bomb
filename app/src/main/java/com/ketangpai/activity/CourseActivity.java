@@ -1,19 +1,11 @@
 package com.ketangpai.activity;
 
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
-import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BaseToolbarActivity;
-import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.Course;
-import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.CourseFragment;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by nan on 2016/3/16.

@@ -6,18 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ketangpai.activity.ChatActivity;
-import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.MessageAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.NewestMessage;
 import com.ketangpai.bean.User;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.MessagePresenter;
 import com.ketangpai.viewInterface.MessageViewInterface;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;

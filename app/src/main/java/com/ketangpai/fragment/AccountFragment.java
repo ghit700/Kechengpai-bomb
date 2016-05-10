@@ -1,20 +1,12 @@
 package com.ketangpai.fragment;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,22 +15,16 @@ import com.ketangpai.activity.AccountUpdateActivity;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.User;
 import com.ketangpai.constant.Constant;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.AccountPresenter;
-import com.ketangpai.presenter.AccountUpdatePresenter;
-import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.utils.IntentUtils;
 import com.ketangpai.view.ActionSheetDialog;
-import com.ketangpai.viewInterface.AccountUpdateViewInterface;
 import com.ketangpai.viewInterface.AccountViewInterface;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-
-import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by nan on 2016/3/21.

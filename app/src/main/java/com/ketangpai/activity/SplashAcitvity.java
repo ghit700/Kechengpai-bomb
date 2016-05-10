@@ -9,10 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.ketangpai.bean.Course;
-import com.ketangpai.nan.ketangpai.teacher.R;
-
-import cn.bmob.v3.listener.SaveListener;
+import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by nan on 2016/3/9.

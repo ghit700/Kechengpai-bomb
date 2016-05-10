@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import com.ketangpai.nan.ketangpai.R;
 
 import com.ketangpai.adapter.SearchTabPagerAdapter;
 import com.ketangpai.base.BaseActivity;
-import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.view.SlidingTabLayout;
 
 

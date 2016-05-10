@@ -14,9 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import com.ketangpai.nan.ketangpai.R;
 
 
-import com.ketangpai.nan.ketangpai.teacher.R;
 
 import java.util.ArrayList;
 import java.util.List;

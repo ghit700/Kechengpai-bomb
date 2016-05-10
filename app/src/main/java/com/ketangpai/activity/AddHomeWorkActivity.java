@@ -3,10 +3,10 @@ package com.ketangpai.activity;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.ketangpai.nan.ketangpai.R;
 
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.fragment.AddHomeworkFragment;
-import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.utils.IntentUtils;
 
 /**

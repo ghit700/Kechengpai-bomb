@@ -1,23 +1,18 @@
 package com.ketangpai.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.ketangpai.base.BaseActivity;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.bean.Subject;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 
 import java.util.List;
 

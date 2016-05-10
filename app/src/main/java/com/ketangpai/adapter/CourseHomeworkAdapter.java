@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import com.ketangpai.nan.ketangpai.R;
 
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Teacher_Homework;
-import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.MyPopupMenu;
 

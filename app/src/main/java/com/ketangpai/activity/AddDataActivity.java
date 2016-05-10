@@ -2,9 +2,8 @@ package com.ketangpai.activity;
 
 import android.support.v4.app.Fragment;
 
-import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BaseToolbarActivity;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by nan on 2016/4/10.

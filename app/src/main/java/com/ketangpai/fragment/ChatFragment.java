@@ -1,29 +1,24 @@
 package com.ketangpai.fragment;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.ketangpai.adapter.ChatAdapter;
-import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.User;
 import com.ketangpai.event.ReceiveMessageEvent;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.ChatPresenter;
 import com.ketangpai.viewInterface.ChatViewInterface;
 
@@ -206,13 +201,16 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
 
     @Subscribe
     public void onReceiveMessageEvent(ReceiveMessageEvent event) {
-        mChatAdapter.addItem(mChatRecondList.size(), event.getMessageInfo());
-        mChatList.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mChatList.smoothScrollToPosition(mChatRecondList.size());
-            }
-        }, 200);
+        if (event.getMessageInfo().getSend_account().equals(mSend_User.getAccount())){
+            mChatAdapter.addItem(mChatRecondList.size(), event.getMessageInfo());
+            mChatList.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mChatList.smoothScrollToPosition(mChatRecondList.size());
+                }
+            }, 200);
+
+        }
 
 
     }

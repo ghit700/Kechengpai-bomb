@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.ketangpai.nan.ketangpai.R;
 
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.fragment.AddExamFragment;
-import com.ketangpai.nan.ketangpai.teacher.R;
 
 /**
  * Created by nan on 2016/5/3.

@@ -8,7 +8,7 @@ import com.ketangpai.adapter.ExamAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Student_Reply;
 import com.ketangpai.bean.Subject;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.ExamDetailPresenter;
 import com.ketangpai.view.FullyLinearLayoutManager;
 import com.ketangpai.viewInterface.ExamDetailViewInterface;
@@ -37,6 +37,7 @@ public class ExamDetailFragment extends BasePresenterFragment<ExamDetailViewInte
 
     @Override
     protected int getLayoutId() {
+
         return R.layout.fragment_t_detail_exam;
     }
 

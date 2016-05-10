@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.bean.Notice;
 import com.ketangpai.fragment.NoticeFragment;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by Administrator on 2016/4/15.

@@ -8,7 +8,6 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ketangpai.bean.MessageInfo;
-import com.ketangpai.bean.NotificationInfo;
 import com.ketangpai.bean.PushMessage;
 import com.ketangpai.event.ReceiveMessageEvent;
 

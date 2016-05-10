@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,13 +21,11 @@ import android.widget.TextView;
 import com.ketangpai.base.BasePresenterActivity;
 import com.ketangpai.bean.User;
 import com.ketangpai.constant.Constant;
-import com.ketangpai.nan.ketangpai.teacher.R;
+import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.LoginPresenter;
 import com.ketangpai.utils.ActivityCollector;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.viewInterface.LoginViewInterface;
-
-import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by nan on 2016/3/9.

@@ -10,7 +10,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.nan.ketangpai.nan.nan.ketangpai.teacher"
+        applicationId "com.ketangpai.nan.ketangpai"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
