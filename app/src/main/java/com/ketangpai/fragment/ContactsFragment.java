@@ -10,7 +10,7 @@ import com.ketangpai.adapter.ContactsExAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.User;
 import com.ketangpai.bean.User_Group;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.ContactsPresenter;
 import com.ketangpai.utils.NetUtils;
 import com.ketangpai.viewInterface.ContactsViewInterface;

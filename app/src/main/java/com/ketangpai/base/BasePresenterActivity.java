@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
+
 
 /**
  * Created by nan on 2016/4/16.

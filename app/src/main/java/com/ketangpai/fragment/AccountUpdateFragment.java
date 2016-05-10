@@ -17,7 +17,7 @@ import com.ketangpai.activity.AccountUpdateActivity;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.User;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.AccountUpdatePresenter;
 import com.ketangpai.viewInterface.AccountUpdateViewInterface;
 

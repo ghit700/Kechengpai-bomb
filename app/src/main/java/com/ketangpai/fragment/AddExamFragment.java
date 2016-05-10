@@ -20,7 +20,7 @@ import com.ketangpai.bean.Subject;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.Test;
 import com.ketangpai.event.AddExamEvent;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.AddExamPresenter;
 import com.ketangpai.view.FullyLinearLayoutManager;
 import com.ketangpai.viewInterface.AddExamViewInterface;

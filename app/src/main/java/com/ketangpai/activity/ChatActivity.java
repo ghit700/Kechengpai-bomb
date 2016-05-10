@@ -10,7 +10,7 @@ import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.User;
 import com.ketangpai.fragment.ChatFragment;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 
 /**
  * Created by nan on 2016/3/18.

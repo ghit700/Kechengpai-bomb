@@ -10,7 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ketangpai.nan.ketangpai.R;
+
+import com.ketangpai.nan.ketangpai.teacher.R;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;

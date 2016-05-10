@@ -57,7 +57,7 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
     public void createCourse(Context context, final Teacher_Course course, String path) {
         if (isViewAttached()) {
             mainCourseViewInterface = getView();
-            mainCourseViewInterface.showLoading(0);
+            mainCourseViewInterface.showLoading();
 
             courseModel.createCourse(context, course, path, new ResultCallback() {
                 @Override

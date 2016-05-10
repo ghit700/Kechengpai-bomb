@@ -13,7 +13,7 @@ import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.CourseFragment;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 
 /**
  * Created by nan on 2016/3/16.

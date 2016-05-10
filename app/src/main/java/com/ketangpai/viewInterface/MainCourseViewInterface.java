@@ -26,7 +26,7 @@ public interface MainCourseViewInterface {
 
 
 
-    void showLoading(int type);
+    void showLoading();
 
     void hideLoading();
 }

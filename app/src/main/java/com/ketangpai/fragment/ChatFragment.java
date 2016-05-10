@@ -23,7 +23,7 @@ import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.User;
 import com.ketangpai.event.ReceiveMessageEvent;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.ChatPresenter;
 import com.ketangpai.viewInterface.ChatViewInterface;
 

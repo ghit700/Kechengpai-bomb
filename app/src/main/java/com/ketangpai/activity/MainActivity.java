@@ -20,7 +20,7 @@ import com.ketangpai.bean.Installation;
 import com.ketangpai.fragment.ContactsFragment;
 import com.ketangpai.fragment.MainCourseFragment;
 import com.ketangpai.fragment.MessageFragment;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.utils.ActivityCollector;
 
 import java.util.List;

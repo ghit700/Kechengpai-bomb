@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="com.ketangpai.nan.ketangpai"
+    package="com.ketangpai.nan.ketangpai.teacher"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--允许联网 -->

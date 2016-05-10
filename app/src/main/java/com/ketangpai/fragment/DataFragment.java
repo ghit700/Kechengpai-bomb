@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.constant.Constant;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.DataPresenter;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.utils.IntentUtils;

@@ -23,7 +23,7 @@ import com.ketangpai.activity.AccountUpdateActivity;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.User;
 import com.ketangpai.constant.Constant;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.AccountPresenter;
 import com.ketangpai.presenter.AccountUpdatePresenter;
 import com.ketangpai.utils.FileUtils;
@@ -51,7 +51,6 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
     ImageView img_account_user;
     //变量
     private String school;
-    private int number;
     private String name;
     private String account;
     private String u_id;
@@ -68,7 +67,6 @@ public class AccountFragment extends BasePresenterFragment<AccountViewInterface,
         school = mContext.getSharedPreferences("user", 0).getString("school", "");
         name = mContext.getSharedPreferences("user", 0).getString("name", "");
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
-        number = mContext.getSharedPreferences("user", 0).getInt("number", -1);
         u_id = mContext.getSharedPreferences("user", 0).getString("u_id", "");
         path = mContext.getSharedPreferences("user", 0).getString("path", "");
         mFragment = this;

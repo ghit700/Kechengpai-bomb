@@ -14,7 +14,7 @@ import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.utils.CodeUtils;
 import com.ketangpai.view.MyPopupMenu;
 

@@ -12,7 +12,7 @@ import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.NewestMessage;
 import com.ketangpai.bean.User;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.MessagePresenter;
 import com.ketangpai.viewInterface.MessageViewInterface;
 

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.ketangpai.adapter.SearchTabPagerAdapter;
 import com.ketangpai.base.BaseActivity;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.view.SlidingTabLayout;
 
 

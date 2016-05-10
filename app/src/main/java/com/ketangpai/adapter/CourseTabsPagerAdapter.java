@@ -10,7 +10,7 @@ import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.fragment.CourseTabFragment;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 
 import java.util.ArrayList;
 import java.util.List;

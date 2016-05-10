@@ -21,7 +21,7 @@ import com.ketangpai.activity.LoginActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.constant.Constant;
 import com.ketangpai.fragment.AccountFragment;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.utils.ImageLoaderUtils;
 
 import java.io.File;

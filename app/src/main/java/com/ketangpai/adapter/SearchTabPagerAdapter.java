@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import com.ketangpai.fragment.SearchTabFragment;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 
 import java.util.ArrayList;
 import java.util.List;

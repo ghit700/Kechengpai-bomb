@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.bean.Student_Reply;
 import com.ketangpai.fragment.ExamDetailFragment;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 
 /**
  * Created by nan on 2016/5/1.

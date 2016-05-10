@@ -22,7 +22,7 @@ import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Data;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.bean.Teacher_Homework;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.AddHomeworkPresenter;
 import com.ketangpai.utils.FileUtils;
 import com.ketangpai.utils.IntentUtils;

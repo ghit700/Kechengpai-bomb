@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.ketangpai.bean.Course;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 
 import cn.bmob.v3.listener.SaveListener;
 

@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.ketangpai.base.BasePresenterActivity;
 import com.ketangpai.bean.User;
 import com.ketangpai.constant.Constant;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.LoginPresenter;
 import com.ketangpai.utils.ActivityCollector;
 import com.ketangpai.utils.ImageLoaderUtils;
@@ -117,7 +117,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
                 mimm.showSoftInput(null, InputMethodManager.SHOW_FORCED);
                 break;
             case R.id.tv_login_register:
-                showRegisterLoading();
+                showRegisterDialog();
                 mimm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 break;
             default:

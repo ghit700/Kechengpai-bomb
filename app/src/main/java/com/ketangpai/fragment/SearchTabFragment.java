@@ -19,7 +19,7 @@ import com.ketangpai.bean.Search;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.SearchPresenter;
 import com.ketangpai.viewInterface.SearchViewInterface;
 

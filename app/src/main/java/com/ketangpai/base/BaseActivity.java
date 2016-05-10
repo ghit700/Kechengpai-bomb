@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.ketangpai.utils.ActivityCollector;
-import com.ketangpai.nan.ketangpai.R;
 
 import org.greenrobot.eventbus.EventBus;
 

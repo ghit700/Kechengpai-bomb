@@ -24,7 +24,7 @@ import com.ketangpai.bean.Course;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.listener.OnItemClickListener;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.presenter.MainCoursePresenter;
 import com.ketangpai.utils.CodeUtils;
 import com.ketangpai.utils.NetUtils;
@@ -279,13 +279,11 @@ public class MainCourseFragment extends BasePresenterFragment<MainCourseViewInte
 
 
     @Override
-    public void showLoading(int typte) {
+    public void showLoading() {
         showLoadingDialog();
-        if (typte == 0) {
-            setLoadingText("创建班级中...");
-        } else {
-            setLoadingText("加入班级中...");
-        }
+
+        setLoadingText("创建班级中...");
+
     }
 
     @Override

@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.NewestMessage;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.utils.ImageLoaderUtils;
 import com.ketangpai.utils.TimeUtils;
 

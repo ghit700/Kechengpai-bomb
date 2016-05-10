@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ketangpai.nan.ketangpai.R;
 
 import org.greenrobot.eventbus.EventBus;
 

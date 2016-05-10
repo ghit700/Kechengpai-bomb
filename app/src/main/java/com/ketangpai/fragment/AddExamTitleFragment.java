@@ -14,7 +14,7 @@ import android.widget.TimePicker;
 import com.ketangpai.activity.AddExamActivity;
 import com.ketangpai.base.BaseFragment;
 import com.ketangpai.bean.Teacher_Course;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.utils.TimeUtils;
 
 import java.util.Calendar;

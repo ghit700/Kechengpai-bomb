@@ -17,7 +17,7 @@ import com.ketangpai.base.BaseActivity;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.bean.Subject;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 
 import java.util.List;
 

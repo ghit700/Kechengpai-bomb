@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.bean.Test;
-import com.ketangpai.nan.ketangpai.R;
+import com.ketangpai.nan.ketangpai.teacher.R;
 import com.ketangpai.utils.TimeUtils;
 import com.ketangpai.view.MyPopupMenu;
 
