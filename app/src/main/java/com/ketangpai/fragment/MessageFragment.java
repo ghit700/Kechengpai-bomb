@@ -3,18 +3,14 @@ package com.ketangpai.fragment;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.ketangpai.activity.ChatActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.MessageAdapter;
-import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenterFragment;
-import com.ketangpai.bean.MessageInfo;
 import com.ketangpai.bean.NewestMessage;
 import com.ketangpai.bean.User;
-import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.MessagePresenter;
@@ -46,14 +42,8 @@ public class MessageFragment extends BasePresenterFragment<MessageViewInterface,
     protected void initVarious() {
         super.initVarious();
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
-        EventBus.getDefault().register(this);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
     protected MessagePresenter createPresenter() {
@@ -106,10 +96,7 @@ public class MessageFragment extends BasePresenterFragment<MessageViewInterface,
 
     }
 
-    @Subscribe
-    public void onNotificationEvent(NotificationEvent event) {
-        ((MainActivity) getActivity()).setNotifyOn();
-    }
+
 
     @Override
     public void getNewestMessageListOnComplete(List<NewestMessage> newestMessages) {

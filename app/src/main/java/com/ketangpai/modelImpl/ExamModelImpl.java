@@ -5,16 +5,12 @@ import android.util.Log;
 
 import com.ketangpai.bean.Search;
 import com.ketangpai.bean.Student_Course;
-import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Student_Reply;
 import com.ketangpai.bean.Subject;
-import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
 import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.fragment.AddExamFragment;
-import com.ketangpai.fragment.AddHomeworkFragment;
-import com.ketangpai.fragment.THomeworkFragment;
 import com.ketangpai.model.ExamModel;
 
 import java.util.ArrayList;

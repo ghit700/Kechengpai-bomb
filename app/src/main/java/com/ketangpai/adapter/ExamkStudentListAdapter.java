@@ -14,10 +14,10 @@ import java.util.List;
 /**
  * Created by nan on 2016/5/1.
  */
-public class TExamkAdapter extends BaseAdapter<Student_Reply> {
+public class ExamkStudentListAdapter extends BaseAdapter<Student_Reply> {
 
 
-    public TExamkAdapter(Context mContext, List<Student_Reply> mDataList) {
+    public ExamkStudentListAdapter(Context mContext, List<Student_Reply> mDataList) {
         super(mContext, mDataList);
     }
 

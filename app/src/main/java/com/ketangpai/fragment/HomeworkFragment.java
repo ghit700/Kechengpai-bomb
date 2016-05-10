@@ -1,38 +1,34 @@
 package com.ketangpai.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.ketangpai.activity.THomeworkDetailActivity;
-import com.ketangpai.adapter.THomeworkAdapter;
+import com.ketangpai.activity.HomeworkDetailActivity;
+import com.ketangpai.adapter.HomeworkStudentListAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.THomeworkPresenter;
-import com.ketangpai.viewInterface.THomeworkViewInterface;
+import com.ketangpai.presenter.HomeworkPresenter;
+import com.ketangpai.viewInterface.HomeworkViewInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
  * Created by nan on 2016/5/1.
  */
-public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterface, THomeworkPresenter> implements THomeworkViewInterface, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class HomeworkFragment extends BasePresenterFragment<HomeworkViewInterface, HomeworkPresenter> implements HomeworkViewInterface, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
 
-    public static final String TAG = "===THomeworkFragment";
+    public static final String TAG = "===HomeworkFragment";
 
     @InjectView(R.id.list_t_homework)
     RecyclerView listTHomework;
@@ -40,7 +36,7 @@ public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterf
     SwipeRefreshLayout refeshHomework;
 
     //adapter
-    private THomeworkAdapter mTHomeworkAdapter;
+    private HomeworkStudentListAdapter mHomeworkStudentListAdapter;
 
     //various
     private Teacher_Homework homework;
@@ -63,8 +59,8 @@ public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterf
         super.initView();
         listTHomework.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mHomeworks = new ArrayList<>();
-        mTHomeworkAdapter = new THomeworkAdapter(mContext, mHomeworks);
-        listTHomework.setAdapter(mTHomeworkAdapter);
+        mHomeworkStudentListAdapter = new HomeworkStudentListAdapter(mContext, mHomeworks);
+        listTHomework.setAdapter(mHomeworkStudentListAdapter);
     }
 
     @Override
@@ -78,7 +74,7 @@ public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterf
     @Override
     protected void initListener() {
         super.initListener();
-        mTHomeworkAdapter.setOnItemClickListener(this);
+        mHomeworkStudentListAdapter.setOnItemClickListener(this);
         refeshHomework.setOnRefreshListener(this);
     }
 
@@ -97,7 +93,7 @@ public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterf
     @Override
     public void onItemClick(View view, int position) {
         if (mHomeworks.get(position).getS_state().equals("按时交") || mHomeworks.get(position).getS_state().equals("逾时未交")) {
-            Intent intent = new Intent(mContext, THomeworkDetailActivity.class);
+            Intent intent = new Intent(mContext, HomeworkDetailActivity.class);
             intent.putExtra("homework", mHomeworks.get(position));
             startActivity(intent);
         }
@@ -105,8 +101,8 @@ public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterf
 
 
     @Override
-    protected THomeworkPresenter createPresenter() {
-        return new THomeworkPresenter();
+    protected HomeworkPresenter createPresenter() {
+        return new HomeworkPresenter();
     }
 
     @Override
@@ -114,7 +110,7 @@ public class THomeworkFragment extends BasePresenterFragment<THomeworkViewInterf
         refeshHomework.setRefreshing(false);
         mHomeworks.addAll(homeworklist);
         Collections.reverse(mHomeworks);
-        mTHomeworkAdapter.notifyDataSetChanged();
+        mHomeworkStudentListAdapter.notifyDataSetChanged();
     }
 
 

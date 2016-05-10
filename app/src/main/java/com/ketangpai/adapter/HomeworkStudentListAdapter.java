@@ -15,10 +15,10 @@ import butterknife.InjectView;
 /**
  * Created by nan on 2016/5/1.
  */
-public class THomeworkAdapter extends BaseAdapter<Student_Homework> {
+public class HomeworkStudentListAdapter extends BaseAdapter<Student_Homework> {
 
 
-    public THomeworkAdapter(Context mContext, List<Student_Homework> mDataList) {
+    public HomeworkStudentListAdapter(Context mContext, List<Student_Homework> mDataList) {
         super(mContext, mDataList);
     }
 

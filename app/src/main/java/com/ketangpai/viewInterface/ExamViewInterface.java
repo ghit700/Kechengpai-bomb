@@ -8,6 +8,6 @@ import java.util.List;
 /**
  * Created by nan on 2016/5/8.
  */
-public interface TExamViewInterface {
+public interface ExamViewInterface {
     void getStudentReplyListOnComplete(List<Student_Reply> student_replies);
 }

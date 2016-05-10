@@ -6,12 +6,11 @@ import android.util.Log;
 import com.ketangpai.bean.Search;
 import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Student_Homework;
-import com.ketangpai.bean.Teacher_Course;
 import com.ketangpai.callback.ResultCallback;
 import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.fragment.AddHomeworkFragment;
-import com.ketangpai.fragment.THomeworkFragment;
+import com.ketangpai.fragment.HomeworkFragment;
 import com.ketangpai.model.HomeworkModel;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
-import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * Created by nan on 2016/4/24.
@@ -114,7 +112,7 @@ public class HomeworkModelImpl implements HomeworkModel {
 
             @Override
             public void onError(int i, String s) {
-                Log.i(THomeworkFragment.TAG, "getStudentHomeworkList " + s);
+                Log.i(HomeworkFragment.TAG, "getStudentHomeworkList " + s);
             }
         });
     }

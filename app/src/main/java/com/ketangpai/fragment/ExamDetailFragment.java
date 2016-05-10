@@ -1,37 +1,28 @@
 package com.ketangpai.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ketangpai.adapter.ExamAdapter;
-import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Student_Reply;
 import com.ketangpai.bean.Subject;
-import com.ketangpai.bean.Test;
 import com.ketangpai.nan.ketangpai.R;
-import com.ketangpai.presenter.TExamDetailPresenter;
-import com.ketangpai.presenter.TExamPresenter;
+import com.ketangpai.presenter.ExamDetailPresenter;
 import com.ketangpai.view.FullyLinearLayoutManager;
-import com.ketangpai.viewInterface.TExamDetailViewInterface;
-import com.ketangpai.viewInterface.TExamViewInterface;
+import com.ketangpai.viewInterface.ExamDetailViewInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
  * Created by nan on 2016/5/8.
  */
-public class TExamDetailFragment extends BasePresenterFragment<TExamDetailViewInterface, TExamDetailPresenter> implements TExamDetailViewInterface {
+public class ExamDetailFragment extends BasePresenterFragment<ExamDetailViewInterface, ExamDetailPresenter> implements ExamDetailViewInterface {
     @InjectView(R.id.list_exam)
     RecyclerView listExam;
     @InjectView(R.id.btn_exam_submit)
@@ -63,7 +54,7 @@ public class TExamDetailFragment extends BasePresenterFragment<TExamDetailViewIn
         } else {
             mSubjects = new ArrayList<>();
         }
-        mExamAdapter = new ExamAdapter(mContext, mSubjects, 0);
+        mExamAdapter = new ExamAdapter(mContext, mSubjects);
         listExam.setAdapter(mExamAdapter);
 
         if (null != mStudent_reply.getGrade()) {
@@ -105,7 +96,7 @@ public class TExamDetailFragment extends BasePresenterFragment<TExamDetailViewIn
 
 
     @Override
-    protected TExamDetailPresenter createPresenter() {
-        return new TExamDetailPresenter();
+    protected ExamDetailPresenter createPresenter() {
+        return new ExamDetailPresenter();
     }
 }

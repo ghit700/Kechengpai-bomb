@@ -1,30 +1,26 @@
 package com.ketangpai.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ketangpai.base.BasePresenter;
-import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.callback.ResultsCallback;
-import com.ketangpai.fragment.THomeworkFragment;
 import com.ketangpai.model.HomeworkModel;
 import com.ketangpai.modelImpl.HomeworkModelImpl;
-import com.ketangpai.viewInterface.THomeworkViewInterface;
+import com.ketangpai.viewInterface.HomeworkViewInterface;
 
 import java.util.List;
 
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 
 /**
  * Created by nan on 2016/5/1.
  */
-public class THomeworkPresenter extends BasePresenter<THomeworkViewInterface> {
-    THomeworkViewInterface mTHomeworkViewInterface;
+public class HomeworkPresenter extends BasePresenter<HomeworkViewInterface> {
+    HomeworkViewInterface mTHomeworkViewInterface;
     HomeworkModel mHomeworkModel = new HomeworkModelImpl();
 
 
-    public THomeworkPresenter() {
+    public HomeworkPresenter() {
         mHomeworkModel = new HomeworkModelImpl();
     }
 

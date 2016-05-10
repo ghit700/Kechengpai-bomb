@@ -7,21 +7,18 @@ import com.ketangpai.base.BasePresenter;
 import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.model.HomeworkModel;
 import com.ketangpai.modelImpl.HomeworkModelImpl;
-import com.ketangpai.viewInterface.THomeworkDetailViewInterface;
-import com.ketangpai.viewInterface.THomeworkViewInterface;
+import com.ketangpai.viewInterface.HomeworkDetailViewInterface;
 
-import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
-import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * Created by nan on 2016/5/1.
  */
-public class THomeworkDetailPresenter extends BasePresenter<THomeworkDetailViewInterface> {
-    private THomeworkDetailViewInterface mTHomeworkViewInterface;
+public class HomeworkDetailPresenter extends BasePresenter<HomeworkDetailViewInterface> {
+    private HomeworkDetailViewInterface mTHomeworkViewInterface;
     private HomeworkModel mHomeworkModel;
 
-    public THomeworkDetailPresenter() {
+    public HomeworkDetailPresenter() {
         mHomeworkModel = new HomeworkModelImpl();
     }
 

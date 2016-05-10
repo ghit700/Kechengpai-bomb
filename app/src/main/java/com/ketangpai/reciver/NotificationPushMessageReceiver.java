@@ -8,15 +8,12 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ketangpai.bean.MessageInfo;
-import com.ketangpai.bean.Notification;
 import com.ketangpai.bean.NotificationInfo;
 import com.ketangpai.bean.PushMessage;
-import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.event.ReceiveMessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.push.PushConstants;
 
 /**
@@ -33,12 +30,7 @@ public class NotificationPushMessageReceiver extends BroadcastReceiver {
             JSONObject object = JSON.parseObject(result);
             PushMessage pushMessage = JSON.parseObject(object.getString("alert"), PushMessage.class);
             switch (pushMessage.getType()) {
-                case 0:
-                    NotificationInfo notificationInfo = JSON.parseObject(pushMessage.getObject(), NotificationInfo.class);
-                    NotificationEvent notificationEvent = new NotificationEvent();
-                    notificationEvent.setNotificationInfo(notificationInfo);
-                    EventBus.getDefault().post(notificationEvent);
-                    break;
+
                 case 1:
                     MessageInfo messageInfo = JSON.parseObject(pushMessage.getObject(), MessageInfo.class);
                     ReceiveMessageEvent receiveMessageEvent = new ReceiveMessageEvent(messageInfo);

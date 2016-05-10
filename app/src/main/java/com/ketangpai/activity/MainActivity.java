@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,15 +17,11 @@ import android.view.View;
 
 import com.ketangpai.base.DrawerBaseActivity;
 import com.ketangpai.bean.Installation;
-import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.fragment.ContactsFragment;
 import com.ketangpai.fragment.MainCourseFragment;
 import com.ketangpai.fragment.MessageFragment;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.ActivityCollector;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -54,8 +49,6 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
     //actionbar开关对象
     private ActionBarDrawerToggle mDrawerToggle;
     private String account;
-    private Menu mMenu;
-    private boolean haveNotify = false;
     private MainCourseFragment mMainCourseFragment;
     private ContactsFragment mContactsFragment;
     private MessageFragment mMessageFragment;
@@ -170,11 +163,6 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
 
                 break;
 
-            case R.id.notify:
-                setNotifyOff();
-                Intent intent = new Intent(mContext, NotificationActivity.class);
-                startActivity(intent);
-                break;
 
         }
         return true;
@@ -276,17 +264,13 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean isOpen = mDrawerContainer.isDrawerVisible(mfl_main_drawerContent);
         menu.findItem(R.id.search).setVisible(!isOpen);
-        menu.findItem(R.id.notify).setVisible(!isOpen);
-        if (haveNotify) {
-            menu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications_on);
-        }
+
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.base_toolbar_menu, menu);
-        mMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -312,19 +296,6 @@ public class MainActivity extends DrawerBaseActivity implements View.OnClickList
             }
         });
     }
-
-    public void setNotifyOn() {
-        haveNotify = true;
-        mMenu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications_on);
-    }
-
-    public void setNotifyOff() {
-        haveNotify = false;
-        mMenu.findItem(R.id.notify).setIcon(R.drawable.ic_notifications);
-
-    }
-
-
 
 
 }

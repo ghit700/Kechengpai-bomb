@@ -48,10 +48,11 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
     private InputMethodManager mimm;
     //保存点击的时间
     private long exitTime;
-    private int type = 0;
+    private int type = 1;
     private AlertDialog RegisterDialog;
     private User mUser;
     private String account;
+    private String path;
 
 
     @Override
@@ -63,6 +64,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
     protected void initVariables() {
         super.initVariables();
         account = getSharedPreferences("user", 0).getString("account", "");
+        path = getSharedPreferences("user", 0).getString("path", "");
 
     }
 
@@ -115,7 +117,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
                 mimm.showSoftInput(null, InputMethodManager.SHOW_FORCED);
                 break;
             case R.id.tv_login_register:
-                startChooseTypeDialog();
+                showRegisterLoading();
                 mimm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 break;
             default:
@@ -123,22 +125,6 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
         }
     }
 
-    private void startChooseTypeDialog() {
-        new AlertDialog.Builder(mContext).setTitle("注册").setNeutralButton("学生", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                type = 1;
-                showRegisterDialog(1);
-            }
-
-        }).setPositiveButton("老师", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                type = 0;
-                showRegisterDialog(0);
-            }
-        }).create().show();
-    }
 
     private void initEtNameAndPassword() {
 
@@ -162,7 +148,7 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!account.equals("") && account.equals(mName.getText().toString())) {
+                if (!account.equals("") && account.equals(mName.getText().toString()) && !path.equals("")) {
                     ImageLoaderUtils.displayNoDisk(mContext, mUserIconImg, Constant.LOGO_FOLDER);
                 } else {
                     ImageLoaderUtils.display(mContext, mUserIconImg, "");
@@ -193,19 +179,15 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
         return super.onKeyDown(keyCode, event);
     }
 
-    private void showRegisterDialog(final int type) {
+    private void showRegisterDialog() {
         RegisterDialog = new AlertDialog.Builder(mContext).create();
         RegisterDialog.setCanceledOnTouchOutside(false);
         View view;
 
-        if (type == 1) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.dialog_register_student, null);
-        } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.dialog_register_teacher, null);
-        }
+        view = LayoutInflater.from(mContext).inflate(R.layout.dialog_register_teacher, null);
+
         final EditText et_register_account = (EditText) view.findViewById(R.id.et_register_account);
         final EditText et_register_name = (EditText) view.findViewById(R.id.et_register_name);
-        final EditText et_register_sid = (EditText) view.findViewById(R.id.et_register_sid);
         final EditText et_register_password = (EditText) view.findViewById(R.id.et_register_password);
         final EditText et_register_school = (EditText) view.findViewById(R.id.et_register_school);
         Button btn_register = (Button) view.findViewById(R.id.btn_register);
@@ -228,22 +210,15 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
 
                     mUser = new User();
                     //注册
-                    if (type == 0) {
-                        //老师
-                        mUser.setAccount(et_register_account.getText().toString());
-                        mUser.setPassword(et_register_password.getText().toString());
-                        mUser.setName(et_register_name.getText().toString());
-                        mUser.setNumber(0);
-                        mUser.setSchool(et_register_school.getText().toString());
-                        mUser.setType(0);
-                    } else {
-                        mUser.setAccount(et_register_account.getText().toString());
-                        mUser.setPassword(et_register_password.getText().toString());
-                        mUser.setName(et_register_name.getText().toString());
-                        mUser.setNumber(Integer.parseInt(et_register_sid.getText().toString()));
-                        mUser.setSchool(et_register_school.getText().toString());
-                        mUser.setType(1);
-                    }
+
+                    //老师
+                    mUser.setAccount(et_register_account.getText().toString());
+                    mUser.setPassword(et_register_password.getText().toString());
+                    mUser.setName(et_register_name.getText().toString());
+                    mUser.setNumber(0);
+                    mUser.setSchool(et_register_school.getText().toString());
+                    mUser.setType(0);
+
                     mPresenter.register(mContext, mUser);
                 } else {
                     showRegisterFailDialog();
@@ -333,7 +308,6 @@ public class LoginActivity extends BasePresenterActivity<LoginViewInterface, Log
     private void saveUserMessage() {
         SharedPreferences sp = getSharedPreferences("user", 0);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("type", type);
         editor.putString("account", mUser.getAccount());
         editor.putString("password", mUser.getPassword());
         editor.putString("school", mUser.getSchool());

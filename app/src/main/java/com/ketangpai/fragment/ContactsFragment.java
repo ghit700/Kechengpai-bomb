@@ -1,18 +1,15 @@
 package com.ketangpai.fragment;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.ketangpai.activity.ChatActivity;
 import com.ketangpai.activity.MainActivity;
 import com.ketangpai.adapter.ContactsExAdapter;
-import com.ketangpai.base.BaseFragment;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.User;
 import com.ketangpai.bean.User_Group;
-import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.ContactsPresenter;
 import com.ketangpai.utils.NetUtils;
@@ -50,14 +47,12 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
     @Override
     protected void initVarious() {
         super.initVarious();
-        EventBus.getDefault().register(this);
         account = mContext.getSharedPreferences("user", 0).getString("account", "");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -107,10 +102,6 @@ public class ContactsFragment extends BasePresenterFragment<ContactsViewInterfac
         return true;
     }
 
-    @Subscribe
-    public void onNotificationEvent(NotificationEvent event) {
-        ((MainActivity) getActivity()).setNotifyOn();
-    }
 
     @Override
     public void getContactListOnComplete(List<User_Group> user_groups) {

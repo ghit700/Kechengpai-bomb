@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by nan on 2016/5/1.
  */
-public interface THomeworkViewInterface {
+public interface HomeworkViewInterface {
 
     void getStudentHomeworkListOnComplete(List<Student_Homework> homeworklist);
 }

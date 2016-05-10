@@ -24,12 +24,7 @@ public interface MainCourseViewInterface {
      */
     void createCourseOnComplete(Teacher_Course course);
 
-    /**
-     * 加入课程
-     *
-     * @param course
-     */
-    void addCourseOnComplete(Student_Course course);
+
 
     void showLoading(int type);
 

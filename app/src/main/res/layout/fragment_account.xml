@@ -64,43 +64,11 @@
                 />
         </RelativeLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="15dp"
-            android:background="@color/colorNormalText"/>
 
-        <RelativeLayout
-            android:id="@+id/ll_account_sid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/backgroud_accout_item"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
-                android:text="学号"
-                android:textColor="@android:color/black"/>
-
-            <TextView
-                android:id="@+id/tv_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="2012121212121"
-                />
-        </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginLeft="15dp"
             android:background="@color/colorNormalText"/>
 
@@ -130,7 +98,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginLeft="15dp"
             android:background="@color/colorNormalText"/>
 

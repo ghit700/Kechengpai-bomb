@@ -45,7 +45,7 @@ public class UserModelImpl implements UserModel {
 
 
         Log.i(AccountUpdateFragment.TAG, "login account=" + account + " password=" + password);
-        String sql = "select * from User where password=? and account=?";
+        String sql = "select * from User where password=? and account=? and type =0";
         BmobQuery<User> query = new BmobQuery<User>("User");
         query.doSQLQuery(context, sql, new SQLQueryListener<User>() {
             @Override

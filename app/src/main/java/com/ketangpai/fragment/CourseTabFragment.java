@@ -20,7 +20,6 @@ import com.ketangpai.adapter.CourseDataAdapter;
 import com.ketangpai.adapter.CourseNoticeAdapter;
 import com.ketangpai.adapter.CourseExamAdapter;
 import com.ketangpai.adapter.CourseHomeworkAdapter;
-import com.ketangpai.adapter.ExamAdapter;
 import com.ketangpai.base.BaseAdapter;
 import com.ketangpai.base.BasePresenterFragment;
 import com.ketangpai.bean.Course;
@@ -30,7 +29,6 @@ import com.ketangpai.bean.Student_Course;
 import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
 import com.ketangpai.event.AddExamEvent;
-import com.ketangpai.event.NotificationEvent;
 import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.presenter.CourseTabPresenter;
@@ -64,7 +62,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     //变量
     private List mTabContents;
     private int mPosition;
-    private int type;
     private final int REQUEST = 11;
     private int c_id;
     private String c_name;
@@ -86,7 +83,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     @Override
     protected void initVarious() {
         super.initVarious();
-        type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
         c_id = course.getC_id();
         c_name = course.getName();
     }
@@ -117,12 +113,10 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     @Override
     protected void initView() {
         mTabList = (RecyclerView) view.findViewById(R.id.list_course_tab);
-        if (type == 0) {
-            mPublishBtn = (FloatingActionButton) view.findViewById(R.id.btn_course_tab_publish);
-            mPublishBtn.setOnClickListener(this);
-            mPublishBtn.setVisibility(View.VISIBLE);
-            mTabList.setOnTouchListener(new ShowHideOnScroll(mPublishBtn));
-        }
+        mPublishBtn = (FloatingActionButton) view.findViewById(R.id.btn_course_tab_publish);
+        mPublishBtn.setOnClickListener(this);
+        mPublishBtn.setVisibility(View.VISIBLE);
+        mTabList.setOnTouchListener(new ShowHideOnScroll(mPublishBtn));
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fresh_course_tab);
         initTabList();
     }
@@ -169,31 +163,22 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     public void changeTabAdaterByPosition(int position, Context context) {
         switch (position) {
             case 0:
-                mTabAdapter = new CourseHomeworkAdapter(context, mTabContents, type);
-                if (type == 0) {
-                    mPublishBtn.setBackgroundResource(R.drawable.category_1004);
-                }
+                mTabAdapter = new CourseHomeworkAdapter(context, mTabContents);
+                mPublishBtn.setBackgroundResource(R.drawable.category_1004);
                 break;
             case 1:
                 mTabAdapter = new CourseDataAdapter(context, mTabContents);
-                if (type == 0) {
                     mPublishBtn.setBackgroundResource(R.drawable.category_1002);
-                }
 
                 break;
             case 2:
-                mTabAdapter = new CourseNoticeAdapter(context, mTabContents, type);
-                if (type == 0) {
-                    mPublishBtn.setBackgroundResource(R.drawable.category_1003);
-                }
+                mTabAdapter = new CourseNoticeAdapter(context, mTabContents);
+                mPublishBtn.setBackgroundResource(R.drawable.category_1003);
 
                 break;
             case 3:
-                mTabAdapter = new CourseExamAdapter(context, mTabContents, type);
-                if (type == 0) {
-
-                    mPublishBtn.setBackgroundResource(R.drawable.category_1001);
-                }
+                mTabAdapter = new CourseExamAdapter(context, mTabContents);
+                mPublishBtn.setBackgroundResource(R.drawable.category_1001);
 
                 break;
 
@@ -209,30 +194,17 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
     public void onRefresh() {
         switch (mPosition) {
             case 0:
-                if (type == 0) {
-                    mPresenter.getHomeworkList(mContext, c_id);
-                } else {
-                    mPresenter.getHomeworkListToStudent(mContext, c_id, ((Student_Course) course).getAdd_time());
-                }
+                mPresenter.getHomeworkList(mContext, c_id);
                 break;
             case 1:
                 mPresenter.getDataList(mContext, c_id);
 
                 break;
             case 2:
-                if (type == 0) {
-                    mPresenter.getNoticeList(mContext, c_id);
-                } else {
-                    mPresenter.getNoticeListToStudent(mContext, (Student_Course) course);
-                }
-
+                mPresenter.getNoticeList(mContext, c_id);
                 break;
             case 3:
-                if (type == 0) {
-                    mPresenter.getExamList(mContext, c_id);
-                } else {
-                    mPresenter.getExamListToStudent(mContext, c_id, ((Student_Course) course).getAdd_time());
-                }
+                mPresenter.getExamList(mContext, c_id);
 
                 break;
 
@@ -404,7 +376,6 @@ public class CourseTabFragment extends BasePresenterFragment<CourseTabViewInterf
             mTabList.smoothScrollToPosition(0);
         }
     }
-
 
 
     public void setCourse(Course course) {

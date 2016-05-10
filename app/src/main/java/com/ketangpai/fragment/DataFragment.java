@@ -35,7 +35,6 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
     private String mName;
     private String mUrl;
     private ProgressDialog mDialog;
-    private int type;
 
     @Override
     protected void initVarious() {
@@ -44,7 +43,6 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
             mName = getActivity().getIntent().getStringExtra("name");
             mUrl = getActivity().getIntent().getStringExtra("url");
         }
-        type = mContext.getSharedPreferences("user", 0).getInt("type", -1);
     }
 
     @Override
@@ -58,15 +56,13 @@ public class DataFragment extends BasePresenterFragment<DataViewInterface, DataP
         tv_data_name = (TextView) view.findViewById(R.id.tv_data_name);
         btn_data_delete = (Button) view.findViewById(R.id.btn_data_delete);
         btn_data_preview = (Button) view.findViewById(R.id.btn_data_download);
-        if (type == 1) {
-            btn_data_delete.setVisibility(View.GONE);
-        }
+
 
     }
 
     @Override
     protected void initData() {
-        ImageLoaderUtils.displayByFileName(mContext,img_data_fileImg,mUrl,mName);
+        ImageLoaderUtils.displayByFileName(mContext, img_data_fileImg, mUrl, mName);
         tv_data_name.setText(mName);
         File file = new File(Constant.ALBUM_PATH + Constant.DATA_FOLDER, mName);
         if (file.exists()) {

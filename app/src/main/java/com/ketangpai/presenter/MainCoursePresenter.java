@@ -30,10 +30,10 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
         courseModel = new CourseModelImpl();
     }
 
-    public void getCourseList(Context context, String account, int type) {
+    public void getCourseList(Context context, String account) {
         if (isViewAttached()) {
             mainCourseViewInterface = getView();
-            courseModel.queryCourseList(context, account, type, new ResultsCallback() {
+            courseModel.queryCourseList(context, account, new ResultsCallback() {
                 @Override
                 public void onSuccess(List list) {
                     if (list.size() > 0) {
@@ -80,29 +80,5 @@ public class MainCoursePresenter extends BasePresenter<MainCourseViewInterface> 
         }
     }
 
-    public void addCourse(final Context context, String code, String acccount, String name, int number,String path) {
-        if (isViewAttached()) {
-            mainCourseViewInterface = getView();
-            mainCourseViewInterface.showLoading(1);
-            courseModel.addCourse(context, code, acccount, name, number, path, new ResultCallback() {
-                @Override
-                public void onSuccess(Object object) {
-                    mainCourseViewInterface.addCourseOnComplete((Student_Course) object);
-                    mainCourseViewInterface.hideLoading();
-                }
 
-                @Override
-                public void onFailure(String e) {
-                    Log.i(MainCourseFragment.TAG, "addCourse " + e);
-                    mainCourseViewInterface.addCourseOnComplete(null);
-                    mainCourseViewInterface.hideLoading();
-
-                }
-            });
-        } else {
-            Log.i(MainCourseFragment.TAG, "没有连接到view");
-
-        }
-
-    }
 }

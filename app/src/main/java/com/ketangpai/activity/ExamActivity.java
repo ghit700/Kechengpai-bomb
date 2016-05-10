@@ -3,10 +3,8 @@ package com.ketangpai.activity;
 import android.support.v4.app.Fragment;
 
 import com.ketangpai.base.BaseToolbarActivity;
-import com.ketangpai.bean.Teacher_Homework;
 import com.ketangpai.bean.Test;
-import com.ketangpai.fragment.SExamFragment;
-import com.ketangpai.fragment.TExamFragment;
+import com.ketangpai.fragment.ExamFragment;
 import com.ketangpai.nan.ketangpai.R;
 
 /**
@@ -15,7 +13,6 @@ import com.ketangpai.nan.ketangpai.R;
 public class ExamActivity extends BaseToolbarActivity {
 
     private Test test;
-    private int type;
 
     @Override
     protected void initVariables() {
@@ -23,16 +20,11 @@ public class ExamActivity extends BaseToolbarActivity {
         if (null != getIntent().getSerializableExtra("test")) {
             test = (Test) getIntent().getSerializableExtra("test");
         }
-        type = getSharedPreferences("user", 0).getInt("type", -1);
     }
 
     @Override
     protected Fragment getLayoutFragment() {
-        if (type == 0) {
-            return new TExamFragment();
-        } else {
-            return new SExamFragment();
-        }
+        return new ExamFragment();
     }
 
     @Override

@@ -10,9 +10,5 @@
         android:title=""
         app:showAsAction="always"></item>
 
-    <item
-        android:id="@+id/notify"
-        android:icon="@drawable/ic_notifications"
-        android:title=""
-        app:showAsAction="always"></item>
+   
 </menu>

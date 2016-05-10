@@ -20,12 +20,9 @@ import java.util.List;
  */
 public class CourseNoticeAdapter extends BaseAdapter<Notice> {
 
-    private int type;
 
-
-    public CourseNoticeAdapter(Context mContext, List<Notice> mDataList, int type) {
+    public CourseNoticeAdapter(Context mContext, List<Notice> mDataList) {
         super(mContext, mDataList);
-        this.type = type;
     }
 
     @Override
@@ -42,36 +39,31 @@ public class CourseNoticeAdapter extends BaseAdapter<Notice> {
         ImageView mNoticeEdit = (ImageView) holder.getViewById(R.id.img_notice_edit);
 
 
-        if (type == 0) {
-            //设置点击事件
-            final MyPopupMenu mNoticeEditPopupMenu = new MyPopupMenu(mContext, mNoticeEdit, R.menu.notice_edit_menu);
-            mNoticeEditPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.notice_delete_menu:
-                            s.delete(mContext);
-                            deleteItem(position);
-                            break;
-                        case R.id.notice_edit_menu:
-                            break;
+        //设置点击事件
+        final MyPopupMenu mNoticeEditPopupMenu = new MyPopupMenu(mContext, mNoticeEdit, R.menu.notice_edit_menu);
+        mNoticeEditPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.notice_delete_menu:
+                        s.delete(mContext);
+                        deleteItem(position);
+                        break;
+                    case R.id.notice_edit_menu:
+                        break;
 
-                        default:
-                            break;
-                    }
-                    return false;
+                    default:
+                        break;
                 }
-            });
-            mNoticeEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mNoticeEditPopupMenu.show();
-                }
-            });
-
-        } else {
-            mNoticeEdit.setVisibility(View.GONE);
-        }
+                return false;
+            }
+        });
+        mNoticeEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNoticeEditPopupMenu.show();
+            }
+        });
 
 
         //初始化值

@@ -4,13 +4,13 @@ import android.support.v4.app.Fragment;
 
 import com.ketangpai.base.BaseToolbarActivity;
 import com.ketangpai.bean.Student_Homework;
-import com.ketangpai.fragment.THomeworkDetailFragment;
+import com.ketangpai.fragment.HomeworkDetailFragment;
 import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by nan on 2016/5/1.
  */
-public class THomeworkDetailActivity extends BaseToolbarActivity {
+public class HomeworkDetailActivity extends BaseToolbarActivity {
 
 
     private Student_Homework homework;
@@ -23,7 +23,7 @@ public class THomeworkDetailActivity extends BaseToolbarActivity {
 
     @Override
     protected Fragment getLayoutFragment() {
-        return new THomeworkDetailFragment();
+        return new HomeworkDetailFragment();
     }
 
     @Override

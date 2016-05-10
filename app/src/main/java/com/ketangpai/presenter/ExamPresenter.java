@@ -5,11 +5,8 @@ import android.content.Context;
 import com.ketangpai.base.BasePresenter;
 import com.ketangpai.callback.ResultsCallback;
 import com.ketangpai.model.ExamModel;
-import com.ketangpai.model.HomeworkModel;
 import com.ketangpai.modelImpl.ExamModelImpl;
-import com.ketangpai.modelImpl.HomeworkModelImpl;
-import com.ketangpai.viewInterface.TExamViewInterface;
-import com.ketangpai.viewInterface.THomeworkViewInterface;
+import com.ketangpai.viewInterface.ExamViewInterface;
 
 import java.util.List;
 
@@ -18,23 +15,23 @@ import cn.bmob.v3.exception.BmobException;
 /**
  * Created by nan on 2016/5/8.
  */
-public class TExamPresenter extends BasePresenter<TExamViewInterface> {
+public class ExamPresenter extends BasePresenter<ExamViewInterface> {
 
-    TExamViewInterface mTExamViewInterface;
+    ExamViewInterface mExamViewInterface;
     ExamModel mExamModel;
 
 
-    public TExamPresenter() {
+    public ExamPresenter() {
         mExamModel = new ExamModelImpl();
     }
 
     public void getStudentReplykList(Context context, int t_id) {
         if (isViewAttached()) {
-            mTExamViewInterface = getView();
+            mExamViewInterface = getView();
             mExamModel.getStudentExamList(context, t_id, new ResultsCallback() {
                 @Override
                 public void onSuccess(List list) {
-                    mTExamViewInterface.getStudentReplyListOnComplete(list);
+                    mExamViewInterface.getStudentReplyListOnComplete(list);
                 }
 
                 @Override

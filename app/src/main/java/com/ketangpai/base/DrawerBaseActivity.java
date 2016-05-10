@@ -1,54 +1,30 @@
 package com.ketangpai.base;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.ketangpai.activity.AccountActivity;
-import com.ketangpai.activity.CourseActivity;
 import com.ketangpai.activity.LoginActivity;
 import com.ketangpai.activity.MainActivity;
-import com.ketangpai.activity.SearchActivity;
-import com.ketangpai.adapter.NevigationCourseAdapter;
-import com.ketangpai.adapter.NotificationAdapter;
-import com.ketangpai.bean.Course;
 import com.ketangpai.constant.Constant;
 import com.ketangpai.fragment.AccountFragment;
-import com.ketangpai.fragment.CourseFragment;
-import com.ketangpai.listener.OnItemClickListener;
 import com.ketangpai.nan.ketangpai.R;
 import com.ketangpai.utils.ImageLoaderUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -227,6 +203,7 @@ public abstract class DrawerBaseActivity extends BaseActivity implements View.On
             public void onClick(DialogInterface dialog, int which) {
                 getSharedPreferences("user", 0).edit().clear().commit();
                 getSharedPreferences("user", 0).edit().putString("account", account).commit();
+                getSharedPreferences("user", 0).edit().putString("path", path).commit();
                 startActivity(new Intent(mContext, LoginActivity.class));
                 finish();
             }

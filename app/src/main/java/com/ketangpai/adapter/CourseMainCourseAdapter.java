@@ -23,9 +23,9 @@ import java.util.List;
 /**
  * Created by nan on 2016/3/14.
  */
-public class CourseTMainCourseAdapter extends BaseAdapter<Course> {
+public class CourseMainCourseAdapter extends BaseAdapter<Course> {
 
-    public CourseTMainCourseAdapter(Context mContext, List<Course> mDataList) {
+    public CourseMainCourseAdapter(Context mContext, List<Course> mDataList) {
         super(mContext, mDataList);
     }
 

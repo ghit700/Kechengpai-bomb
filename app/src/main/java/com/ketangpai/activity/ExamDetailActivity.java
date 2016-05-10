@@ -3,16 +3,14 @@ package com.ketangpai.activity;
 import android.support.v4.app.Fragment;
 
 import com.ketangpai.base.BaseToolbarActivity;
-import com.ketangpai.bean.Student_Homework;
 import com.ketangpai.bean.Student_Reply;
-import com.ketangpai.fragment.TExamDetailFragment;
-import com.ketangpai.fragment.THomeworkDetailFragment;
+import com.ketangpai.fragment.ExamDetailFragment;
 import com.ketangpai.nan.ketangpai.R;
 
 /**
  * Created by nan on 2016/5/1.
  */
-public class TExamDetailActivity extends BaseToolbarActivity {
+public class ExamDetailActivity extends BaseToolbarActivity {
 
 
     private Student_Reply student_reply;
@@ -25,7 +23,7 @@ public class TExamDetailActivity extends BaseToolbarActivity {
 
     @Override
     protected Fragment getLayoutFragment() {
-        return new TExamDetailFragment();
+        return new ExamDetailFragment();
     }
 
     @Override
