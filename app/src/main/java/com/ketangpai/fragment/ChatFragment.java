@@ -1,5 +1,6 @@
 package com.ketangpai.fragment;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -201,7 +202,9 @@ public class ChatFragment extends BasePresenterFragment<ChatViewInterface, ChatP
 
     @Subscribe
     public void onReceiveMessageEvent(ReceiveMessageEvent event) {
-        if (event.getMessageInfo().getSend_account().equals(mSend_User.getAccount())){
+        if (event.getMessageInfo().getSend_account().equals(mSend_User.getAccount())) {
+            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(0);
             mChatAdapter.addItem(mChatRecondList.size(), event.getMessageInfo());
             mChatList.postDelayed(new Runnable() {
                 @Override
